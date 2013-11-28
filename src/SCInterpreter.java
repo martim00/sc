@@ -150,13 +150,6 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     		union.add(insn);
     		union.addAll(value.insns);
     		String name = extractNameForLoadAndStore((VarInsnNode)insn);
-//    		if (debug) {
-//    			assert(varInsn.var < this.methodNode.localVariables.size());
-//    			String varName = this.methodNode.localVariables.get(varInsn.var).name;
-//    			name = CodeGeneration.prepareFullyQualifiedName(className, getMethodName(), varName);
-//    		} else {
-//    			name = CodeGeneration.prepareFullyQualifiedName(className, getMethodName(), new Integer(varInsn.var).toString());
-//    		}
     		return new SCValue(union.size(), union, name);
     	case ISTORE: 
 		case LSTORE:
