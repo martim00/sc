@@ -1,5 +1,4 @@
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +16,6 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import org.objectweb.asm.tree.analysis.Interpreter;
-import org.objectweb.asm.tree.analysis.SourceValue;
 
 public class SCInterpreter extends Interpreter<SCValue> implements
         Opcodes {
@@ -245,11 +243,12 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     	
         return new SCValue(1, insn, ""); // TODO
     }
-
+    
     @Override
     public SCValue naryOperation(final AbstractInsnNode insn,
             final List<? extends SCValue> values) {
     	
+    	// TODO: refactor!!!
         int size;
         String name = "";
         int opcode = insn.getOpcode();
@@ -267,9 +266,17 @@ public class SCInterpreter extends Interpreter<SCValue> implements
             
             boolean isProcedure = Type.getReturnType(desc) == Type.VOID_TYPE;
             if (!isProcedure) {
-            	name += getMethodCallName(insn, values); 
+            	
+            	String fullName = getMethodCallName(insn); 
+            	
+            	if (methodCallIsPropertyVerifier(fullName)) { // se for um property verifier de uma lista, por exemplo, não adicionamos o nome do método mas sim  o nome da instância (no caso a lista)...
+            		assert(values.size() >= 1);
+            		name = values.get(0).getName();
+            	} else { // senão adicionamos o próprio nome do método como value
+            		name = fullName;
+            	}
             }
-            if (methodName.equals("assertEquals")) {
+            if (methodIsAssert(methodName)) {
             	System.out.println("AddAssert : " + name + " at instruction " + lastStatement.toString());
             	
             	for (SCValue value : values) {
@@ -287,22 +294,16 @@ public class SCInterpreter extends Interpreter<SCValue> implements
         
         return new SCValue(size, insn, name);
     }
+
+	private boolean methodIsAssert(String methodName) {
+		return methodName.equals("assertEquals");
+	}
     
-    private String getMethodCallName(AbstractInsnNode insn, final List<? extends SCValue> args) {
+    private String getMethodCallName(AbstractInsnNode insn) {
     	
     	assert(insn instanceof MethodInsnNode);
-    	
     	MethodInsnNode methodInsn = (MethodInsnNode)insn;
-    	
-    	String fullName = CodeGeneration.prepareFullyQualifiedName(methodInsn.owner, methodInsn.name + methodInsn.desc); 
-    	
-//    	if (thirdPartPropertyVerifier.contains(fullName)) {
-//    		assert(args.size() >= 1);
-//    		return args.get(0).getName();
-//    	}
-//    		return CodeGeneration.prepareFullyQualifiedName(instance.getName());
-    	
-    	return fullName;
+    	return CodeGeneration.prepareFullyQualifiedName(methodInsn.owner, methodInsn.name + methodInsn.desc); 
     }
 
     private void instrumentThirdPart(AbstractInsnNode insn, final List<? extends SCValue> values) {
@@ -312,7 +313,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     			|| insn.getOpcode() == Opcodes.INVOKEVIRTUAL))
     		return;
     	
-    	String fullName = getMethodCallName(insn, values);
+    	String fullName = getMethodCallName(insn);
     	
     	if (methodCallIsNonConst(fullName)) {
     		
@@ -329,6 +330,10 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 //    		}
     	}
     }
+
+	private boolean methodCallIsPropertyVerifier(String fullName) {
+		return this.thirdPartPropertyVerifier.contains(fullName);
+	}
 
 	/**
      * Return true if the method call passed modifies the object
