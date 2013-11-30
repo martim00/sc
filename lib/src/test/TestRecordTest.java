@@ -20,5 +20,11 @@ public class TestRecordTest {
 		assertEquals(1, asserts.size());
 		assertEquals("HumanName.IsCelebrity()", asserts.get(0));
 	}
+	
+//	@Test
+//	public void testAddStateModifications() {
+//		TestRecord testRecord = new TestRecord();
+//		testRecord.addModificationOf("");
+//	}
 
 }

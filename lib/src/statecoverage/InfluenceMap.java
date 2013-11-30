@@ -29,7 +29,8 @@ public class InfluenceMap {
         Set<String> dependenciesOf = new HashSet<String>(result);
         for (String dep : dependenciesOf)
         {
-            result.addAll(getInfluencesOf(dep));
+        	if (!dep.isEmpty()) // temos que ver outra maneira de tratar listas...
+        		result.addAll(getInfluencesOf(dep));
         }
 
         return result;
