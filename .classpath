@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="asm-4.1-bin/asm-4.1/lib/all/asm-debug-all-4.1.jar" sourcepath="asm-4.1-bin/asm-4.1/src.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/statecoverage"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="asm-4.1-bin/asm-4.1/lib/all/asm-debug-all-4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
