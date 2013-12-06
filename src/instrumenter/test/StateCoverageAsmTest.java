@@ -350,6 +350,5 @@ public class StateCoverageAsmTest {
 			    "    RETURN\n"); 
 	}
 	
-	
 
 }

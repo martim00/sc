@@ -101,6 +101,32 @@ public class StateCoverageResult {
 		result += getStateCoverageValue();
 		return result;
 	}
+
+	public String toJson() {
+		
+		String result = new String();
+		
+		result += "{\n";
+		result += "  \"test_name\": \"" + testName + "\",\n";
+		result += "  \"modified_states\": \"" + statesModified.size() + "\",\n";
+		result += "  \"covered_states\": \"" + statesCovered.size() + "\",\n";
+		result += "  \"state_coverage\": \"" + getStateCoverageValue() + "\"\n";
+		result += "}";
+		
+		return result;
+	}
+	
+	public String toHtmlRow() {
+		String result = new String();
+		
+		result += "<tr>";
+		result += "<td>" + statesModified.size() + "</td>";
+		result += "<td>" + statesCovered.size()  + "</td>";
+		result += "<td>" + getStateCoverageValue() + "</td>";
+		result += "</tr>";
+		
+		return result;
+	}
 	
 
 }

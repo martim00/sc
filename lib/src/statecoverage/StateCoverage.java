@@ -67,39 +67,24 @@ public class StateCoverage {
 	
 	public static void EndTestCapture(String testName) {
 		dump("Ending test : " + testName);
-		dumpToFile("c:/sc_output/dump.txt");
+//		dumpToFile("c:/sc_output/dump.txt", log);
 		actualTest = null;
-		System.out.println(StateCoverage.GetResultFor(testName));
+		StateCoverageResult result = StateCoverage.GetResultFor(testName);
+		System.out.println(result.toString());
+		
+		Utils.dumpToFile(Utils.escape(testName) + ".json", result.toJson());
+		
+		
+		
 	}
 
-	private static void dumpToFile(String filename) {
-		File file = new File(filename);
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}		
-		
-		FileWriter writer = null;
-		try {
-			writer = new FileWriter(file);
-			writer.write(log);
-			writer.close();
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 
-	public static String GetResultFor(String test) {
+	public static StateCoverageResult GetResultFor(String test) {
 		
 		StateCoverageSolver solver = new StateCoverageSolver(testRegistry);
-		return solver.computeStateCoverageFor(test, true).toString();
-//		return solver.computeStateCoverageFor(test).toString();
+		return solver.computeStateCoverageFor(test, true);
+//		return solver.computeStateCoverageFor(test);
 	}
 
 
