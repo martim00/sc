@@ -15,15 +15,12 @@ public class StateCoverageSolver {
 	
 	private Set<String> getTotalModifiedState(TestRecord testRecord) {
 		
-		InfluenceMap testInfluence = testRecord.getInfluenceMap();
-		Set<String> totalModifiedState = testInfluence.getAllTargets();
-		return totalModifiedState;
+		return testRecord.getModifiedStates();
 	}
 	
 	private Set<String> getTotalCoveredState(TestRecord testRecord) {
 		
 		List<String> asserts = testRecord.getAsserts();
-		
 		
 		Set<String> totalCoveredState = new HashSet<String>();
 		

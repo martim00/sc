@@ -28,7 +28,7 @@ public class StateCoverageSolverTest {
 	@Test
 	public void testFullCoverageShouldResultIn1()
 	{
-		influenceMap.addDependency("first", "second");
+		testRecord.addModification("first");
 		testRecord.addAssert("first");
 		
 		StateCoverageResult result = solver.computeStateCoverageFor("HumanNameTest.test");
@@ -39,26 +39,41 @@ public class StateCoverageSolverTest {
 	@Test
 	public void test() {
 		
+		testRecord.addModification("HumanName.last");
 		influenceMap.addDependency("HumanName.last", "HumanName.HumanName().oneNameCelebrity");
+		testRecord.addModification("HumanName.first");
 		influenceMap.clearDependenciesOf("HumanName.first");
 		influenceMap.addDependency("HumanName.IsCelebrity()", "HumanName.first");
 		
 		testRecord.addAssert("HumanName.IsCelebrity()");
 		
-		StateCoverageResult result = solver.computeStateCoverageFor("HumanNameTest.test");
+		StateCoverageResult result = solver.computeStateCoverageFor("HumanNameTest.test", true);
 		
 		// TODO: criar implementações para os três tipos de state coverage
-		assertEquals(3, result.getTotalModified());
+		
+		// isso seria de acordo com a definição de Koster et al
+//		assertEquals(3, result.getTotalModified());
+//		assertTrue(result.getModifiedStates().contains("HumanName.last"));
+//		assertTrue(result.getModifiedStates().contains("HumanName.first"));
+//		assertTrue(result.getModifiedStates().contains("HumanName.IsCelebrity()"));
+
+		assertEquals(2, result.getTotalModified());
 		assertTrue(result.getModifiedStates().contains("HumanName.last"));
 		assertTrue(result.getModifiedStates().contains("HumanName.first"));
-		assertTrue(result.getModifiedStates().contains("HumanName.IsCelebrity()"));
 		
-		assertEquals(2, result.getTotalCovered());
+		// isso seria de acordo com a definição de Koster et al
+//		assertEquals(2, result.getTotalCovered());
+//		assertTrue(result.getCoveredStates().contains("HumanName.first"));
+//		assertTrue(result.getCoveredStates().contains("HumanName.IsCelebrity()"));
+		
+		assertEquals(1, result.getTotalCovered());
 		assertTrue(result.getCoveredStates().contains("HumanName.first"));
-		assertTrue(result.getCoveredStates().contains("HumanName.IsCelebrity()"));
-		
+
 		// TODO: ver se eh certo 0.5 ou 0.333 ou 0.66
-		assertEquals(0.666, result.getStateCoverageValue(), 0.001);
+		// isso seria de acordo com a definição de Koster et al
+//		assertEquals(0.666, result.getStateCoverageValue(), 0.001);
+
+		assertEquals(0.5, result.getStateCoverageValue(), 0.001);
 	}
 	
 	@Test
@@ -76,6 +91,7 @@ public class StateCoverageSolverTest {
 	public void testShouldBeAbleToComputeOnlyAttributes()
 	{
 		influenceMap.addDependency("IsDependency()", "other");
+		testRecord.addModification("last");
 		influenceMap.addDependency("last", "first");
 		
 		testRecord.addAssert("last");

@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -21,10 +22,14 @@ public class TestRecordTest {
 		assertEquals("HumanName.IsCelebrity()", asserts.get(0));
 	}
 	
-//	@Test
-//	public void testAddStateModifications() {
-//		TestRecord testRecord = new TestRecord();
-//		testRecord.addModificationOf("");
-//	}
+	@Test
+	public void testAddStateModifications() {
+		TestRecord testRecord = new TestRecord();
+		testRecord.addModification("HumanName.last");
+		
+		Set<String> modifications = testRecord.getModifiedStates();
+		assertEquals(1, modifications.size());	
+		assertTrue(modifications.contains("HumanName.last"));
+	}
 
 }
