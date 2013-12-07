@@ -49,6 +49,7 @@ public class CodeGeneration {
 	}
 
 	public static InsnList generateAddModification(String target) {
+		assert(!target.isEmpty());
 		InsnList il = new InsnList();
 		il.add(new LdcInsnNode(target));
 		il.add(new MethodInsnNode(StateCoverageClassAdapter.INVOKESTATIC,

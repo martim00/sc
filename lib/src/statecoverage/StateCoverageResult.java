@@ -72,15 +72,18 @@ public class StateCoverageResult {
 	
 	private String setToString(Set<String> set) {
 		String result = new String();
-		result += " { ";
+		result += " [ ";
 		
-		for (String item : set) {
-			result += item;
-			result += ", ";
+		String[] arr = set.toArray(new String[0]);
+		for (int i = 0; i < arr.length; i++) {
+			result += "\"";
+			result += arr[i];
+			result += "\"";
+			if (i != arr.length-1)
+				result += ", ";
 		}
-		result += "}";
+		result += " ]";
 		return result;
-		
 	}
 	
 	@Override
@@ -110,7 +113,9 @@ public class StateCoverageResult {
 		result += "  \"test_name\": \"" + testName + "\",\n";
 		result += "  \"modified_states\": \"" + statesModified.size() + "\",\n";
 		result += "  \"covered_states\": \"" + statesCovered.size() + "\",\n";
-		result += "  \"state_coverage\": \"" + getStateCoverageValue() + "\"\n";
+		result += "  \"state_coverage\": \"" + getStateCoverageValue() + "\",\n";
+		result += "  \"modified\": " + setToString(statesModified) + ",\n" ;
+		result += "  \"covered\": " + setToString(statesCovered) + "\n" ;
 		result += "}";
 		
 		return result;

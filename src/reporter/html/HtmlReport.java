@@ -11,7 +11,10 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -31,7 +34,6 @@ public class HtmlReport {
 			
 			@Override
 			public boolean accept(File arg0, String arg1) {
-				// TODO Auto-generated method stub
 				return arg1.endsWith(".json");
 			}
 		});	
@@ -39,8 +41,6 @@ public class HtmlReport {
 		for (File file : files) {
 			
 			try {
-				String content = Utils.readFile(file.getAbsolutePath(), Charset.defaultCharset());
-				
 				FileReader reader = new FileReader(file);
 				
 				JSONObject json = (JSONObject)JSONValue.parse(reader);
@@ -49,6 +49,8 @@ public class HtmlReport {
 				assert(json.containsKey("modified_states"));
 				assert(json.containsKey("covered_states"));
 				assert(json.containsKey("state_coverage"));
+				assert(json.containsKey("modified"));
+				assert(json.containsKey("covered"));
 				
 				builder
 					.append("<tr>")
@@ -66,12 +68,43 @@ public class HtmlReport {
 					.append("</td>")
 					.append("</tr>");
 				
+				JSONArray modified = (JSONArray) json.get("modified");
+				JSONArray covered = (JSONArray) json.get("covered");
+				
+			
+				for (Object state : modified) {
+					
+					String jsonObject = (String) state;
+					
+					List<String> column = new ArrayList<String>();
+					column.add(jsonObject);
+					builder.append(generateRow(column, covered.contains(jsonObject)));
+				}
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		} 
+		
+	}
+	
+	private String generateRow(List<String> columns, boolean green) {
+		String result = new String();
+		result += "<tr class=\"";
+		if (green)
+			result += "covered\">";
+		else
+			result += "uncovered\">";
+		
+		for (String column : columns) {
+			result += "<td>";
+			result += column;
+			result += "</td>";
+		}
+		result += "</tr>";
+		return result;
 		
 	}
 	
@@ -83,7 +116,11 @@ public class HtmlReport {
 			.append("<head>\n")
 			.append("<title>State Coverage Report</title>\n")
 			.append("<!DOCTYPE html>\n")
-			.append("<!DOCTYPE html>\n")
+			.append("<style type=\"text/css\">\n")
+			.append(".covered {background-color:#c0ffc0;}\n")
+			.append(".uncovered {background-color:#ffa0a0;}\n")
+			.append("</style>")
+
 			.append("</head>\n")
 			.append("<body>\n")
 			.append("<h2>State Coverage Report for Tablelize-it</h2>\n")
@@ -109,6 +146,8 @@ public class HtmlReport {
 		
 		HtmlReport report = new HtmlReport(reportFolder);
 		report.generateHtml();	
+		
+		System.out.println("Html report generated at " +reportFolder + "/report.html");
 		
 	}
 	

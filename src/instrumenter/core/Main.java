@@ -8,8 +8,10 @@ public class Main {
 		
 		System.out.println("Usage: sc [input_folder] [output_folder]");
 		
-		String inputFolder = "C:/Users/Martim/workspace/table/java";
-		//String inputFolder = "C:/Users/Aniceto/workspace/statecoverage/externals/tablelize_it/java";
+//		String inputFolder = "C:/Users/Martim/workspace/table/java";
+//		String inputFolder = "C:/Users/Aniceto/workspace/statecoverage/externals/tablelize_it/java";
+		String inputFolder = "C:/Users/Aniceto/workspace/tablelize_it/java";
+		
 		
 		String outputFolder = "C:/sc_output";
 		

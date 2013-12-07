@@ -151,7 +151,7 @@ class StateCoverageClassAdapter extends ClassVisitor implements Opcodes {
 							if (interpreter.hasInstrumentationAt(insn)) {
 								InsnList instrumentedInsn = interpreter.getInstrumentationFor(insn);
 								instructions.insert(insn, instrumentedInsn);
-								i += instrumentedInsn.size();
+//								i += instrumentedInsn.size();
 							}
 						}
 						

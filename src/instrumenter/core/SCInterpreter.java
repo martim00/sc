@@ -230,10 +230,12 @@ public class SCInterpreter extends Interpreter<SCValue> implements
         case PUTFIELD:
         	size = 2;
         	FieldInsnNode fieldInsn = (FieldInsnNode)insn;
-        	this.addInstrumentation(CodeGeneration.generateAddDependencyCode(
-        			CodeGeneration.prepareFullyQualifiedName(fieldInsn.owner, fieldInsn.name), value2.getName())
-					, lastStatement);
-        	System.out.println("PUTFIELD found for field " + value2.getName());
+        	if (!value2.getName().isEmpty()) {
+        		this.addInstrumentation(CodeGeneration.generateAddDependencyCode(
+        				CodeGeneration.prepareFullyQualifiedName(fieldInsn.owner, fieldInsn.name), value2.getName())
+        				, lastStatement);
+        		System.out.println("PUTFIELD found for field " + value2.getName());
+        	}
 			this.addInstrumentation(CodeGeneration.generateAddModification(CodeGeneration.prepareFullyQualifiedName(fieldInsn.owner, fieldInsn.name)), lastStatement);
         default:
             size = 1;
