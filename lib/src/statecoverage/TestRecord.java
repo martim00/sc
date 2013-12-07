@@ -19,9 +19,9 @@ public class TestRecord {
 		return asserts;
 	}
 
-	public InfluenceMap getInfluenceMap() {
-		return influences;
-	}
+//	public InfluenceMap getInfluenceMap() {
+//		return influences;
+//	}
 
 	public void addModification(String modification) {
 		modifiedStates.add(modification);
@@ -29,6 +29,26 @@ public class TestRecord {
 
 	public Set<String> getModifiedStates() {
 		return modifiedStates;
+	}
+
+	public void addDependency(String target, String source) {
+		influences.addDependency(target, source);
+	}
+
+	public void ignoreState(String state) {
+		influences.ignoreState(state);
+	}
+
+	public void clearDependenciesOf(String target) {
+		influences.clearDependenciesOf(target);
+	}
+
+	public Set<String> getInfluencesOf(String target) {
+		return influences.getInfluencesOf(target);
+	}
+
+	public boolean ignores(String target) {
+		return influences.ignores(target);
 	}
 
 }

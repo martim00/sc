@@ -26,11 +26,11 @@ public class StateCoverageSolver {
 		
 		for (String assertPred : asserts) {
 			
-			Set<String> influences = testRecord.getInfluenceMap().getInfluencesOf(assertPred);
+			Set<String> influences = testRecord.getInfluencesOf(assertPred);
 			totalCoveredState.addAll(influences);
 			
 			// adicionamos o próprio assert se ele não for um dos ignorados
-			if (!testRecord.getInfluenceMap().ignores(assertPred))
+			if (!testRecord.ignores(assertPred))
 				totalCoveredState.add(assertPred);
 		}
 		

@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import statecoverage.InfluenceMap;
 import statecoverage.StateCoverageResult;
 import statecoverage.StateCoverageSolver;
 import statecoverage.TestRecord;
@@ -14,14 +13,14 @@ import statecoverage.TestRegistry;
 public class StateCoverageSolverTest {
 	
 	TestRegistry registry = new TestRegistry();
-	InfluenceMap influenceMap = null;
+//	InfluenceMap influenceMap = null;
 	TestRecord testRecord = null;
 	StateCoverageSolver solver = null;
 	
 	@Before
 	public void setUp() {
 		testRecord = registry.getRecordFor("HumanNameTest.test");
-		influenceMap = testRecord.getInfluenceMap();
+//		influenceMap = testRecord.getInfluenceMap();
 		solver = new StateCoverageSolver(registry);
 	}
 
@@ -40,10 +39,10 @@ public class StateCoverageSolverTest {
 	public void test() {
 		
 		testRecord.addModification("HumanName.last");
-		influenceMap.addDependency("HumanName.last", "HumanName.HumanName().oneNameCelebrity");
+		testRecord.addDependency("HumanName.last", "HumanName.HumanName().oneNameCelebrity");
 		testRecord.addModification("HumanName.first");
-		influenceMap.clearDependenciesOf("HumanName.first");
-		influenceMap.addDependency("HumanName.IsCelebrity()", "HumanName.first");
+		testRecord.clearDependenciesOf("HumanName.first");
+		testRecord.addDependency("HumanName.IsCelebrity()", "HumanName.first");
 		
 		testRecord.addAssert("HumanName.IsCelebrity()");
 		
@@ -79,7 +78,7 @@ public class StateCoverageSolverTest {
 	@Test
 	public void testShouldCountCoveredOnlyTheExactMatches()
 	{
-		influenceMap.addDependency("first", "second");
+		testRecord.addDependency("first", "second");
 		testRecord.addAssert("assert");
 		
 		StateCoverageResult result = solver.computeStateCoverageFor("HumanNameTest.test");
@@ -90,9 +89,9 @@ public class StateCoverageSolverTest {
 	@Test
 	public void testShouldBeAbleToComputeOnlyAttributes()
 	{
-		influenceMap.addDependency("IsDependency()", "other");
+		testRecord.addDependency("IsDependency()", "other");
 		testRecord.addModification("last");
-		influenceMap.addDependency("last", "first");
+		testRecord.addDependency("last", "first");
 		
 		testRecord.addAssert("last");
 		

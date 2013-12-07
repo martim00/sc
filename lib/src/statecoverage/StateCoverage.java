@@ -25,15 +25,15 @@ public class StateCoverage {
 		dump(target + " <- " + source);
 		
 		globalInfluences.addDependency(target, source);
-		actualTest.getInfluenceMap().addDependency(target, source);
+		actualTest.addDependency(target, source);
 	}
 	
 	public static void AddTestDependency(String target, String source) {
 		
 		dump(target + " <- " + source);
 		
-		actualTest.getInfluenceMap().addDependency(target, source);		
-		actualTest.getInfluenceMap().ignoreState(target);
+		actualTest.addDependency(target, source);		
+		actualTest.ignoreState(target);
 	}
 
 	public static void ClearDependenciesOf(String target) {
@@ -41,7 +41,7 @@ public class StateCoverage {
 		dump(target + " <- empty");
 		
 		globalInfluences.clearDependenciesOf(target);
-		actualTest.getInfluenceMap().clearDependenciesOf(target);
+		actualTest.clearDependenciesOf(target);
 	}
 	
 	public static void ClearTestDependenciesOf(String target) {
@@ -49,8 +49,8 @@ public class StateCoverage {
 		dump(target + " <- empty");
 		
 		globalInfluences.clearDependenciesOf(target);
-		actualTest.getInfluenceMap().clearDependenciesOf(target);
-		actualTest.getInfluenceMap().ignoreState(target);
+		actualTest.clearDependenciesOf(target);
+		actualTest.ignoreState(target);
 	}
 	
 	public static void AddAssert(String assertPredicate) {
@@ -74,11 +74,7 @@ public class StateCoverage {
 		
 		Utils.dumpToFile(Utils.escape(testName) + ".json", result.toJson());
 		
-		
-		
 	}
-
-	
 
 	public static StateCoverageResult GetResultFor(String test) {
 		
