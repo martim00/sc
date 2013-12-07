@@ -13,6 +13,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.analysis.Analyzer;
 import org.objectweb.asm.tree.analysis.AnalyzerException;
@@ -141,14 +142,17 @@ class StateCoverageClassAdapter extends ClassVisitor implements Opcodes {
 					try {
 						a.analyze(owner, this);
 						
-						interpreter.instrumentBeginAndEnd(); // temos que fazer isso pois o Analyser não chama o Interpreter::returnOperation quando 
+						interpreter.instrumentBeginAndEnd(); // temos que fazer isso pois o Analyser não chama o Interpreter.returnOperation quando 
 						// o retorno do método é void
 						
 						for (int i = 0; i < instructions.size(); ++i) {
 							AbstractInsnNode insn = instructions.get(i);
 
-							if (interpreter.hasInstrumentationAt(insn))
-								instructions.insert(insn, interpreter.getInstrumentationFor(insn));
+							if (interpreter.hasInstrumentationAt(insn)) {
+								InsnList instrumentedInsn = interpreter.getInstrumentationFor(insn);
+								instructions.insert(insn, instrumentedInsn);
+								i += instrumentedInsn.size();
+							}
 						}
 						
 					} catch (AnalyzerException e) {

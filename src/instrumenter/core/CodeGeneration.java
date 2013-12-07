@@ -2,6 +2,7 @@ package instrumenter.core;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
 import org.objectweb.asm.Opcodes;
 
 
@@ -47,6 +48,15 @@ public class CodeGeneration {
 		return il;
 	}
 
+	public static InsnList generateAddModification(String target) {
+		InsnList il = new InsnList();
+		il.add(new LdcInsnNode(target));
+		il.add(new MethodInsnNode(StateCoverageClassAdapter.INVOKESTATIC,
+				"statecoverage/StateCoverage", "AddModification",
+				"(Ljava/lang/String;)V"));
+		return il;
+	}
+
 	public static String prepareFullyQualifiedName(String klass, String name, String var) {
 		return klass + "." + name + "." + var;
 	}
@@ -54,4 +64,5 @@ public class CodeGeneration {
 	public static String prepareFullyQualifiedName(String klass, String name) {
 		return klass + "." + name;
 	}
+
 }

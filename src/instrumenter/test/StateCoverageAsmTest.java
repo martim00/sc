@@ -162,7 +162,7 @@ public class StateCoverageAsmTest {
 				
 		MethodNode method = result.methods.get(3);
 		assertEquals("localVarToFieldAssignment", method.name);
-		assertEquals(9, method.instructions.size());
+		assertEquals(11, method.instructions.size());
 		
 		assertCode(method, 
 			    		   "    ICONST_0\n" +
@@ -170,6 +170,8 @@ public class StateCoverageAsmTest {
 			    		   "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.a\"\n" +
 			    		   "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.localVarToFieldAssignment()V.local\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    		   "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.a\"\n" +
+			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    		   "    ALOAD 0\n" +
 			    		   "    ILOAD 1\n" +
 			    		   "    PUTFIELD instrumenter/test/StateCoverageAsmTest$Dummy.a : I\n" +
@@ -181,11 +183,13 @@ public class StateCoverageAsmTest {
 				
 		MethodNode method = result.methods.get(4);
 		assertEquals("fieldToFieldAssignement", method.name);
-		assertEquals(8, method.instructions.size());
+		assertEquals(10, method.instructions.size());
 		assertCode(method, 
 			    		   "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.a\"\n" +
 			    		   "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.other\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    		   "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.a\"\n" +
+			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    		   "    ALOAD 0\n" +
 			    		   "    ALOAD 0\n" +
 			    		   "    GETFIELD instrumenter/test/StateCoverageAsmTest$Dummy.other : I\n" +
@@ -272,11 +276,10 @@ public class StateCoverageAsmTest {
 		
 		MethodNode method = result.methods.get(9);
 		assertEquals("testListModification", method.name);
-		assertEquals(9, method.instructions.size());
+		assertEquals(8, method.instructions.size());
 		assertCode(method, 
 						   "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.list\"\n" +
-						   "    LDC \"\"\n" + 
-						   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+						   "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    		   "    ALOAD 0\n" +
 						   "    GETFIELD instrumenter/test/StateCoverageAsmTest$Dummy.list : Ljava/util/List;\n" + 
 			    		   "    LDC \"aaa\"\n" +
@@ -329,10 +332,12 @@ public class StateCoverageAsmTest {
 	
 	@Test
 	public void testAssertListProperties() {
-		assertInstrumentation(11, "testAssertListProperties", 17, 
+		assertInstrumentation(11, "testAssertListProperties", 19, 
 
 			    "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.testAssertListProperties()V\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
+			    "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.list\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.getListCount()I\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 			    "    ALOAD 0\n" +

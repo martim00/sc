@@ -60,6 +60,13 @@ public class StateCoverage {
 		actualTest.addAssert(assertPredicate);
 	}
 
+	public static void AddModification(String target) {
+		
+		dump("add modification : " + target);
+		
+		actualTest.addModification(target);
+	}
+
 	public static void BeginTestCapture(String testName) {
 		dump("Beginning test : " + testName);
 		actualTest = testRegistry.addTest(testName);

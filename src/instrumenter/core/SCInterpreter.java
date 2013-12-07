@@ -1,5 +1,6 @@
 package instrumenter.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +38,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 		}
 	}
 	
-	private Map<AbstractInsnNode, InstrumenterInfo> instrumentation = new HashMap<AbstractInsnNode, InstrumenterInfo>();
+	private Map<AbstractInsnNode, List<InstrumenterInfo>> instrumentation 
+		= new HashMap<AbstractInsnNode, List<InstrumenterInfo>>();
 	
 	private String className;
 	private MethodNode methodNode;
@@ -120,7 +122,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     		// há casos aonde o número de variáveis locais contidos em 'localVariables' é menor do que o maxLocals
     		// isso acontece por exemplo, quando há variáveis escondidas no bytecode, por exemplo em um foreach 
     		if (varNode.var >= this.methodNode.localVariables.size()) {
-    			varName = "invisible" + new Integer(varNode.var).toString();
+    			varName = "hidden" + new Integer(varNode.var).toString();
     		} else {
     			varName = this.methodNode.localVariables.get(varNode.var).name;
     		}					
@@ -162,6 +164,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 				String target = extractNameForLoadAndStore((VarInsnNode)insn);
 				this.addInstrumentation(CodeGeneration.generateAddDependencyCode(target, value.getName()), lastStatement);
 			}
+			
 			this.lastStatement = insn;
 			return new SCValue(value.getSize(), insn, "");
     	}
@@ -231,6 +234,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
         			CodeGeneration.prepareFullyQualifiedName(fieldInsn.owner, fieldInsn.name), value2.getName())
 					, lastStatement);
         	System.out.println("PUTFIELD found for field " + value2.getName());
+			this.addInstrumentation(CodeGeneration.generateAddModification(CodeGeneration.prepareFullyQualifiedName(fieldInsn.owner, fieldInsn.name)), lastStatement);
         default:
             size = 1;
         }
@@ -320,7 +324,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     		
     		assert(values.size() >= 1);
     		// TODO: tratar isso.. por exemplo... list.add("some"); // devemos criar uma outra notação para isso
-    		addInstrumentation(CodeGeneration.generateAddDependencyCode(values.get(0).getName(), ""), this.lastStatement);
+//    		addInstrumentation(CodeGeneration.generateAddDependencyCode(values.get(0).getName(), ""), this.lastStatement);
+    		addInstrumentation(CodeGeneration.generateAddModification(values.get(0).getName()), this.lastStatement);
     		
 //    		for (int i = 0; i < values.size(); i++) {
 //    		    			
@@ -365,7 +370,10 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     }
 	
 	public void addInstrumentation(InsnList insnList, AbstractInsnNode previousNode) {
-		this.instrumentation.put(previousNode, new InstrumenterInfo(insnList, previousNode));
+		if (!instrumentation.containsKey(previousNode))
+			instrumentation.put(previousNode, new ArrayList<InstrumenterInfo>());
+		
+		this.instrumentation.get(previousNode).add(new InstrumenterInfo(insnList, previousNode));
 	}
 
 	public boolean hasInstrumentationAt(AbstractInsnNode insn) {
@@ -373,8 +381,12 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 	}
 	
 	public InsnList getInstrumentationFor(AbstractInsnNode insn) {
-		return this.instrumentation.get(insn).instructionList;
-		
+		InsnList result = new InsnList();
+		List<InstrumenterInfo> instrumented = this.instrumentation.get(insn);
+		for (InstrumenterInfo insnInfo : instrumented) {
+			result.add(insnInfo.instructionList);
+		}
+		return result;
 	}
 	
 }
