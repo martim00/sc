@@ -1,2 +1,2 @@
-statecoverage
+sc
 =============
