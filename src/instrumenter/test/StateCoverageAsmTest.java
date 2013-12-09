@@ -82,6 +82,12 @@ public class StateCoverageAsmTest {
 			return list.size();
 		}
 		
+		@Test
+		public void testPop() {
+			// isso deve gerar um pop, pois ninguém armazena o resultado da função
+			getListCount();
+		}
+		
 		
 		
 	}
@@ -353,6 +359,20 @@ public class StateCoverageAsmTest {
 			    "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.testAssertListProperties()V\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
 			    "    RETURN\n"); 
+	}
+	
+	@Test
+	public void testInstrumentPop() {
+		
+		assertInstrumentation(13, "testPop", 8, 
+			    "    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.testPop()V\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
+				"    ALOAD 0\n" +
+				"    INVOKESPECIAL instrumenter/test/StateCoverageAsmTest$Dummy.getListCount ()I\n" +
+				"    POP\n" +
+				"    LDC \"instrumenter/test/StateCoverageAsmTest$Dummy.testPop()V\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
+				"    RETURN\n");
 	}
 	
 

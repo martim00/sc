@@ -66,6 +66,10 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 
     private void initThirdPartPropertyVerifier() {
     	this.thirdPartPropertyVerifier.add("java/util/List.size()I");
+    	this.thirdPartPropertyVerifier.add("java/util/Map.get(Ljava/lang/Object;)Ljava/lang/Object;");
+    	this.thirdPartPropertyVerifier.add("java/util/Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object;");
+    	
+    	
 	}
     
 	public void instrumentBeginAndEnd() {
@@ -176,7 +180,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     public SCValue unaryOperation(final AbstractInsnNode insn,
             final SCValue value) {
     	
-    	String name = "";
+    	String name = value.getName(); // repassamos para a próxima instrução o valor...
         int size;
         switch (insn.getOpcode()) {
         case LNEG:
@@ -187,7 +191,6 @@ public class SCInterpreter extends Interpreter<SCValue> implements
         case F2L:
         case F2D:
         case D2L:
-        	name = value.getName(); // repassamos para a próxima instrução o valor...
             size = 2;
             break;
         case GETFIELD:
@@ -368,7 +371,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     	Set<AbstractInsnNode> union = new HashSet<AbstractInsnNode>();
     	union.addAll(d.insns);
     	union.addAll(w.insns);
-    	return new SCValue(union.size(), union, d.getName() + ", " + w.getName());
+//    	return new SCValue(union.size(), union, d.getName() + ", " + w.getName());
+    	return new SCValue(union.size(), union, "");
     }
 	
 	public void addInstrumentation(InsnList insnList, AbstractInsnNode previousNode) {
