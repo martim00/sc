@@ -12,7 +12,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,6 +25,8 @@ import instrumenter.core.Utils;
 public class HtmlReport {
 	
 	private String folder;
+	private Set<String> globalModified = new HashSet<String>();
+	private Set<String> globalCovered = new HashSet<String>();
 	
 	public HtmlReport(String folder) {
 		this.folder = folder;
@@ -37,6 +41,7 @@ public class HtmlReport {
 				return arg1.endsWith(".json");
 			}
 		});	
+
 		
 		for (File file : files) {
 			
@@ -71,6 +76,7 @@ public class HtmlReport {
 				JSONArray modified = (JSONArray) json.get("modified");
 				JSONArray covered = (JSONArray) json.get("covered");
 				
+				
 			
 				for (Object state : modified) {
 					
@@ -78,25 +84,57 @@ public class HtmlReport {
 					
 					List<String> column = new ArrayList<String>();
 					column.add(jsonObject);
-					builder.append(generateRow(column, covered.contains(jsonObject)));
+					builder.append(generateColoredRow(column, covered.contains(jsonObject)));
+					
+					globalModified.add(jsonObject);
+					if (covered.contains(jsonObject))
+						globalCovered.add(jsonObject);
 				}
+				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		} 
+		
 		
 	}
 	
-	private String generateRow(List<String> columns, boolean green) {
+	private List<String> getGlobalResultRow(int totalModified, int totalCovered) {
+		List<String> row = new ArrayList<String>();
+		row.add(new Integer(totalModified).toString());
+		row.add(new Integer(totalCovered).toString());
+		row.add(new Double(totalCovered / (double)totalModified).toString());
+		return row;
+	}
+
+	
+	private List<String> getGlobalResultHeader() {
+		List<String> header = new ArrayList<String>();
+		header.add("Total Modified");
+		header.add("Total Covered");
+		header.add("Total State Coverage");
+		return header;
+	}
+
+
+	private String generateColoredRow(List<String> columns, boolean green) {
+		if (green)
+			return generateRow(columns, "covered");
+		else 
+			return generateRow(columns, "uncovered");
+	}
+
+	private String generateRow(List<String> columns) {
+		return generateRow(columns, "");
+	}
+	
+	private String generateRow(List<String> columns, String cssClass) {
 		String result = new String();
 		result += "<tr class=\"";
-		if (green)
-			result += "covered\">";
-		else
-			result += "uncovered\">";
+		result += cssClass;
+		result += "\">";
 		
 		for (String column : columns) {
 			result += "<td>";
@@ -105,7 +143,6 @@ public class HtmlReport {
 		}
 		result += "</tr>";
 		return result;
-		
 	}
 	
 	public void generateHtml() {
@@ -131,7 +168,17 @@ public class HtmlReport {
 			.append("<td>Covered States</td>\n")
 			.append("<td>State Coverage</td>\n");
 		
-			appendTests(builder);
+		appendTests(builder);
+			
+		builder.append("</table>\n");
+			
+		builder
+			.append("<h3>Total State Coverage</h3>\n")
+			.append("<table border=\"1\">\n")
+			.append(generateRow(getGlobalResultHeader()))
+			.append(generateRow(getGlobalResultRow(globalModified.size(), globalCovered.size())))
+			.append("</table>\n");
+
 			
 		builder.append("</body>\n")
 			.append("</html>\n");
