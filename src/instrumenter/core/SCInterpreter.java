@@ -68,7 +68,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     	this.thirdPartPropertyVerifier.add("java/util/List.size()I");
     	this.thirdPartPropertyVerifier.add("java/util/Map.get(Ljava/lang/Object;)Ljava/lang/Object;");
     	this.thirdPartPropertyVerifier.add("java/util/Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object;");
-    	
+    	this.thirdPartPropertyVerifier.add("java/util/List.get(I)Ljava/lang/Object;");
+    	this.thirdPartPropertyVerifier.add("java/util/Map.size()I");
     	
 	}
     
