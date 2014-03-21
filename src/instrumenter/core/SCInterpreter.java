@@ -94,6 +94,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     @Override
     public SCValue newOperation(final AbstractInsnNode insn) {
         int size;
+        String name = "";
         switch (insn.getOpcode()) {
         case LCONST_0:
         case LCONST_1:
@@ -107,11 +108,12 @@ public class SCInterpreter extends Interpreter<SCValue> implements
             break;
         case GETSTATIC:
             size = Type.getType(((FieldInsnNode) insn).desc).getSize();
+            name = ((FieldInsnNode)insn).name;
             break;
         default:
             size = 1;
         }
-        return new SCValue(size, insn, ""); // TODO
+        return new SCValue(size, insn, name); // TODO
     }
 
     private String getMethodName() {
