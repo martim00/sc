@@ -9,12 +9,18 @@ public class Main {
 		System.out.println("Usage: sc [input_folder] [output_folder]");
 		
 //		String inputFolder = "C:/Users/Martim/workspace/table/java";
-		String inputFolder = "C:/Users/Aniceto/workspace/junit";
+		String inputFolder = "C:/Users/Aniceto/workspace/junit_original";
 //		String inputFolder = "C:/Users/Aniceto/workspace/statecoverage/externals/tablelize_it/java";
 //		String inputFolder = "C:/Users/Aniceto/workspace/tablelize_it/java";
 		
 		
 		String outputFolder = "C:/sc_junit";
+		
+		inputFolder = args[0];
+		System.out.println("Input folder: " + inputFolder);
+		outputFolder = args[1];
+		System.out.println("Output folder: " + outputFolder);	
+		
 		
 		StateCoverageAsm instrumenter = new StateCoverageAsm();
 		try {

@@ -13,6 +13,17 @@ import org.objectweb.asm.tree.MethodNode;
 
 public class Utils {
 
+	public static boolean isTestMethod(MethodNode methodNode, String className) {
+		
+		boolean starts = methodNode.name.startsWith("test");
+		
+		boolean extend = Utils.extendsClass(className, "junit/framework/TestCase"); // for junit < 4 
+		
+        				
+		return Utils.hasTestAnnotation(methodNode) // for junit4
+        		 || (starts && extend); 
+	}
+    
 	public static boolean hasTestAnnotation(MethodNode methodNode) {
 		if (methodNode.visibleAnnotations == null)
 			return false;
@@ -54,6 +65,38 @@ public class Utils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+	}
+
+	public static boolean extendsClass(String derived, String base) {
+		
+		Class<?> baseClass, derivedClass;
+		
+		ClassLoader classLoader = Utils.class.getClassLoader();
+        try {
+            baseClass = Class.forName(base.replace('/', '.'), false, classLoader);
+            derivedClass = Class.forName(derived.replace('/', '.'), false, classLoader);
+        } catch (Exception e) {
+        	
+        	System.out.println(derived.replace('/', '.'));
+            throw new RuntimeException(e.toString());
+        }
+        
+//        return (derivedClass.isAssignableFrom(baseClass));
+        
+        Class<?> C = derivedClass;
+        while (C != null) {
+          System.out.println(C.getName());
+          
+          if (C.equals(baseClass))
+        	  return true;
+          
+          C = C.getSuperclass();
+          
+        }
+        
+        return false;
+        
+        //return derivedClass.isInstance(baseClass);
 	}
 
 

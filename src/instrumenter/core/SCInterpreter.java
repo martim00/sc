@@ -51,14 +51,14 @@ public class SCInterpreter extends Interpreter<SCValue> implements
         this.className = className;
         this.methodNode = methodNode;
         
-        this.isTestMethod = Utils.hasTestAnnotation(methodNode);
+        this.isTestMethod = Utils.isTestMethod(methodNode, className);
         
         this.lastStatement = methodNode.instructions.getFirst();
         
         initThirdPartNonConst();
         initThirdPartPropertyVerifier();
     }
-    
+
     private void initThirdPartNonConst() {
     	this.thirdPartNonConstMethods.add("java/util/List.add(Ljava/lang/Object;)Z");
     	this.thirdPartNonConstMethods.add("java/util/ArrayList.add(Ljava/lang/Object;)Z");

@@ -61,9 +61,19 @@ public class StateCoverageAsm {
 		return absolute.replace(root, "");
 	}
 	
+	private void clearFolder(String folderPath) {
+		File folder = new File(folderPath);
+		if (folder.exists()) {
+			folder.delete();
+		}
+			
+	}
+	
 	private void instrumentRecursivelyFolder(File folder, String inputRoot, String outputRoot) throws ClassNotFoundException, IOException {
 		
 		File[] files = folder.listFiles();
+		
+		clearFolder(outputRoot);
 		
 		String outputFolder = outputRoot + extractRelativeTo(inputRoot, folder.getAbsolutePath());
 		Files.createDirectories(new File(outputFolder).toPath());

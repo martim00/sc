@@ -20,20 +20,32 @@ public class StateCoverage {
 	}
 
 	public static void AddDependency(String target, String source) {
-		System.out.println("Adding dependency of " + source + " to " + target);
+//		System.out.println("Adding dependency of " + source + " to " + target);
 		
 		dump(target + " <- " + source);
 		
 		globalInfluences.addDependency(target, source);
-		actualTest.addDependency(target, source);
+		
+		if (verifyActualTest())
+			actualTest.addDependency(target, source);
 	}
 	
+	private static boolean verifyActualTest() {
+		if (actualTest == null) {
+			dump("warning: add modification outside a test");
+			return false;
+		}
+		return true;
+	}
+
 	public static void AddTestDependency(String target, String source) {
 		
 		dump(target + " <- " + source);
 		
-		actualTest.addDependency(target, source);		
-		actualTest.ignoreState(target);
+		if (verifyActualTest()) {
+			actualTest.addDependency(target, source);		
+			actualTest.ignoreState(target);
+		}
 	}
 
 	public static void ClearDependenciesOf(String target) {
@@ -41,7 +53,9 @@ public class StateCoverage {
 		dump(target + " <- empty");
 		
 		globalInfluences.clearDependenciesOf(target);
-		actualTest.clearDependenciesOf(target);
+		if (verifyActualTest()) {
+			actualTest.clearDependenciesOf(target);
+		}
 	}
 	
 	public static void ClearTestDependenciesOf(String target) {
@@ -49,30 +63,39 @@ public class StateCoverage {
 		dump(target + " <- empty");
 		
 		globalInfluences.clearDependenciesOf(target);
-		actualTest.clearDependenciesOf(target);
-		actualTest.ignoreState(target);
+		
+		if (verifyActualTest()) {
+			actualTest.clearDependenciesOf(target);
+			actualTest.ignoreState(target);
+		}
 	}
 	
 	public static void AddAssert(String assertPredicate) {
 		
 		dump("add assert : " + assertPredicate);
 		
-		actualTest.addAssert(assertPredicate);
+		if (verifyActualTest()) {
+			actualTest.addAssert(assertPredicate);
+		}
 	}
 
 	public static void AddModification(String target) {
 		
 		dump("add modification : " + target);
 		
-		actualTest.addModification(target);
+		if (verifyActualTest()) {
+			actualTest.addModification(target);
+		}
 	}
 
 	public static void BeginTestCapture(String testName) {
+		System.out.println("Begin test capture for : " + testName);
 		dump("Beginning test : " + testName);
 		actualTest = testRegistry.addTest(testName);
 	}
 	
 	public static void EndTestCapture(String testName) {
+		System.out.println("End test capture for : " + testName);
 		dump("Ending test : " + testName);
 		Utils.dumpToFile("c:/sc_output/dump.txt", log);
 		actualTest = null;
