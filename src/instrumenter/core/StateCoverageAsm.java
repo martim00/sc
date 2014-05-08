@@ -140,7 +140,8 @@ class StateCoverageClassAdapter extends ClassVisitor implements Opcodes {
 					
 					super.visitEnd();
 					
-					if (true) { // debug
+					boolean debug = false;
+					if (debug) { // debug
 						
 						System.out.println(DebugUtils.codeToString(this));
 						

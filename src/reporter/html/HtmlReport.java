@@ -28,11 +28,13 @@ public class HtmlReport {
 	private Set<String> globalModified = new HashSet<String>();
 	private Set<String> globalCovered = new HashSet<String>();
 	
+	private enum Colors { GREEN, RED, YELLOW }
+	
 	public HtmlReport(String folder) {
 		this.folder = folder;
 	}
 	
-	private void appendTests(StringBuilder builder) {
+	private void appendTests(StringBuilder builder) throws Exception {
 		
 		File[] files = new File(folder).listFiles(new FilenameFilter() {
 			
@@ -53,9 +55,11 @@ public class HtmlReport {
 				assert(json.containsKey("test_name"));
 				assert(json.containsKey("modified_states"));
 				assert(json.containsKey("covered_states"));
+				assert(json.containsKey("useless_covered_states"));
 				assert(json.containsKey("state_coverage"));
 				assert(json.containsKey("modified"));
 				assert(json.containsKey("covered"));
+				assert(json.containsKey("useless"));
 				
 				builder
 					.append("<tr>")
@@ -84,11 +88,23 @@ public class HtmlReport {
 					
 					List<String> column = new ArrayList<String>();
 					column.add(jsonObject);
-					builder.append(generateColoredRow(column, covered.contains(jsonObject)));
+					builder.append(generateColoredRow(column, covered.contains(jsonObject) ? Colors.GREEN : Colors.RED));
 					
 					globalModified.add(jsonObject);
 					if (covered.contains(jsonObject))
 						globalCovered.add(jsonObject);
+				}
+				
+				JSONArray useless = (JSONArray) json.get("useless");
+				for (Object state : useless) {
+					
+					String jsonObject = (String) state;
+					
+					// TODO: extract method
+					List<String> column = new ArrayList<String>();
+					column.add(jsonObject);
+					String content = generateColoredRow(column, Colors.YELLOW);
+					builder.append(content);
 				}
 				
 				
@@ -96,10 +112,8 @@ public class HtmlReport {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} 
-		
-		
-	}
+		}		
+	}	
 	
 	private List<String> getGlobalResultRow(int totalModified, int totalCovered) {
 		List<String> row = new ArrayList<String>();
@@ -119,11 +133,18 @@ public class HtmlReport {
 	}
 
 
-	private String generateColoredRow(List<String> columns, boolean green) {
-		if (green)
+	private String generateColoredRow(List<String> columns, Colors color) throws Exception {
+		
+		switch (color) {
+		case GREEN:
 			return generateRow(columns, "covered");
-		else 
+		case RED:
 			return generateRow(columns, "uncovered");
+		case YELLOW:
+			return generateRow(columns, "useless");
+		}
+		
+		throw new Exception("cant reach");
 	}
 
 	private String generateRow(List<String> columns) {
@@ -145,7 +166,7 @@ public class HtmlReport {
 		return result;
 	}
 	
-	public void generateHtml() {
+	public void generateHtml() throws Exception {
 		
 		StringBuilder builder = new StringBuilder();
 		builder
@@ -156,6 +177,7 @@ public class HtmlReport {
 			.append("<style type=\"text/css\">\n")
 			.append(".covered {background-color:#c0ffc0;}\n")
 			.append(".uncovered {background-color:#ffa0a0;}\n")
+			.append(".useless {background-color:#ffffa5;}\n")
 			.append("</style>")
 
 			.append("</head>\n")
@@ -189,10 +211,22 @@ public class HtmlReport {
 	
 	public static void main(String[] args) {
 		
-		String reportFolder = "c:/sc_output";
+		//String reportFolder = "c:/users/aniceto/workspace/scova/build";
+		
+		if (args.length < 2) {
+			System.out.println("Usage: HtmlReport <reportFolder>");
+		}
+		
+		String reportFolder = args[0];
+		System.out.println("Reporting to " + reportFolder);
 		
 		HtmlReport report = new HtmlReport(reportFolder);
-		report.generateHtml();	
+		try {
+			report.generateHtml();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 		
 		System.out.println("Html report generated at " +reportFolder + "/report.html");
 		

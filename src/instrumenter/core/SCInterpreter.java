@@ -309,7 +309,9 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     }
 
 	private boolean methodIsAssert(String methodName) {
-		return methodName.equals("assertEquals");
+		return WhiteList.getAsserts().contains(methodName);
+		
+		//return methodName.equals("assertEquals");
 	}
     
     private String getMethodCallName(AbstractInsnNode insn) {

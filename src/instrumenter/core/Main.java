@@ -16,6 +16,9 @@ public class Main {
 		
 		String outputFolder = "C:/sc_junit";
 		
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+		
 		inputFolder = args[0];
 		System.out.println("Input folder: " + inputFolder);
 		outputFolder = args[1];

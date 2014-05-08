@@ -1,5 +1,16 @@
 <project default="instrument-and-run">
-    <target name="compile">
+
+    <!-- TODO #6 Rodar testes da lib e do instrumenter -->
+
+    <target name="compile-lib" description="compiles the state coverage lib">
+        <javac srcdir="../lib/src" destdir="../lib/bin">
+            <classpath>
+                <pathelement location="../deps/junit-4.10.jar"/>                
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="compile" depends="compile-lib">
         <!--<mkdir dir="bin"/>-->
         <javac srcdir="../src" destdir="../bin">
         	<classpath>
@@ -15,8 +26,9 @@
     	<java classname="instrumenter.core.Main">
 
     		<!-- specific for instrumenting junit -->    		
-    		<arg value="C:/Users/Aniceto/workspace/junit_original"/>
-    		<arg value="C:/sc/sc_junit"/>
+    		<!--<arg value="C:/Users/Aniceto/workspace/junit_original"/>-->
+    		<arg value="C:/Users/Aniceto/workspace/picon"/>
+    		<arg value="C:/sc/sc_picon"/>
     		<!-- end -->
 
     		<classpath>
@@ -24,7 +36,8 @@
     			<pathelement location="../deps/asm-debug-all-4.1.jar"/>
 
     			<!-- specific for instrumenting junit -->
-    			<pathelement location="C:/Users/Aniceto/workspace/junit_original/bin"/> 
+    			<pathelement location="C:/Users/Aniceto/workspace/picon"/> 
+    			<pathelement location="../deps/junit-4.10.jar"/>
     			<pathelement location="C:/Users/Aniceto/workspace/junit_original/lib/hamcrest-core-1.3.jar"/>
     			<!-- end -->
 
@@ -36,15 +49,31 @@
     	<java classname="org.junit.runner.JUnitCore">
 
     		<!-- specific for instrumenting junit -->    		
-    		<arg value="junit.tests.framework.AssertTest"/>
+    		<!--<arg value="junit.tests.framework.ComparisonCompactorTest"/>-->
+    		<arg value="test.net.douglashiura.picon.TestPiconAtributoEntidade"/>
     		<!-- end -->
 
     		<classpath>
-    			<pathelement location="c:/sc/sc_junit/bin"/>
+    			<!--<pathelement location="C:/Users/Aniceto/workspace/picon"/> -->
+    			<pathelement location="c:/sc/sc_picon"/>
+                <pathelement location="c:/sc/sc_picon/lib/uuid-3.2.0.jar"/>
     			<pathelement location="../deps/junit-4.10.jar"/>
     			<pathelement location="../lib/bin"/>
     		</classpath>
     	</java>
+    </target>
+
+    <target name="report">
+        <java classname="reporter.html.HtmlReport">
+
+            <arg value="../build"/>
+            <classpath>
+                <pathelement location="../bin"/>
+                <pathelement location="../deps/json-simple-1.1.1.jar"/>
+            </classpath>
+
+
+        </java>
     </target>
 
     <target name="instrument-and-run" depends="compile, instrument, run"/>

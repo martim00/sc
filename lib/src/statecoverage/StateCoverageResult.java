@@ -43,19 +43,15 @@ public class StateCoverageResult {
 
 	public double getStateCoverageValue() {
 		
+		Set<String> intersection = getUsefullCoveredStates();
+		return getStateCoverageValue(intersection);
+	}
+	
+	private double getStateCoverageValue(Set<String> usefullCoveredStates) {
 		if (statesModified.isEmpty())
-			return 0.0;
+			return 0.0;		
 		
-		// if the copy here is bad in performance we could use the method proposed here:
-		// http://stackoverflow.com/questions/7574311/efficiently-compute-intersection-of-two-sets-in-java
-		Set<String> intersection = new HashSet<String>(statesModified);
-		intersection.retainAll(statesCovered);
-		
-		return (double)intersection.size() / statesModified.size();
-		
-		
-		
-//		return statesCovered.size() / (double)statesModified.size();
+		return (double)usefullCoveredStates.size() / statesModified.size();		
 	}
 
 	public int getTotalCovered() {
@@ -68,6 +64,21 @@ public class StateCoverageResult {
 	
 	public Set<String> getCoveredStates() {
 		return statesCovered;
+	}
+	
+	public Set<String> getUselessCoveredStates(Set<String> usefullStatesCovered) {
+		
+		Set<String> diff = new HashSet<String>(statesCovered);
+		diff.removeAll(usefullStatesCovered);		
+		return diff;
+	}
+	
+	public Set<String> getUsefullCoveredStates() {
+		// if the copy here is bad in performance we could use the method proposed here:
+				// http://stackoverflow.com/questions/7574311/efficiently-compute-intersection-of-two-sets-in-java
+		Set<String> intersection = new HashSet<String>(statesModified);
+		intersection.retainAll(statesCovered);
+		return intersection;
 	}
 	
 	private String setToString(Set<String> set) {
@@ -109,13 +120,18 @@ public class StateCoverageResult {
 		
 		String result = new String();
 		
+		Set<String> usefull = getUsefullCoveredStates();
+		Set<String> useless = getUselessCoveredStates(usefull);		
+		
 		result += "{\n";
 		result += "  \"test_name\": \"" + testName + "\",\n";
 		result += "  \"modified_states\": \"" + statesModified.size() + "\",\n";
-		result += "  \"covered_states\": \"" + statesCovered.size() + "\",\n";
-		result += "  \"state_coverage\": \"" + getStateCoverageValue() + "\",\n";
+		result += "  \"covered_states\": \"" + usefull.size() + "\",\n";
+		result += "  \"useless_covered_states\": \"" + useless.size() + "\",\n";		
 		result += "  \"modified\": " + setToString(statesModified) + ",\n" ;
-		result += "  \"covered\": " + setToString(statesCovered) + "\n" ;
+		result += "  \"covered\": " + setToString(usefull) + ",\n" ;
+		result += "  \"useless\": " + setToString(useless) + ",\n" ;
+		result += "  \"state_coverage\": \"" + getStateCoverageValue(usefull) + "\"\n";
 		result += "}";
 		
 		return result;
