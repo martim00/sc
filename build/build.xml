@@ -48,19 +48,39 @@
     <target name="run">
     	<java classname="org.junit.runner.JUnitCore">
 
-    		<!-- specific for instrumenting junit -->    		
-    		<!--<arg value="junit.tests.framework.ComparisonCompactorTest"/>-->
+    		<!-- put your tests here -->
     		<arg value="test.net.douglashiura.picon.TestPiconAtributoEntidade"/>
+            <arg value="test.net.douglashiura.picon.TestePiconEscolha"/>
     		<!-- end -->
 
-    		<classpath>
-    			<!--<pathelement location="C:/Users/Aniceto/workspace/picon"/> -->
-    			<pathelement location="c:/sc/sc_picon"/>
-                <pathelement location="c:/sc/sc_picon/lib/uuid-3.2.0.jar"/>
-    			<pathelement location="../deps/junit-4.10.jar"/>
-    			<pathelement location="../lib/bin"/>
-    		</classpath>
-    	</java>
+            <classpath refid="test.classpath"/>    	
+    	</java>       
+    </target>
+
+
+    <path id="test.classpath">
+        <pathelement location="c:/sc/sc_picon"/>
+        <pathelement location="c:/sc/sc_picon/lib/uuid-3.2.0.jar"/>
+        <pathelement location="../deps/junit-4.10.jar"/>
+        <pathelement location="../lib/bin"/>
+    </path>
+
+    <property name="test.home" value="c:/sc/sc_picon" />
+
+    <target name="run-batch">
+        <junit printsummary="yes">
+            <classpath refid="test.classpath"/>
+            <!-- If test.entry is defined, run a single test, otherwise run all valid tests -->
+            <test name="${test.entry}" todir="${test.reports}" if="test.entry"/>
+            <batchtest todir="tmp" unless="test.entry">
+                <fileset dir="${test.home}">
+                    <include name="**/Test*.java"/>
+                    <exclude name="**/*AbstractTest.java"/>
+                </fileset>
+                <formatter type="xml"/>
+            </batchtest>
+            <!--<fail if="junit.failure" message="There were test failures."/>-->
+        </junit>
     </target>
 
     <target name="report">
@@ -76,6 +96,6 @@
         </java>
     </target>
 
-    <target name="instrument-and-run" depends="compile, instrument, run"/>
+    <target name="instrument-and-run" depends="compile, instrument, run-batch"/>
     	
 </project>
