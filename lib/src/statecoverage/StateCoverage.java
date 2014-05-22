@@ -12,7 +12,7 @@ public class StateCoverage {
 	
 	static TestRecord actualTest = null;
 	
-	private static String log = new String();
+	private static String log = new String();	
 	
 	private static void dump(String str) {
 		log += str;

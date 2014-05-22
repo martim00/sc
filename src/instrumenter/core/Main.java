@@ -14,10 +14,7 @@ public class Main {
 //		String inputFolder = "C:/Users/Aniceto/workspace/tablelize_it/java";
 		
 		
-		String outputFolder = "C:/sc_junit";
-		
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+		String outputFolder = "C:/sc_junit";		
 		
 		inputFolder = args[0];
 		System.out.println("Input folder: " + inputFolder);
