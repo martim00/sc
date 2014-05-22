@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/TesteCarregador.unico()V",
+  "modified_states": "0",
+  "covered_states": "0",
+  "useless_covered_states": "1",
+  "modified":  [  ],
+  "covered":  [  ],
+  "useless":  [ "UNICO" ],
+  "state_coverage": "0.0"
+}

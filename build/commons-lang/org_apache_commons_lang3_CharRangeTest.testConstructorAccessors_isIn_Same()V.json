@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/CharRangeTest.testConstructorAccessors_isIn_Same()V",
+  "modified_states": "4",
+  "covered_states": "4",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/CharRange.start", "org/apache/commons/lang3/CharRange.iToString", "org/apache/commons/lang3/CharRange.end", "org/apache/commons/lang3/CharRange.negated" ],
+  "covered":  [ "org/apache/commons/lang3/CharRange.start", "org/apache/commons/lang3/CharRange.iToString", "org/apache/commons/lang3/CharRange.end", "org/apache/commons/lang3/CharRange.negated" ],
+  "useless":  [  ],
+  "state_coverage": "1.0"
+}

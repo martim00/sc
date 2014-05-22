@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/TesteResolveReflexao.refletirLabelNomeValorString()V",
+  "modified_states": "1",
+  "covered_states": "0",
+  "useless_covered_states": "1",
+  "modified":  [ "net/douglashiura/picon/Reflexao.mapaField" ],
+  "covered":  [  ],
+  "useless":  [ "test/net/douglashiura/picon/Entidade.nome" ],
+  "state_coverage": "0.0"
+}

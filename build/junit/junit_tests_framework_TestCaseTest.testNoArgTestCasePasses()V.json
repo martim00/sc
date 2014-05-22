@@ -1,0 +1,10 @@
+{
+  "test_name": "junit/tests/framework/TestCaseTest.testNoArgTestCasePasses()V",
+  "modified_states": "10",
+  "covered_states": "1",
+  "useless_covered_states": "0",
+  "modified":  [ "junit/framework/TestResult.fStop", "junit/framework/TestCase.fName", "junit/framework/TestResult.fRunTests", "junit/framework/TestResult.fListeners", "junit/framework/TestSuite.fName", "junit/framework/TestResult$1.val$test", "junit/framework/TestResult.fFailures", "junit/framework/TestResult$1.this$0", "junit/framework/TestSuite.fTests", "junit/framework/TestResult.fErrors" ],
+  "covered":  [ "junit/framework/TestCase.fName" ],
+  "useless":  [  ],
+  "state_coverage": "0.1"
+}

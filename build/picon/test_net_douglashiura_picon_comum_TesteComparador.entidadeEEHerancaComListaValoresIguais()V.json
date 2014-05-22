@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/comum/TesteComparador.entidadeEEHerancaComListaValoresIguais()V",
+  "modified_states": "4",
+  "covered_states": "1",
+  "useless_covered_states": "0",
+  "modified":  [ "net/douglashiura/picon/comum/Comparador.fields", "net/douglashiura/picon/comum/Comparador.igual", "test/net/douglashiura/picon/comum/Entidade.entidades", "test/net/douglashiura/picon/comum/Entidade.nome" ],
+  "covered":  [ "net/douglashiura/picon/comum/Comparador.igual" ],
+  "useless":  [  ],
+  "state_coverage": "0.25"
+}

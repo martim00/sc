@@ -1,0 +1,10 @@
+{
+  "test_name": "junit/tests/framework/TestListenerTest.testStartStop()V",
+  "modified_states": "7",
+  "covered_states": "2",
+  "useless_covered_states": "0",
+  "modified":  [ "junit/tests/framework/TestListenerTest.fStartCount", "junit/framework/TestCase.fName", "junit/framework/TestResult.fRunTests", "junit/tests/framework/TestListenerTest$3.this$0", "junit/framework/TestResult$1.val$test", "junit/tests/framework/TestListenerTest.fEndCount", "junit/framework/TestResult$1.this$0" ],
+  "covered":  [ "junit/tests/framework/TestListenerTest.fStartCount", "junit/tests/framework/TestListenerTest.fEndCount" ],
+  "useless":  [  ],
+  "state_coverage": "0.2857142857142857"
+}

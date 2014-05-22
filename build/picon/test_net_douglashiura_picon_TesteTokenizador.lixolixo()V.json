@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/TesteTokenizador.lixolixo()V",
+  "modified_states": "5",
+  "covered_states": "1",
+  "useless_covered_states": "0",
+  "modified":  [ "net/douglashiura/picon/Tokenizador.tokens", "net/douglashiura/picon/Tokenizador.RESERVADO", "net/douglashiura/picon/Tokenizador.ESCAPAR", "net/douglashiura/picon/Tokenizador.BREAK", "net/douglashiura/picon/Tokenizador.BREAK_LINHA" ],
+  "covered":  [ "net/douglashiura/picon/Tokenizador.tokens" ],
+  "useless":  [  ],
+  "state_coverage": "0.2"
+}

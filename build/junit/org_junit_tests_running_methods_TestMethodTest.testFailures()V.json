@@ -1,0 +1,10 @@
+{
+  "test_name": "org/junit/tests/running/methods/TestMethodTest.testFailures()V",
+  "modified_states": "11",
+  "covered_states": "1",
+  "useless_covered_states": "0",
+  "modified":  [ "org/junit/runners/model/InitializationError.fErrors", "org/junit/runners/model/TestClass.fFieldsForAnnotations", "org/junit/runners/ParentRunner$1.this$0", "org/junit/runners/ParentRunner.fChildrenLock", "org/junit/runners/model/FrameworkMethod.fMethod", "org/junit/runners/model/TestClass.fClass", "org/junit/runners/ParentRunner.fFilteredChildren", "org/junit/runners/ParentRunner.fTestClass", "org/junit/runners/ParentRunner.fAnnotationsValidator", "org/junit/runners/model/TestClass.fMethodsForAnnotations", "org/junit/runners/ParentRunner.fScheduler" ],
+  "covered":  [ "org/junit/runners/model/InitializationError.fErrors" ],
+  "useless":  [  ],
+  "state_coverage": "0.09090909090909091"
+}

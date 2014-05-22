@@ -1,0 +1,10 @@
+{
+  "test_name": "org/junit/tests/experimental/rules/TestWatcherTest$TestWatcherSkippedThrowsExceptionTest.fails()V",
+  "modified_states": "4",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/junit/internal/AssumptionViolatedException.fValueMatcher", "org/junit/internal/AssumptionViolatedException.fAssumption", "org/junit/internal/AssumptionViolatedException.fMatcher", "org/junit/internal/AssumptionViolatedException.fValue" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

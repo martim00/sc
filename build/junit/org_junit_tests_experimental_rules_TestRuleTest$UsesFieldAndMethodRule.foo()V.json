@@ -1,0 +1,10 @@
+{
+  "test_name": "org/junit/tests/experimental/rules/TestRuleTest$UsesFieldAndMethodRule.foo()V",
+  "modified_states": "0",
+  "covered_states": "0",
+  "useless_covered_states": "1",
+  "modified":  [  ],
+  "covered":  [  ],
+  "useless":  [ "orderList" ],
+  "state_coverage": "0.0"
+}

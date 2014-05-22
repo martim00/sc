@@ -1,0 +1,10 @@
+{
+  "test_name": "junit/tests/framework/TestImplementorTest.testSuccessfulRun()V",
+  "modified_states": "6",
+  "covered_states": "3",
+  "useless_covered_states": "0",
+  "modified":  [ "junit/framework/TestResult.fStop", "junit/framework/TestResult.fRunTests", "junit/framework/TestResult.fListeners", "junit/tests/framework/TestImplementorTest$DoubleTestCase$1.this$1", "junit/framework/TestResult.fFailures", "junit/framework/TestResult.fErrors" ],
+  "covered":  [ "junit/framework/TestResult.fRunTests", "junit/framework/TestResult.fFailures", "junit/framework/TestResult.fErrors" ],
+  "useless":  [  ],
+  "state_coverage": "0.5"
+}

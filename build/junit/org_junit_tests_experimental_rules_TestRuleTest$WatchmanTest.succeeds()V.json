@@ -1,0 +1,10 @@
+{
+  "test_name": "org/junit/tests/experimental/rules/TestRuleTest$WatchmanTest.succeeds()V",
+  "modified_states": "0",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [  ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}
