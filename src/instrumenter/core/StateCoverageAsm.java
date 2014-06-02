@@ -15,7 +15,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.analysis.Analyzer;
 import org.objectweb.asm.tree.analysis.AnalyzerException;
 
 public class StateCoverageAsm {
@@ -148,7 +147,7 @@ class StateCoverageClassAdapter extends ClassVisitor implements Opcodes {
 					}
 					
 					SCInterpreter interpreter = new SCInterpreter(owner, this);
-					Analyzer<SCValue> a = new Analyzer<SCValue>(interpreter);
+					SCAnalyzer a = new SCAnalyzer(interpreter);
 
 					try {
 						a.analyze(owner, this);

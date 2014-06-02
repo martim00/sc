@@ -1,8 +1,10 @@
 package instrumenter.test;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -81,6 +83,21 @@ public class SampleClass {
 	private static List<Integer> staticList = new ArrayList<Integer>();
 	public static void modifyStaticList() {
 		staticList.add(1);
+	}
+	
+	@Test
+	public void testWhileIteratorSample() {
+		
+		List<String> myList = new ArrayList<String>();
+		myList.add("ola mundo");
+		
+		Iterator<String> it = myList.iterator();
+		while (it.hasNext()) {
+			String n = it.next();
+			assertTrue(true);  // only to add an assert here
+		}
+		
+		
 	}
 	
 	

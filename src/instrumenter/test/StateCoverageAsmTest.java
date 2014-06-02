@@ -270,13 +270,13 @@ public class StateCoverageAsmTest {
 			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
 			    "    LDC \"instrumenter/test/SampleClass.list\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
-			    "    LDC \"instrumenter/test/SampleClass.getListCount()I\"\n" +
-			    "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 			    "    ALOAD 0\n" +
 			    "    GETFIELD instrumenter/test/SampleClass.list : Ljava/util/List;\n" +
 			    "    LDC \"aaa\"\n" +
 			    "    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
 			    "    POP\n" +
+			    "    LDC \"instrumenter/test/SampleClass.getListCount()I\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 			    "    LCONST_1\n" +
 			    "    ALOAD 0\n" +
 			    "    INVOKESPECIAL instrumenter/test/SampleClass.getListCount ()I\n" +
@@ -316,5 +316,53 @@ public class StateCoverageAsmTest {
 		
 	}
 	
+//	@Test // TODO: provavelmente quando arrumar o pop isso vai funcionar...
+	public void testWhileIterator() {
+		
+		assertInstrumentation(16, "testWhileIteratorSample", 41, 
+			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
+			    "    NEW java/util/ArrayList\n" +
+			    "    DUP\n" +
+			    "    INVOKESPECIAL java/util/ArrayList.<init> ()V\n" +
+			    "    ASTORE 1\n" +
+			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V.myList\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
+			    "    ALOAD 1\n" +
+			    "    LDC \"ola mundo\"\n" +
+			    "    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
+			    "    POP\n" +
+			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V.it\"\n" +
+			    "    LDC \"java/util/List.iterator()Ljava/util/Iterator;\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    "    ALOAD 1\n" +
+			    "    INVOKEINTERFACE java/util/List.iterator ()Ljava/util/Iterator;\n" +
+			    "    ASTORE 2\n" +
+			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V.n\"\n" +
+			    "    LDC \"java/util/Iterator.next()Ljava/lang/Object;\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    "    GOTO L0\n" +
+			    "   L1\n" +
+			    "   FRAME APPEND [java/util/ArrayList java/util/Iterator]\n" +
+			    "    ALOAD 2\n" +
+			    "    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;\n" +
+			    "    CHECKCAST java/lang/String\n" +
+			    "    ASTORE 3\n" +
+			    "    ICONST_1\n" +
+			    "    INVOKESTATIC org/junit/Assert.assertTrue (Z)V\n" +
+			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V.n\"\n" +
+			    "    LDC \"java/util/Iterator.next()Ljava/lang/Object;\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
+			    "   L0\n" +
+			    "   FRAME SAME\n" +
+			    "    ALOAD 2\n" +
+			    "    INVOKEINTERFACE java/util/Iterator.hasNext ()Z\n" +
+			    "    IFNE L1\n" +
+			    "    RETURN\n");
+
+		
+	}
 
 }

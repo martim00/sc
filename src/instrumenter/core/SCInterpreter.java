@@ -399,6 +399,10 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 		}
 		return result;
 	}
+
+	public void pop(AbstractInsnNode insn) {
+		this.lastStatement = insn;
+	}
 	
 }
 
