@@ -1,0 +1,130 @@
+<project default="instrument-and-run">
+
+    <property file="build.properties"/>
+
+    <!-- TODO #6 Rodar testes da lib e do instrumenter -->
+
+    <target name="compile-lib" description="compiles the state coverage lib">
+        <javac srcdir="../lib/src" destdir="../lib/bin">
+            <classpath>
+                <pathelement location="../deps/junit-4.10.jar"/>                
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="compile" depends="compile-lib">
+        <!--<mkdir dir="bin"/>-->
+        <javac srcdir="../src" destdir="../bin">
+        	<classpath>
+        		<pathelement location="../deps/asm-debug-all-4.1.jar"/>
+        		<pathelement location="../deps/json-simple-1.1.1.jar"/>
+        		<pathelement location="../deps/junit-4.10.jar"/>
+        		<pathelement location="../lib/bin"/>
+        	</classpath>
+        </javac>
+    </target>
+
+    <property name="scova.classpath" value="../bin;../deps/asm-debug-all-4.1.jar;../deps/junit-4.10.jar;C:/Users/Aniceto/workspace/junit_original/lib/hamcrest-core-1.3.jar" />
+
+
+    <echo message="${scova.classpath}" />
+    <target name="instrument">
+    	<java classname="instrumenter.core.Main">
+
+    		<!-- specific for instrumenting junit -->    		
+    		<!--<arg value="C:/Users/Aniceto/workspace/junit_original"/>
+            <arg value="C:/sc/junit"/>
+        -->
+
+            <!-- specific for instrumenting picon -->           
+    		<!--<arg value="C:/Users/Aniceto/workspace/picon"/>
+    		<arg value="C:/sc/sc_picon"/>-->
+    		<!-- end -->
+            <arg value="${project.src}"/>
+            <arg value="${project.output}"/>
+
+    		<classpath>
+                <pathelement path="${scova.classpath}"/>
+                <!--
+    			<pathelement location="../bin"/>
+    			<pathelement location="../deps/asm-debug-all-4.1.jar"/>
+                <pathelement location="../deps/junit-4.10.jar"/>
+                <pathelement location="C:/Users/Aniceto/workspace/junit_original/lib/hamcrest-core-1.3.jar"/>
+
+-->
+                <!-- specific for instrumenting picon -->
+                <pathelement path="${project.classpath}"/>
+
+    			<!-- specific for instrumenting junit -->    			
+    			<!-- end -->
+
+    		</classpath>
+    	</java>
+    </target>
+
+    <target name="run">
+    	<java classname="org.junit.runner.JUnitCore">
+
+    		<!-- put your tests here -->
+    		<arg value="test.net.douglashiura.picon.TestPiconAtributoEntidade"/>
+            <arg value="test.net.douglashiura.picon.TestePiconEscolha"/>
+    		<!-- end -->
+
+            <classpath refid="test.classpath.id"/>    	
+    	</java>       
+    </target>
+
+    <echo message="{test.classpath}: " />
+    <echo message="${test.classpath}"/>
+
+    <echo message="{project.classpath}: " />
+    <echo message="${project.classpath}"/>
+
+    <path id="test.classpath.id">
+        <pathelement path="${test.classpath}"/>
+        <!-- scova lib -->
+        <pathelement location="../lib/bin" /> 
+        <!-- junit -->
+        <pathelement location="../deps/junit-4.10.jar"/>
+
+        <!--<pathelement location="c:/sc/sc_picon"/>
+        <pathelement location="c:/sc/sc_picon/lib/uuid-3.2.0.jar"/>
+        <pathelement location="../deps/junit-4.10.jar"/>
+        <pathelement location="../lib/bin"/>-->
+    </path>
+
+    <!--<property name="test.home" value="c:/sc/sc_picon" />-->
+
+    <target name="run-batch">
+        <junit printsummary="withOutAndErr" fork="yes" showoutput="yes">
+            <classpath refid="test.classpath.id"/>
+            <!-- If test.entry is defined, run a single test, otherwise run all valid tests -->
+            <test name="${test.entry}" todir="${test.reports}" if="test.entry"/>
+            <batchtest todir="tmp" unless="test.entry">
+                <fileset dir="${test.home}">
+                    <include name="**/Test*.java"/>
+                    <include name="**/*Test.java"/>
+                    <exclude name="**/*AbstractTest.java"/>
+                </fileset>
+                <formatter type="xml"/>
+            </batchtest>
+            <!--<fail if="junit.failure" message="There were test failures."/>-->
+        </junit>
+    </target>
+
+    <target name="report">
+        <java classname="reporter.html.HtmlReport">
+
+            <arg value="../build"/>
+            <classpath>
+                <pathelement location="../bin"/>
+                <pathelement location="../deps/json-simple-1.1.1.jar"/>
+            </classpath>
+
+
+        </java>
+    </target>
+
+    <target name="instrument-and-run" depends="compile, instrument, run-batch"/>
+    	
+</project>

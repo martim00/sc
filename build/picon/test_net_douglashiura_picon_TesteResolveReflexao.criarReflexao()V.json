@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/TesteResolveReflexao.criarReflexao()V",
+  "modified_states": "1",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "net/douglashiura/picon/Reflexao.mapaField" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

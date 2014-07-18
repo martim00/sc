@@ -1,0 +1,10 @@
+{
+  "test_name": "org/junit/tests/experimental/rules/TestRuleTest$UsesCustomMethodRule.foo()V",
+  "modified_states": "0",
+  "covered_states": "0",
+  "useless_covered_states": "1",
+  "modified":  [  ],
+  "covered":  [  ],
+  "useless":  [ "org/junit/tests/experimental/rules/TestRuleTest$CustomTestName.name" ],
+  "state_coverage": "0.0"
+}

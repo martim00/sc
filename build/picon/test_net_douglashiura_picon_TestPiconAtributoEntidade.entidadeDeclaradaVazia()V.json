@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/TestPiconAtributoEntidade.entidadeDeclaradaVazia()V",
+  "modified_states": "11",
+  "covered_states": "1",
+  "useless_covered_states": "1",
+  "modified":  [ "net/douglashiura/picon/Tokenizador.tokens", "net/douglashiura/picon/Toke.anterior", "net/douglashiura/picon/Tokenizador.RESERVADO", "net/douglashiura/picon/Tokenizador.ESCAPAR", "net/douglashiura/picon/Reflexao.mapaField", "net/douglashiura/picon/Picon.master", "net/douglashiura/picon/Toke.valor", "net/douglashiura/picon/Tokenizador.BREAK", "net/douglashiura/picon/Tokenizador.BREAK_LINHA", "net/douglashiura/picon/Toke.linha", "net/douglashiura/picon/PiconAtributoEntidade.umObjeto" ],
+  "covered":  [ "net/douglashiura/picon/PiconAtributoEntidade.umObjeto" ],
+  "useless":  [ "test/net/douglashiura/picon/Entidade.entidade" ],
+  "state_coverage": "0.09090909090909091"
+}

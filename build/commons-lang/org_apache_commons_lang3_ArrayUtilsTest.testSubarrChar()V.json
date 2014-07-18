@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/ArrayUtilsTest.testSubarrChar()V",
+  "modified_states": "1",
+  "covered_states": "1",
+  "useless_covered_states": "1",
+  "modified":  [ "org/apache/commons/lang3/builder/EqualsBuilder.isEquals" ],
+  "covered":  [ "org/apache/commons/lang3/builder/EqualsBuilder.isEquals" ],
+  "useless":  [ "EMPTY_CHAR_ARRAY" ],
+  "state_coverage": "1.0"
+}

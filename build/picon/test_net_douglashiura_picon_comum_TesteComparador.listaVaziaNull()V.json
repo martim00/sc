@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/comum/TesteComparador.listaVaziaNull()V",
+  "modified_states": "2",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "net/douglashiura/picon/comum/Comparador.fields", "net/douglashiura/picon/comum/Comparador.igual" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

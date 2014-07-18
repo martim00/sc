@@ -1,0 +1,10 @@
+{
+  "test_name": "junit/tests/framework/TestCaseTest.testSuccess()V",
+  "modified_states": "9",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "junit/framework/TestResult.fStop", "junit/framework/TestCase.fName", "junit/framework/TestResult.fRunTests", "junit/framework/TestResult.fListeners", "junit/tests/framework/TestCaseTest$4.this$0", "junit/framework/TestResult$1.val$test", "junit/framework/TestResult.fFailures", "junit/framework/TestResult$1.this$0", "junit/framework/TestResult.fErrors" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

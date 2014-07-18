@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/TesteResolveReflexao.refletirEnum()V",
+  "modified_states": "2",
+  "covered_states": "0",
+  "useless_covered_states": "2",
+  "modified":  [ "test/net/douglashiura/picon/TesteResolveReflexao$T.this$0", "net/douglashiura/picon/Reflexao.mapaField" ],
+  "covered":  [  ],
+  "useless":  [ "test/net/douglashiura/picon/TesteResolveReflexao$T.a", "A" ],
+  "state_coverage": "0.0"
+}

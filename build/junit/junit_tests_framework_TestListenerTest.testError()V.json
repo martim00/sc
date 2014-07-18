@@ -1,0 +1,10 @@
+{
+  "test_name": "junit/tests/framework/TestListenerTest.testError()V",
+  "modified_states": "11",
+  "covered_states": "2",
+  "useless_covered_states": "0",
+  "modified":  [ "junit/tests/framework/TestListenerTest.fStartCount", "junit/framework/TestCase.fName", "junit/framework/TestResult.fRunTests", "junit/tests/framework/TestListenerTest.fErrorCount", "junit/framework/TestResult$1.val$test", "junit/tests/framework/TestListenerTest.fEndCount", "junit/tests/framework/TestListenerTest$1.this$0", "junit/framework/TestResult$1.this$0", "junit/framework/TestFailure.fFailedTest", "junit/framework/TestFailure.fThrownException", "junit/framework/TestResult.fErrors" ],
+  "covered":  [ "junit/tests/framework/TestListenerTest.fErrorCount", "junit/tests/framework/TestListenerTest.fEndCount" ],
+  "useless":  [  ],
+  "state_coverage": "0.18181818181818182"
+}

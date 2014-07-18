@@ -51,14 +51,14 @@ public class SCInterpreter extends Interpreter<SCValue> implements
         this.className = className;
         this.methodNode = methodNode;
         
-        this.isTestMethod = Utils.hasTestAnnotation(methodNode);
+        this.isTestMethod = Utils.isTestMethod(methodNode, className);
         
         this.lastStatement = methodNode.instructions.getFirst();
         
         initThirdPartNonConst();
         initThirdPartPropertyVerifier();
     }
-    
+
     private void initThirdPartNonConst() {
     	this.thirdPartNonConstMethods.add("java/util/List.add(Ljava/lang/Object;)Z");
     	this.thirdPartNonConstMethods.add("java/util/ArrayList.add(Ljava/lang/Object;)Z");
@@ -94,6 +94,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     @Override
     public SCValue newOperation(final AbstractInsnNode insn) {
         int size;
+        String name = "";
         switch (insn.getOpcode()) {
         case LCONST_0:
         case LCONST_1:
@@ -107,11 +108,12 @@ public class SCInterpreter extends Interpreter<SCValue> implements
             break;
         case GETSTATIC:
             size = Type.getType(((FieldInsnNode) insn).desc).getSize();
+            name = ((FieldInsnNode)insn).name;
             break;
         default:
             size = 1;
         }
-        return new SCValue(size, insn, ""); // TODO
+        return new SCValue(size, insn, name); // TODO
     }
 
     private String getMethodName() {
@@ -307,7 +309,9 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     }
 
 	private boolean methodIsAssert(String methodName) {
-		return methodName.equals("assertEquals");
+		return WhiteList.getAsserts().contains(methodName);
+		
+		//return methodName.equals("assertEquals");
 	}
     
     private String getMethodCallName(AbstractInsnNode insn) {
@@ -394,6 +398,10 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 			result.add(insnInfo.instructionList);
 		}
 		return result;
+	}
+
+	public void pop(AbstractInsnNode insn) {
+		this.lastStatement = insn;
 	}
 	
 }

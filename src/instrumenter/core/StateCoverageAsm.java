@@ -15,7 +15,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.analysis.Analyzer;
 import org.objectweb.asm.tree.analysis.AnalyzerException;
 
 public class StateCoverageAsm {
@@ -61,9 +60,19 @@ public class StateCoverageAsm {
 		return absolute.replace(root, "");
 	}
 	
+	private void clearFolder(String folderPath) {
+		File folder = new File(folderPath);
+		if (folder.exists()) {
+			folder.delete();
+		}
+			
+	}
+	
 	private void instrumentRecursivelyFolder(File folder, String inputRoot, String outputRoot) throws ClassNotFoundException, IOException {
 		
 		File[] files = folder.listFiles();
+		
+		clearFolder(outputRoot);
 		
 		String outputFolder = outputRoot + extractRelativeTo(inputRoot, folder.getAbsolutePath());
 		Files.createDirectories(new File(outputFolder).toPath());
@@ -130,14 +139,15 @@ class StateCoverageClassAdapter extends ClassVisitor implements Opcodes {
 					
 					super.visitEnd();
 					
-					if (true) { // debug
+					boolean debug = false;
+					if (debug) { // debug
 						
 						System.out.println(DebugUtils.codeToString(this));
 						
 					}
 					
 					SCInterpreter interpreter = new SCInterpreter(owner, this);
-					Analyzer<SCValue> a = new Analyzer<SCValue>(interpreter);
+					SCAnalyzer a = new SCAnalyzer(interpreter);
 
 					try {
 						a.analyze(owner, this);

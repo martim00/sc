@@ -1,0 +1,10 @@
+{
+  "test_name": "test/net/douglashiura/picon/TestPiconIntegracao.test()V",
+  "modified_states": "21",
+  "covered_states": "1",
+  "useless_covered_states": "4",
+  "modified":  [ "net/douglashiura/picon/PiconStore.estoque", "net/douglashiura/picon/PiconLista$1.val$uid", "net/douglashiura/picon/Picon$1.val$toke", "net/douglashiura/picon/Picon$1.val$label", "net/douglashiura/picon/PiconStore.referencias", "net/douglashiura/picon/Tokenizador.RESERVADO", "net/douglashiura/picon/Tokenizador.ESCAPAR", "net/douglashiura/picon/PiconLista$1.this$0", "net/douglashiura/picon/PiconAtributoEntidade.umObjeto", "net/douglashiura/picon/Picon$1.val$socka", "net/douglashiura/picon/Toke.anterior", "net/douglashiura/picon/Picon$1.val$uid", "net/douglashiura/picon/Tokenizador.tokens", "net/douglashiura/picon/Picon.master", "net/douglashiura/picon/Reflexao.mapaField", "net/douglashiura/picon/Toke.valor", "net/douglashiura/picon/Tokenizador.BREAK", "net/douglashiura/picon/Tokenizador.BREAK_LINHA", "net/douglashiura/picon/Picon$1.val$umObjeto", "net/douglashiura/picon/Toke.linha", "net/douglashiura/picon/Picon$1.this$0" ],
+  "covered":  [ "net/douglashiura/picon/PiconStore.estoque" ],
+  "useless":  [ "test/net/douglashiura/picon/ETipo.entidades", "test/net/douglashiura/picon/Entidade.entidades", "test/net/douglashiura/picon/Entidade.nome", "test/net/douglashiura/picon/Entidade.idade" ],
+  "state_coverage": "0.047619047619047616"
+}
