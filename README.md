@@ -20,19 +20,24 @@ para rodar em cima do tablelize-it
 Ex:
 
   <!--properties for tablelize-it -->
-  classpath do teste instrumentado
+  <!--classpath do teste instrumentado-->
+  
   test.classpath=c:/sc/tablelize/java/build/classes; 
 
   <!--diretório fonte-->
+  
   project.src=C:/tablelize 
 
   <!--diretório aonde será gerado o código instrumentado-->
+  
   project.output=C:/sc/tablelize 
 
   <!-- classpath do projeto original (não instrumentado) -->
+  
   project.classpath=C:/tablelize/java/build/classes 
 
   <!-- diretório aonde estão os testes (.java) do código instrumentado -->
+  
   test.home=c:/sc/tablelize/java/src 
 
 
