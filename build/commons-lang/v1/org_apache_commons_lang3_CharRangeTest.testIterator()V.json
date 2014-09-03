@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/CharRangeTest.testIterator()V",
+  "modified_states": "6",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/CharRange.start", "org/apache/commons/lang3/CharRange$CharacterIterator.hasNext", "org/apache/commons/lang3/CharRange$CharacterIterator.range", "org/apache/commons/lang3/CharRange.end", "org/apache/commons/lang3/CharRange.negated", "org/apache/commons/lang3/CharRange$CharacterIterator.current" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

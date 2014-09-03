@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/event/EventUtilsTest.testBindFilteredEventsToMethod()V",
+  "modified_states": "9",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/event/EventListenerSupport.proxy", "org/apache/commons/lang3/event/EventListenerSupport.prototypeArray", "org/apache/commons/lang3/event/EventListenerSupport$ProxyInvocationHandler.this$0", "org/apache/commons/lang3/event/EventUtilsTest$EventCounter.count", "org/apache/commons/lang3/event/EventUtils$EventBindingInvocationHandler.methodName", "org/apache/commons/lang3/event/EventUtils$EventBindingInvocationHandler.eventTypes", "org/apache/commons/lang3/event/EventListenerSupport.listeners", "org/apache/commons/lang3/event/EventUtils$EventBindingInvocationHandler.target", "org/apache/commons/lang3/event/EventUtilsTest$MultipleEventSource.listeners" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

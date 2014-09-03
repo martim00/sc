@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/StrBuilderTest.testContains_char()V",
+  "modified_states": "2",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/StrBuilder.buffer", "org/apache/commons/lang3/text/StrBuilder.size" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

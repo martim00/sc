@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/CharSetTest.testStatics()V",
+  "modified_states": "3",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/CharRange.start", "org/apache/commons/lang3/CharRange.end", "org/apache/commons/lang3/CharRange.negated" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

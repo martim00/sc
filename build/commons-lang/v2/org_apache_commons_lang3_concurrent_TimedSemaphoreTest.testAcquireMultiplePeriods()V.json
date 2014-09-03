@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/concurrent/TimedSemaphoreTest.testAcquireMultiplePeriods()V",
+  "modified_states": "15",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/concurrent/TimedSemaphore.unit", "org/apache/commons/lang3/concurrent/TimedSemaphore$1.this$0", "org/apache/commons/lang3/concurrent/TimedSemaphoreTest$SemaphoreThread.count", "org/apache/commons/lang3/concurrent/TimedSemaphore.period", "org/apache/commons/lang3/concurrent/TimedSemaphore.totalAcquireCount", "org/apache/commons/lang3/concurrent/TimedSemaphore.periodCount", "org/apache/commons/lang3/concurrent/TimedSemaphore.ownExecutor", "org/apache/commons/lang3/concurrent/TimedSemaphore.lastCallsPerPeriod", "org/apache/commons/lang3/concurrent/TimedSemaphoreTest$SemaphoreThread.latch", "org/apache/commons/lang3/concurrent/TimedSemaphoreTest$SemaphoreThread.latchCount", "org/apache/commons/lang3/concurrent/TimedSemaphore.limit", "org/apache/commons/lang3/concurrent/TimedSemaphore.executorService", "org/apache/commons/lang3/concurrent/TimedSemaphoreTest$TimedSemaphoreTestImpl.periodEnds", "org/apache/commons/lang3/concurrent/TimedSemaphoreTest$SemaphoreThread.semaphore", "org/apache/commons/lang3/concurrent/TimedSemaphore.acquireCount" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

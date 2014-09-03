@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/StrSubstitutorTest.testReplaceInVariableDisabled()V",
+  "modified_states": "8",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/StrSubstitutor.variableResolver", "org/apache/commons/lang3/text/StrBuilder.buffer", "org/apache/commons/lang3/text/StrSubstitutor.escapeChar", "org/apache/commons/lang3/text/StrSubstitutor.suffixMatcher", "org/apache/commons/lang3/text/StrSubstitutor.valueDelimiterMatcher", "org/apache/commons/lang3/text/StrLookup$MapStrLookup.map", "org/apache/commons/lang3/text/StrSubstitutor.prefixMatcher", "org/apache/commons/lang3/text/StrBuilder.size" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

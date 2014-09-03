@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/reflect/FieldUtilsTest.testGetFieldForceAccess()V",
+  "modified_states": "0",
+  "covered_states": "0",
+  "useless_covered_states": "1",
+  "modified":  [  ],
+  "covered":  [  ],
+  "useless":  [ "org/apache/commons/lang3/reflect/FieldUtilsTest.parentClass" ],
+  "state_coverage": "0.0"
+}

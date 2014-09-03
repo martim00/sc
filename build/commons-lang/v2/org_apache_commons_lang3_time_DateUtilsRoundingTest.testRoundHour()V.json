@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/time/DateUtilsRoundingTest.testRoundHour()V",
+  "modified_states": "0",
+  "covered_states": "0",
+  "useless_covered_states": "2",
+  "modified":  [  ],
+  "covered":  [  ],
+  "useless":  [ "org/apache/commons/lang3/time/DateUtilsRoundingTest.januaryOneDate", "org/apache/commons/lang3/time/DateUtilsRoundingTest.januaryOneCalendar" ],
+  "state_coverage": "0.0"
+}

@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/ExtendedMessageFormatTest.testEscapedQuote_LANG_477()V",
+  "modified_states": "1",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/ExtendedMessageFormat.registry" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

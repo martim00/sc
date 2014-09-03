@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/ReflectionToStringBuilderExcludeTest.test_toStringExclude()V",
+  "modified_states": "7",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/ReflectionToStringBuilderExcludeTest$TestFixture.this$0", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.excludeFieldNames", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.upToClass", "org/apache/commons/lang3/builder/ReflectionToStringBuilderExcludeTest$TestFixture.secretField", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendStatics", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendTransients", "org/apache/commons/lang3/builder/ReflectionToStringBuilderExcludeTest$TestFixture.showField" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

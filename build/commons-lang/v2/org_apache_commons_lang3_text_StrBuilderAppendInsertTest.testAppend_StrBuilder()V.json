@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/StrBuilderAppendInsertTest.testAppend_StrBuilder()V",
+  "modified_states": "3",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/StrBuilder.buffer", "org/apache/commons/lang3/text/StrBuilder.nullText", "org/apache/commons/lang3/text/StrBuilder.size" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/ToStringBuilderTest.testSelfInstanceTwoVarsReflectionObjectCycle()V",
+  "modified_states": "5",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/ReflectionToStringBuilder.upToClass", "org/apache/commons/lang3/builder/ToStringBuilderTest$SelfInstanceTwoVarsReflectionTestFixture.typeIsSelf", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendStatics", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendTransients", "org/apache/commons/lang3/builder/ToStringBuilderTest$SelfInstanceTwoVarsReflectionTestFixture.otherType" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

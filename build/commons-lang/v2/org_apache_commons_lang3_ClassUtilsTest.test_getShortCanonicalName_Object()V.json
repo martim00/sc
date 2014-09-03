@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/ClassUtilsTest.test_getShortCanonicalName_Object()V",
+  "modified_states": "2",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/ClassUtilsTest$5Named.this$0", "org/apache/commons/lang3/ClassUtilsTest$6.this$0" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

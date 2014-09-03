@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/time/DateUtilsTest.testLang530()V",
+  "modified_states": "24",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/time/FastDateParser$CopyQuotedStrategy.formatField", "org/apache/commons/lang3/time/FastDatePrinter$StringLiteral.mValue", "org/apache/commons/lang3/time/FastDatePrinter$TextField.mField", "org/apache/commons/lang3/time/FastDateParser.locale", "org/apache/commons/lang3/time/FastDatePrinter$PaddedNumberField.mField", "org/apache/commons/lang3/time/FastDatePrinter.mMaxLengthEstimate", "org/apache/commons/lang3/time/FastDateParser.startYear", "org/apache/commons/lang3/time/FormatCache$MultipartKey.keys", "org/apache/commons/lang3/time/FastDatePrinter$CharacterLiteral.mValue", "org/apache/commons/lang3/time/FastDateFormat.printer", "org/apache/commons/lang3/time/FastDateParser$NumberStrategy.field", "org/apache/commons/lang3/time/FastDatePrinter.mPattern", "org/apache/commons/lang3/time/FormatCache.cInstanceCache", "org/apache/commons/lang3/time/FastDateParser.timeZone", "org/apache/commons/lang3/time/FastDatePrinter$TextField.mValues", "org/apache/commons/lang3/time/FastDateParser.pattern", "org/apache/commons/lang3/time/FastDatePrinter.mLocale", "org/apache/commons/lang3/time/FastDateParser.century", "org/apache/commons/lang3/time/FastDatePrinter.mTimeZone", "org/apache/commons/lang3/time/FastDatePrinter$TwoDigitNumberField.mField", "org/apache/commons/lang3/time/FastDateFormat.parser", "org/apache/commons/lang3/time/FastDatePrinter$PaddedNumberField.mSize", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneNumberRule.mColon", "org/apache/commons/lang3/time/FastDatePrinter.mRules" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

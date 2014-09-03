@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/CharSetTest.testSerialization()V",
+  "modified_states": "5",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/CharRange.start", "org/apache/commons/lang3/CharRange.end", "org/apache/commons/lang3/CharSet.set", "org/apache/commons/lang3/SerializationUtils$ClassLoaderAwareObjectInputStream.classLoader", "org/apache/commons/lang3/CharRange.negated" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

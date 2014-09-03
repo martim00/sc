@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/CompositeFormatTest.testCompositeFormat()V",
+  "modified_states": "4",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/CompositeFormatTest$1.this$0", "org/apache/commons/lang3/text/CompositeFormat.formatter", "org/apache/commons/lang3/text/CompositeFormat.parser", "org/apache/commons/lang3/text/CompositeFormatTest$2.this$0" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

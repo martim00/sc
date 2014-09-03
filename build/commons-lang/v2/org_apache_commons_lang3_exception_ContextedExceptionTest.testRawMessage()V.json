@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/exception/ContextedExceptionTest.testRawMessage()V",
+  "modified_states": "3",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/exception/DefaultExceptionContext.contextValues", "org/apache/commons/lang3/exception/ContextedExceptionTest.exceptionContext", "org/apache/commons/lang3/exception/ContextedException.exceptionContext" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

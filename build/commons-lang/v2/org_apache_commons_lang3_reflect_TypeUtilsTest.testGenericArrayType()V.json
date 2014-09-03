@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/reflect/TypeUtilsTest.testGenericArrayType()V",
+  "modified_states": "7",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/reflect/TypeUtils$WildcardTypeImpl.upperBounds", "org/apache/commons/lang3/reflect/TypeUtils$WildcardTypeImpl.lowerBounds", "org/apache/commons/lang3/reflect/TypeUtils$ParameterizedTypeImpl.typeArguments", "org/apache/commons/lang3/reflect/TypeUtils$ParameterizedTypeImpl.useOwner", "org/apache/commons/lang3/reflect/TypeUtils$ParameterizedTypeImpl.raw", "org/apache/commons/lang3/reflect/TypeUtils$WildcardTypeBuilder.upperBounds", "org/apache/commons/lang3/reflect/TypeUtils$GenericArrayTypeImpl.componentType" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

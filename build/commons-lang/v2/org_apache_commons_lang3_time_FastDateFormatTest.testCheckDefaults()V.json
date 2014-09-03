@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/time/FastDateFormatTest.testCheckDefaults()V",
+  "modified_states": "1",
+  "covered_states": "0",
+  "useless_covered_states": "3",
+  "modified":  [ "org/apache/commons/lang3/time/FormatCache$MultipartKey.keys" ],
+  "covered":  [  ],
+  "useless":  [ "org/apache/commons/lang3/time/FastDatePrinter.mLocale", "org/apache/commons/lang3/time/FastDatePrinter.mTimeZone", "org/apache/commons/lang3/time/FastDatePrinter.mPattern" ],
+  "state_coverage": "0.0"
+}

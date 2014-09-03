@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/concurrent/TimedSemaphoreTest.testInitDefaultService()V",
+  "modified_states": "5",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/concurrent/TimedSemaphore.unit", "org/apache/commons/lang3/concurrent/TimedSemaphore.limit", "org/apache/commons/lang3/concurrent/TimedSemaphore.executorService", "org/apache/commons/lang3/concurrent/TimedSemaphore.period", "org/apache/commons/lang3/concurrent/TimedSemaphore.ownExecutor" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

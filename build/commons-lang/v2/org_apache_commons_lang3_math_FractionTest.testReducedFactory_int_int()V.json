@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/math/FractionTest.testReducedFactory_int_int()V",
+  "modified_states": "5",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/math/Fraction.hashCode", "org/apache/commons/lang3/math/Fraction.toString", "org/apache/commons/lang3/math/Fraction.numerator", "org/apache/commons/lang3/math/Fraction.denominator", "org/apache/commons/lang3/math/Fraction.toProperString" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

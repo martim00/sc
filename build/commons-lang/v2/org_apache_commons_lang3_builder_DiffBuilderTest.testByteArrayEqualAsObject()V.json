@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/DiffBuilderTest.testByteArrayEqualAsObject()V",
+  "modified_states": "9",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/DiffBuilder.objectsTriviallyEqual", "org/apache/commons/lang3/builder/DiffBuilder.left", "org/apache/commons/lang3/builder/DiffBuilder.right", "org/apache/commons/lang3/builder/DiffResult.diffs", "org/apache/commons/lang3/builder/DiffBuilder.style", "org/apache/commons/lang3/builder/DiffResult.style", "org/apache/commons/lang3/builder/DiffBuilder.diffs", "org/apache/commons/lang3/builder/DiffResult.rhs", "org/apache/commons/lang3/builder/DiffResult.lhs" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

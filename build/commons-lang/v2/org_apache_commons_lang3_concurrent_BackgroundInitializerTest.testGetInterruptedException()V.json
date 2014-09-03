@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/concurrent/BackgroundInitializerTest.testGetInterruptedException()V",
+  "modified_states": "10",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/concurrent/BackgroundInitializer.executor", "org/apache/commons/lang3/concurrent/BackgroundInitializer.future", "org/apache/commons/lang3/concurrent/BackgroundInitializerTest$1.this$0", "org/apache/commons/lang3/concurrent/BackgroundInitializerTest$1.val$init", "org/apache/commons/lang3/concurrent/BackgroundInitializer$InitializationTask.execFinally", "org/apache/commons/lang3/concurrent/BackgroundInitializer.externalExecutor", "org/apache/commons/lang3/concurrent/BackgroundInitializerTest$BackgroundInitializerTestImpl.shouldSleep", "org/apache/commons/lang3/concurrent/BackgroundInitializerTest$1.val$latch1", "org/apache/commons/lang3/concurrent/BackgroundInitializerTest$1.val$iex", "org/apache/commons/lang3/concurrent/BackgroundInitializer$InitializationTask.this$0" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/HashCodeBuilderTest.testSuper()V",
+  "modified_states": "2",
+  "covered_states": "1",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/HashCodeBuilder.iTotal", "org/apache/commons/lang3/builder/HashCodeBuilder.iConstant" ],
+  "covered":  [ "org/apache/commons/lang3/builder/HashCodeBuilder.iTotal" ],
+  "useless":  [  ],
+  "state_coverage": "0.5"
+}

@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/HashCodeBuilderTest.testReflectionObjectCycle()V",
+  "modified_states": "6",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/IDKey.value", "org/apache/commons/lang3/builder/HashCodeBuilder.iTotal", "org/apache/commons/lang3/builder/IDKey.id", "org/apache/commons/lang3/builder/HashCodeBuilderTest$ReflectionTestCycleB.a", "org/apache/commons/lang3/builder/HashCodeBuilder.iConstant", "org/apache/commons/lang3/builder/HashCodeBuilderTest$ReflectionTestCycleA.b" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

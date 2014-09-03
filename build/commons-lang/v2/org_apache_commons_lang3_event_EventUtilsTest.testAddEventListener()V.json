@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/event/EventUtilsTest.testAddEventListener()V",
+  "modified_states": "7",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/event/EventListenerSupport.proxy", "org/apache/commons/lang3/event/EventUtilsTest$PropertyChangeSource.listeners", "org/apache/commons/lang3/event/EventListenerSupport.prototypeArray", "org/apache/commons/lang3/event/EventListenerSupport$ProxyInvocationHandler.this$0", "org/apache/commons/lang3/event/EventUtilsTest$EventCountingInvociationHandler.eventCounts", "org/apache/commons/lang3/event/EventUtilsTest$PropertyChangeSource.property", "org/apache/commons/lang3/event/EventListenerSupport.listeners" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

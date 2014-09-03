@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/ArrayUtilsTest.testNullToEmptyDoubleNull()V",
+  "modified_states": "0",
+  "covered_states": "0",
+  "useless_covered_states": "1",
+  "modified":  [  ],
+  "covered":  [  ],
+  "useless":  [ "EMPTY_DOUBLE_ARRAY" ],
+  "state_coverage": "0.0"
+}

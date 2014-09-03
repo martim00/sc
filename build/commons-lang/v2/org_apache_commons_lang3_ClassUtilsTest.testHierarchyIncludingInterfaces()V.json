@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/ClassUtilsTest.testHierarchyIncludingInterfaces()V",
+  "modified_states": "9",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/ClassUtils$1$1.val$next", "org/apache/commons/lang3/mutable/MutableObject.value", "org/apache/commons/lang3/ClassUtils$2$1.val$wrapped", "org/apache/commons/lang3/ClassUtils$2.val$classes", "org/apache/commons/lang3/ClassUtils$2$1.this$0", "org/apache/commons/lang3/ClassUtils$2$1.val$seenInterfaces", "org/apache/commons/lang3/ClassUtils$2$1.interfaces", "org/apache/commons/lang3/ClassUtils$1$1.this$0", "org/apache/commons/lang3/ClassUtils$1.val$type" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

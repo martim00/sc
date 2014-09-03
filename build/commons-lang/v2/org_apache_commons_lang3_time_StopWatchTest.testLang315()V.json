@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/time/StopWatchTest.testLang315()V",
+  "modified_states": "5",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/time/StopWatch.stopTime", "org/apache/commons/lang3/time/StopWatch.splitState", "org/apache/commons/lang3/time/StopWatch.startTimeMillis", "org/apache/commons/lang3/time/StopWatch.runningState", "org/apache/commons/lang3/time/StopWatch.startTime" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

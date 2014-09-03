@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/time/FastDatePrinterTest.testFormat()V",
+  "modified_states": "20",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/time/FastDatePrinter$TextField.mField", "org/apache/commons/lang3/time/FastDatePrinter$PaddedNumberField.mField", "org/apache/commons/lang3/time/FastDatePrinter.mMaxLengthEstimate", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneNameRule.mStyle", "org/apache/commons/lang3/time/FastDatePrinter$CharacterLiteral.mValue", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneDisplayKey.mTimeZone", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneNameRule.mLocale", "org/apache/commons/lang3/time/FastDatePrinter.mPattern", "org/apache/commons/lang3/time/FastDatePrinter$TextField.mValues", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneDisplayKey.mLocale", "org/apache/commons/lang3/time/FastDatePrinter$UnpaddedNumberField.mField", "org/apache/commons/lang3/time/FastDatePrinter.mLocale", "org/apache/commons/lang3/time/FastDatePrinter.mTimeZone", "org/apache/commons/lang3/time/FastDatePrinter$TwoDigitNumberField.mField", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneNumberRule.mColon", "org/apache/commons/lang3/time/FastDatePrinter$PaddedNumberField.mSize", "org/apache/commons/lang3/time/FastDatePrinter.mRules", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneNameRule.mStandard", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneDisplayKey.mStyle", "org/apache/commons/lang3/time/FastDatePrinter$TimeZoneNameRule.mDaylight" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

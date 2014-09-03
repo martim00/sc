@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/reflect/TypeUtilsTest.testUnboundedWildcardType()V",
+  "modified_states": "4",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/reflect/TypeUtils$WildcardTypeImpl.upperBounds", "org/apache/commons/lang3/reflect/TypeUtils$WildcardTypeImpl.lowerBounds", "org/apache/commons/lang3/reflect/TypeUtils$WildcardTypeBuilder.lowerBounds", "org/apache/commons/lang3/reflect/TypeUtils$WildcardTypeBuilder.upperBounds" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

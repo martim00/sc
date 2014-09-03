@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/concurrent/BasicThreadFactoryTest.testBuildDefaults()V",
+  "modified_states": "5",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/concurrent/BasicThreadFactory$Builder.priority", "org/apache/commons/lang3/concurrent/BasicThreadFactory$Builder.wrappedFactory", "org/apache/commons/lang3/concurrent/BasicThreadFactory$Builder.namingPattern", "org/apache/commons/lang3/concurrent/BasicThreadFactory$Builder.daemonFlag", "org/apache/commons/lang3/concurrent/BasicThreadFactory$Builder.exceptionHandler" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

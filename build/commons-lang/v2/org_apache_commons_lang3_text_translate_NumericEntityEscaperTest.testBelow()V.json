@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/translate/NumericEntityEscaperTest.testBelow()V",
+  "modified_states": "3",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/translate/NumericEntityEscaper.above", "org/apache/commons/lang3/text/translate/NumericEntityEscaper.between", "org/apache/commons/lang3/text/translate/NumericEntityEscaper.below" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

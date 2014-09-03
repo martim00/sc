@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/StrTokenizerTest.testBasicQuoted5()V",
+  "modified_states": "12",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/StrTokenizer.trimmerMatcher", "org/apache/commons/lang3/text/StrTokenizer.tokens", "org/apache/commons/lang3/text/StrTokenizer.chars", "org/apache/commons/lang3/text/StrTokenizer.emptyAsNull", "org/apache/commons/lang3/text/StrBuilder.buffer", "org/apache/commons/lang3/text/StrTokenizer.tokenPos", "org/apache/commons/lang3/text/StrTokenizer.ignoredMatcher", "org/apache/commons/lang3/text/StrTokenizer.quoteMatcher", "org/apache/commons/lang3/text/StrTokenizer.ignoreEmptyTokens", "org/apache/commons/lang3/text/StrMatcher$CharMatcher.ch", "org/apache/commons/lang3/text/StrBuilder.size", "org/apache/commons/lang3/text/StrTokenizer.delimMatcher" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

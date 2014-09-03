@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/StrTokenizerTest.testTSVEmpty()V",
+  "modified_states": "3",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/StrTokenizer.tokens", "org/apache/commons/lang3/text/StrTokenizer.chars", "org/apache/commons/lang3/text/StrTokenizer.tokenPos" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

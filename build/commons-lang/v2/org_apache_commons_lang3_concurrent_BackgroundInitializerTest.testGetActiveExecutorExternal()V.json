@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/concurrent/BackgroundInitializerTest.testGetActiveExecutorExternal()V",
+  "modified_states": "5",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/concurrent/BackgroundInitializer.executor", "org/apache/commons/lang3/concurrent/BackgroundInitializer.future", "org/apache/commons/lang3/concurrent/BackgroundInitializer$InitializationTask.execFinally", "org/apache/commons/lang3/concurrent/BackgroundInitializer.externalExecutor", "org/apache/commons/lang3/concurrent/BackgroundInitializer$InitializationTask.this$0" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/tuple/PairTest.testComparable2()V",
+  "modified_states": "3",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/tuple/ImmutablePair.left", "org/apache/commons/lang3/builder/CompareToBuilder.comparison", "org/apache/commons/lang3/tuple/ImmutablePair.right" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

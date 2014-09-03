@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/ToStringBuilderTest.testReflectionHierarchy()V",
+  "modified_states": "7",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionTestFixtureB.transientB", "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionTestFixtureA.a", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.upToClass", "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionTestFixtureB.b", "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionTestFixtureA.transientA", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendStatics", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendTransients" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

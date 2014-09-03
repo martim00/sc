@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/ToStringBuilderTest.testReflectionStatics()V",
+  "modified_states": "8",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionStaticFieldsFixture.this$0", "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionStaticFieldsFixture.transientInt", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.upToClass", "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionStaticFieldsFixture.instanceString", "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionStaticFieldsFixture.transientString", "org/apache/commons/lang3/builder/ToStringBuilderTest$ReflectionStaticFieldsFixture.instanceInt", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendStatics", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendTransients" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

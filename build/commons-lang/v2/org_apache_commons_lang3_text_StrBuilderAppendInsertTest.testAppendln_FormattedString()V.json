@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/text/StrBuilderAppendInsertTest.testAppendln_FormattedString()V",
+  "modified_states": "4",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/text/StrBuilder.buffer", "org/apache/commons/lang3/text/StrBuilderAppendInsertTest$2.val$count", "org/apache/commons/lang3/text/StrBuilder.size", "org/apache/commons/lang3/text/StrBuilderAppendInsertTest$2.this$0" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

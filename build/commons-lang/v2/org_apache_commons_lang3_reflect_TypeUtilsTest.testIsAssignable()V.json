@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/reflect/TypeUtilsTest.testIsAssignable()V",
+  "modified_states": "15",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/reflect/TypeUtilsTest.intWildcardComparable", "org/apache/commons/lang3/text/translate/NumericEntityEscaper.above", "org/apache/commons/lang3/reflect/AClass.bClass", "org/apache/commons/lang3/text/translate/NumericEntityEscaper.below", "org/apache/commons/lang3/reflect/AClass.cClass", "org/apache/commons/lang3/text/translate/UnicodeEscaper.above", "org/apache/commons/lang3/reflect/AClass.dClass", "org/apache/commons/lang3/text/translate/UnicodeEscaper.below", "org/apache/commons/lang3/text/translate/AggregateTranslator.translators", "org/apache/commons/lang3/reflect/TypeUtilsTest.dis", "org/apache/commons/lang3/text/translate/NumericEntityEscaper.between", "org/apache/commons/lang3/reflect/AAClass$BBClass.this$0", "org/apache/commons/lang3/reflect/AClass.eClass", "org/apache/commons/lang3/text/translate/NumericEntityUnescaper.options", "org/apache/commons/lang3/text/translate/UnicodeEscaper.between" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

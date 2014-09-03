@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/ToStringStyleTest.testSetContentEnd()V",
+  "modified_states": "20",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/ToStringStyle.defaultFullDetail", "org/apache/commons/lang3/builder/ToStringStyle.useIdentityHashCode", "org/apache/commons/lang3/builder/ToStringStyle.arrayStart", "org/apache/commons/lang3/builder/ToStringStyle.fieldSeparator", "org/apache/commons/lang3/builder/ToStringStyle.arrayContentDetail", "org/apache/commons/lang3/builder/ToStringStyle.summaryObjectStartText", "org/apache/commons/lang3/builder/ToStringStyle.nullText", "org/apache/commons/lang3/builder/ToStringStyle.arrayEnd", "org/apache/commons/lang3/builder/ToStringStyle.fieldSeparatorAtStart", "org/apache/commons/lang3/builder/ToStringStyle.contentEnd", "org/apache/commons/lang3/builder/ToStringStyle.fieldSeparatorAtEnd", "org/apache/commons/lang3/builder/ToStringStyle.fieldNameValueSeparator", "org/apache/commons/lang3/builder/ToStringStyle.arraySeparator", "org/apache/commons/lang3/builder/ToStringStyle.useShortClassName", "org/apache/commons/lang3/builder/ToStringStyle.contentStart", "org/apache/commons/lang3/builder/ToStringStyle.useClassName", "org/apache/commons/lang3/builder/ToStringStyle.sizeEndText", "org/apache/commons/lang3/builder/ToStringStyle.summaryObjectEndText", "org/apache/commons/lang3/builder/ToStringStyle.sizeStartText", "org/apache/commons/lang3/builder/ToStringStyle.useFieldNames" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

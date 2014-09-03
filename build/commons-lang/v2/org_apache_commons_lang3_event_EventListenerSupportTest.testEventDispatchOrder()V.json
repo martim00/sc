@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/event/EventListenerSupportTest.testEventDispatchOrder()V",
+  "modified_states": "6",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/event/EventListenerSupport.proxy", "org/apache/commons/lang3/event/EventListenerSupport.prototypeArray", "org/apache/commons/lang3/event/EventListenerSupport$ProxyInvocationHandler.this$0", "org/apache/commons/lang3/event/EventListenerSupportTest$4.val$calledListeners", "org/apache/commons/lang3/event/EventListenerSupport.listeners", "org/apache/commons/lang3/event/EventListenerSupportTest$4.this$0" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

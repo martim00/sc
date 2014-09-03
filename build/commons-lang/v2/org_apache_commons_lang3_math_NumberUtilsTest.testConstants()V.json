@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/math/NumberUtilsTest.testConstants()V",
+  "modified_states": "0",
+  "covered_states": "0",
+  "useless_covered_states": "18",
+  "modified":  [  ],
+  "covered":  [  ],
+  "useless":  [ "BYTE_ONE", "FLOAT_ZERO", "LONG_ZERO", "FLOAT_ONE", "DOUBLE_ZERO", "SHORT_ZERO", "BYTE_MINUS_ONE", "LONG_MINUS_ONE", "DOUBLE_MINUS_ONE", "LONG_ONE", "DOUBLE_ONE", "INTEGER_ZERO", "FLOAT_MINUS_ONE", "INTEGER_MINUS_ONE", "SHORT_ONE", "INTEGER_ONE", "SHORT_MINUS_ONE", "BYTE_ZERO" ],
+  "state_coverage": "0.0"
+}

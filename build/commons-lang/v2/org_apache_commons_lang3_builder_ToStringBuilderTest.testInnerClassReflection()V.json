@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/ToStringBuilderTest.testInnerClassReflection()V",
+  "modified_states": "5",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/ReflectionToStringBuilder.upToClass", "org/apache/commons/lang3/builder/ToStringBuilderTest$Outer$Inner.this$0", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendStatics", "org/apache/commons/lang3/builder/ReflectionToStringBuilder.appendTransients", "org/apache/commons/lang3/builder/ToStringBuilderTest$Outer.inner" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

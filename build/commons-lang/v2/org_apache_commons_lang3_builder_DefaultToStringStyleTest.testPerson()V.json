@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/DefaultToStringStyleTest.testPerson()V",
+  "modified_states": "3",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/ToStringStyleTest$Person.name", "org/apache/commons/lang3/builder/ToStringStyleTest$Person.smoker", "org/apache/commons/lang3/builder/ToStringStyleTest$Person.age" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}

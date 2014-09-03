@@ -1,0 +1,10 @@
+{
+  "test_name": "org/apache/commons/lang3/builder/ToStringStyleConcurrencyTest.testCopyOnWriteArrayList()V",
+  "modified_states": "3",
+  "covered_states": "0",
+  "useless_covered_states": "0",
+  "modified":  [ "org/apache/commons/lang3/builder/ToStringStyleConcurrencyTest$1.this$0", "org/apache/commons/lang3/builder/ToStringStyleConcurrencyTest$CollectionHolder.collection", "org/apache/commons/lang3/builder/ToStringStyleConcurrencyTest$1.val$holder" ],
+  "covered":  [  ],
+  "useless":  [  ],
+  "state_coverage": "0.0"
+}
