@@ -2,7 +2,6 @@ package instrumenter.core;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.VarInsnNode;
 import org.objectweb.asm.Opcodes;
 
 
