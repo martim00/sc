@@ -1,4 +1,4 @@
-package instrumenter.test;
+package org.scova.instrumenter;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;

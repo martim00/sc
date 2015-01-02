@@ -1,6 +1,7 @@
-package instrumenter.core;
+package org.scova.instrumenter;
 
 import org.objectweb.asm.tree.analysis.Analyzer;
+
 import org.objectweb.asm.tree.analysis.Frame;
 import org.objectweb.asm.tree.analysis.Interpreter;
 

@@ -1,4 +1,4 @@
-package instrumenter.core;
+package org.scova.instrumenter;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;

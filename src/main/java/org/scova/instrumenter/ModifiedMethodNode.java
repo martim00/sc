@@ -1,4 +1,4 @@
-package instrumenter.core;
+package org.scova.instrumenter;
 import java.util.Iterator;
 import java.util.ListIterator;
 

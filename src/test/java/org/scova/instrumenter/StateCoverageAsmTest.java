@@ -1,8 +1,5 @@
-package instrumenter.test;
+package org.scova.instrumenter;
 import static org.junit.Assert.*;
-
-import instrumenter.core.DebugUtils;
-import instrumenter.core.StateCoverageAsm;
 
 import java.io.FileInputStream;
 import java.io.IOException;

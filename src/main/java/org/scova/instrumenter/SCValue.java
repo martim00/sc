@@ -1,4 +1,4 @@
-package instrumenter.core;
+package org.scova.instrumenter;
 import java.util.Set;
 
 import org.objectweb.asm.tree.AbstractInsnNode;

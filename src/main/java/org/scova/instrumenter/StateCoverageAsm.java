@@ -1,5 +1,6 @@
-package instrumenter.core;
+package org.scova.instrumenter;
 import java.io.File;
+import org.apache.commons.io.FileUtils;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -63,16 +64,21 @@ public class StateCoverageAsm {
 	private void clearFolder(String folderPath) {
 		File folder = new File(folderPath);
 		if (folder.exists()) {
-			folder.delete();
+			System.out.println("deleting folder " + folderPath);
+			try {
+				FileUtils.deleteDirectory(new File(folderPath));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			folder.delete();
 		}
 			
 	}
 	
 	private void instrumentRecursivelyFolder(File folder, String inputRoot, String outputRoot) throws ClassNotFoundException, IOException {
 		
-		File[] files = folder.listFiles();
-		
-		clearFolder(outputRoot);
+		File[] files = folder.listFiles();	
 		
 		String outputFolder = outputRoot + extractRelativeTo(inputRoot, folder.getAbsolutePath());
 		Files.createDirectories(new File(outputFolder).toPath());
@@ -99,6 +105,7 @@ public class StateCoverageAsm {
 
 	public void instrumentFolder(String inputFolder, String outputFolder) throws ClassNotFoundException, IOException {
 		
+		this.clearFolder(outputFolder);
 		this.instrumentRecursivelyFolder(new File(inputFolder), inputFolder, outputFolder);
 	}
 }

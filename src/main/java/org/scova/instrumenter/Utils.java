@@ -1,4 +1,4 @@
-package instrumenter.core;
+package org.scova.instrumenter;
 
 import java.io.File;
 import java.io.FileWriter;

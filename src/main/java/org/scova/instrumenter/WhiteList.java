@@ -1,4 +1,4 @@
-package instrumenter.core;
+package org.scova.instrumenter;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,3 +1,4 @@
+package org.scova.instrumenter;
 //package instrumenter.core;
 //
 //import org.objectweb.asm.tree.AbstractInsnNode;

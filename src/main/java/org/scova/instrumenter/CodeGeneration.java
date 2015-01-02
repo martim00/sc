@@ -1,4 +1,5 @@
-package instrumenter.core;
+package org.scova.instrumenter;
+
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;

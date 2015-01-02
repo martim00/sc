@@ -1,4 +1,4 @@
-package reporter.html;
+package org.scova.reporter.html;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +20,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import instrumenter.core.Utils;
+import org.scova.instrumenter.Utils;
 
 public class HtmlReport {
 	

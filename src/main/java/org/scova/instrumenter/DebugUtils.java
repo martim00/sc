@@ -1,4 +1,5 @@
-package instrumenter.core;
+package org.scova.instrumenter;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 

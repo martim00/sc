@@ -1,4 +1,5 @@
-package instrumenter.test;
+package org.scova.instrumenter;
+
  public class HumanName {
 	public String first , last ;
 	public HumanName ( String firstName , String lastName ) {

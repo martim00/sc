@@ -19,17 +19,18 @@
         		<pathelement location="../deps/asm-debug-all-4.1.jar"/>
         		<pathelement location="../deps/json-simple-1.1.1.jar"/>
         		<pathelement location="../deps/junit-4.10.jar"/>
+                <pathelement location="../deps/commons-io-2.4.jar"/>
         		<pathelement location="../lib/bin"/>
         	</classpath>
         </javac>
     </target>
 
-    <property name="scova.classpath" value="../bin;../deps/asm-debug-all-4.1.jar;../deps/junit-4.10.jar;C:/Users/Aniceto/workspace/junit_original/lib/hamcrest-core-1.3.jar" />
+    <property name="scova.classpath" value="../bin;../deps/asm-debug-all-4.1.jar;../deps/commons-io-2.4.jar;../deps/junit-4.10.jar;C:/Users/Aniceto/workspace/junit_original/lib/hamcrest-core-1.3.jar" />
 
 
     <echo message="${scova.classpath}" />
     <target name="instrument">
-    	<java classname="instrumenter.core.Main">
+    	<java classname="org.scova.instrumenter.Main">
 
             <arg value="${project.src}"/>
             <arg value="${project.output}"/>
@@ -42,6 +43,11 @@
 
     		</classpath>
     	</java>
+    </target>
+
+    <target name="clean">
+        <delete dir="../bin"/>
+        <mkdir dir="../bin" />
     </target>
 
     <target name="run">
@@ -91,7 +97,7 @@
     </target>
 
     <target name="report">
-        <java classname="reporter.html.HtmlReport">
+        <java classname="org.scova.reporter.html.HtmlReport">
 
             <arg value="../build"/>
             <classpath>
@@ -103,6 +109,6 @@
         </java>
     </target>
 
-    <target name="instrument-and-run" depends="compile, instrument, run-batch"/>
+    <target name="instrument-and-run" depends="clean, compile, instrument, run-batch"/>
     	
 </project>
