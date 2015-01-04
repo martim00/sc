@@ -102,7 +102,9 @@ public class RunHandler extends AbstractHandler {
 		
 		
 		String projectInputFolder = project.getLocation().toString();
-		String projectOutputFolder = "C:/sc/tablelize2/java";
+		
+		
+		String projectOutputFolder = "C:/sc/" + project.getName();
 		
 		String projectInputClasspath = getClasspath(javaProject);
 		
