@@ -66,9 +66,11 @@ public class StateCoverageAsm {
 		if (folder.exists()) {
 			System.out.println("deleting folder " + folderPath);
 			try {
+				
 				FileUtils.deleteDirectory(new File(folderPath));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				System.out.println("error ao deletar folder" + folderPath);
 				e.printStackTrace();
 			}
 //			folder.delete();

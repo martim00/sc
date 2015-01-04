@@ -80,7 +80,9 @@
 
     <!--<property name="test.home" value="c:/sc/sc_picon" />-->
 
+
     <target name="run-batch">
+
         <junit printsummary="withOutAndErr" fork="yes" showoutput="yes">
             <classpath refid="project.output.classpath.id"/>
             <!-- If test.entry is defined, run a single test, otherwise run all valid tests -->
@@ -111,5 +113,6 @@
     </target>
 
     <target name="instrument-and-run" depends="clean, compile, instrument, run-batch"/>
+        
 
 </project>
