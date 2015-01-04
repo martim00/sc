@@ -21,7 +21,7 @@
          "popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=additions">
          <command
                commandId="org.scova.plugin.commands.Run"
-               label="Run mycommand"
+               label="Run Scova"
                mnemonic="M1+P"
                tooltip="Do something with this project">
          </command>
@@ -69,6 +69,15 @@
             id="org.scova.plugin.commands.Run"
             name="Run Scova">
       </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.scova.plugin.commands.Run"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F7">
+      </key>
    </extension>
 
 </plugin>
