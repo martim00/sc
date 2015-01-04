@@ -32,13 +32,14 @@
     <target name="instrument">
     	<java classname="org.scova.instrumenter.Main">
 
-            <arg value="${project.src}"/>
-            <arg value="${project.output}"/>
+            <arg value="${project.input.folder}"/>
+            <arg value="${project.output.folder}"/>
 
     		<classpath>
                 <pathelement path="${scova.classpath}"/>
                 
-                <pathelement path="${project.classpath}"/>
+                <!-- precisa para buscar informações de classe do projeto através de reflexion --> 
+                <pathelement path="${project.input.classpath}"/>
 
 
     		</classpath>
@@ -58,18 +59,18 @@
             <arg value="test.net.douglashiura.picon.TestePiconEscolha"/>
     		<!-- end -->
 
-            <classpath refid="test.classpath.id"/>    	
+            <classpath refid="project.output.classpath.id"/>    	
     	</java>       
     </target>
 
-    <echo message="{test.classpath}: " />
-    <echo message="${test.classpath}"/>
+    <echo message="{project.output.classpath}: " />
+    <echo message="${project.output.classpath}"/>
 
-    <echo message="{project.classpath}: " />
-    <echo message="${project.classpath}"/>
+    <echo message="{project.input.classpath}: " />
+    <echo message="${project.input.classpath}"/>
 
-    <path id="test.classpath.id">
-        <pathelement path="${test.classpath}"/>
+    <path id="project.output.classpath.id">
+        <pathelement path="${project.output.classpath}"/>
         <!-- scova lib -->
         <pathelement location="../lib/bin" /> 
         <!-- junit -->
@@ -81,7 +82,7 @@
 
     <target name="run-batch">
         <junit printsummary="withOutAndErr" fork="yes" showoutput="yes">
-            <classpath refid="test.classpath.id"/>
+            <classpath refid="project.output.classpath.id"/>
             <!-- If test.entry is defined, run a single test, otherwise run all valid tests -->
             <test name="${test.entry}" todir="${test.reports}" if="test.entry"/>
             <batchtest todir="tmp" unless="test.entry">
@@ -110,5 +111,5 @@
     </target>
 
     <target name="instrument-and-run" depends="clean, compile, instrument, run-batch"/>
-    	
+
 </project>
