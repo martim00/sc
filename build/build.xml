@@ -83,11 +83,14 @@
 
     <target name="run-batch">
 
-        <junit printsummary="withOutAndErr" fork="yes" showoutput="yes">
+        <junit printsummary="withOutAndErr" fork="yes" showoutput="yes" haltonfailure="off" >
+            <jvmarg value="-Duser.dir=${project.output.folder}"/>
+             <!-- -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=n -->
+
             <classpath refid="project.output.classpath.id"/>
             <!-- If test.entry is defined, run a single test, otherwise run all valid tests -->
             <test name="${test.entry}" todir="${test.reports}" if="test.entry"/>
-            <batchtest todir="tmp" unless="test.entry">
+            <batchtest todir="${project.output.folder}" unless="test.entry">
                 <fileset dir="${test.home}">
                     <include name="**/Test*.java"/>
                     <include name="**/*Test.java"/>
@@ -102,7 +105,7 @@
     <target name="report">
         <java classname="org.scova.reporter.html.HtmlReport">
 
-            <arg value="../build"/>
+            <arg value="${project.output.folder}"/>
             <classpath>
                 <pathelement location="../bin"/>
                 <pathelement location="../deps/json-simple-1.1.1.jar"/>

@@ -97,7 +97,7 @@ public class StateCoverage {
 	public static void EndTestCapture(String testName) {
 		System.out.println("End test capture for : " + testName);
 		dump("Ending test : " + testName);
-		Utils.dumpToFile("c:/sc_output/dump.txt", log);
+		//Utils.dumpToFile("c:/sc_output/dump.txt", log);
 		actualTest = null;
 		StateCoverageResult result = StateCoverage.GetResultFor(testName);
 		System.out.println(result.toString());

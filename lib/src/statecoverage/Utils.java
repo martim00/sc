@@ -8,12 +8,15 @@ public class Utils {
 	
 	public static String escape(String str) {
 		
-		return str.replace("/", "_");
+		return str.replace("/", "_").replace(".", "_").replace("(", "_").replace(")", "_");
 		
 	}
 	
 	public static void dumpToFile(String filename, String content) {
-		File file = new File(filename);
+		
+		String path = System.getProperty("user.dir");
+		
+		File file = new File(path + "/" + filename);
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -21,16 +24,15 @@ public class Utils {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
-		
+		}
+			
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(file);
 			writer.write(content);
 			writer.close();
 		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {			
 			e.printStackTrace();
 		}
 	}

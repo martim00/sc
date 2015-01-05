@@ -4,24 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+//import org.scova.instrumenter.StateCoverageAsm;
+
 import org.eclipse.core.filesystem.*;
 import org.eclipse.ui.ide.*;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -134,6 +130,7 @@ public class RunHandler extends AbstractHandler {
 		String projectOutputClasspath = projectOutputFolder + "/"
 				+ relative.toString();
 
+		// TODO: hardcoded
 		String projectOutputTestFolder = "C:/sc/douglas+picon/src";
 
 		try {
@@ -141,10 +138,9 @@ public class RunHandler extends AbstractHandler {
 					projectInputClasspath, projectOutputClasspath,
 					projectOutputTestFolder);
 			
-			executeReport();
+			executeReport(projectOutputFolder);
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -197,10 +193,10 @@ public class RunHandler extends AbstractHandler {
 
 	}
 
-	private void executeReport() throws Exception {
-		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "report");
+	private void executeReport(String outputFolder) throws Exception {
+		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "report", "-Dproject.output.folder=" + outputFolder);
 
-		File fileToOpen = new File("c:/users/aniceto/workspace/scova_new/build/report.html");
+		File fileToOpen = new File(outputFolder + "/report.html");
 
 		if (fileToOpen.exists() && fileToOpen.isFile()) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
@@ -250,12 +246,29 @@ public class RunHandler extends AbstractHandler {
 		}
 		return projectClassPath.replace("\"", "");
 	}
+	
+	private void executeFromLocalProject(String inputFolder, String outputFolder) {
+		
+//		StateCoverageAsm instrumenter = new StateCoverageAsm();
+//		try {
+//			instrumenter.instrumentFolder(inputFolder, outputFolder);
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+	}
 
 	private void executeInstrumentation(String projectInputFolder,
 			String projectOutputFolder, String projectInputClasspath,
 			String projectOutputClasspath, String projectOutputTestFolder)
 			throws Exception {
 
+		//executeFromLocalProject(projectInputFolder, projectOutputFolder);
+		
+		//return;
 		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat",
 				"instrument-and-run", "-Dproject.input.folder="
 						+ projectInputFolder, "-Dproject.output.folder="
@@ -263,41 +276,6 @@ public class RunHandler extends AbstractHandler {
 						+ projectInputClasspath, "-Dproject.output.classpath="
 						+ projectOutputClasspath, "-Dtest.home="
 						+ projectOutputTestFolder);
-
-		// System.out.println("Project input folder is : " +
-		// projectInputFolder);
-		//
-		// ProcessBuilder pb = new ProcessBuilder(
-		// "C:/bin/apache-ant-1.8.4-bin/bin/ant.bat",
-		// "instrument-and-run",
-		// "-Dproject.input.folder=" + projectInputFolder,
-		// "-Dproject.output.folder=" + projectOutputFolder,
-		// "-Dproject.input.classpath=" + projectInputClasspath,
-		// "-Dproject.output.classpath=" + projectOutputClasspath,
-		// "-Dtest.home=" + projectOutputTestFolder
-		// );
-		// pb.redirectError();
-		//
-		// File scovaFolder = new
-		// File("c:/users/aniceto/workspace/scova_new/build");
-		// if (!scovaFolder.exists())
-		// throw new Exception("cant find scova path");
-		//
-		// // This should point to where your build.xml file is...
-		// pb.directory(scovaFolder);
-		// try {
-		// Process p = pb.start();
-		// InputStream is = p.getInputStream();
-		// int in = -1;
-		// while ((in = is.read()) != -1) {
-		// System.out.print((char) in);
-		// }
-		// int exitValue = p.waitFor();
-		// System.out.println("Exited with " + exitValue);
-		// } catch (Exception ex) {
-		// ex.printStackTrace();
-		// }
-		//
 	}
 
 	private String getClasspathInfo(IJavaProject project) throws Exception {
