@@ -48,8 +48,8 @@ public class StateCoverageAsmTest {
 	private ClassNode result = null;
 	@Before
 	public void setUp() {
-		instrumentClass("bin/instrumenter/test/SampleClass.class");
-		result = readClass("bin/instrumenter/test/SampleClass.class");
+		instrumentClass("bin/org/scova/instrumenter/SampleClass.class");
+		result = readClass("bin/org/scova/instrumenter/SampleClass.class");
 	}
 	
 	@Test
@@ -61,8 +61,8 @@ public class StateCoverageAsmTest {
 		assertEquals(6, setter.instructions.size());
 		
 		assertCode(setter, 
-			    		   "    LDC \"instrumenter/test/SampleClass.localAssignment(I)V.c\"\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.localAssignment(I)V.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.localAssignment(I)V.c\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.localAssignment(I)V.a\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 						   "    ILOAD 1\n" +
 						   "    ISTORE 2\n" +
@@ -77,11 +77,11 @@ public class StateCoverageAsmTest {
 		assertEquals(7, setter.instructions.size());
 		
 		assertCode(setter, 
-			    		   "    LDC \"instrumenter/test/SampleClass.fieldTolocalVarAssignment()V.b\"\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.fieldTolocalVarAssignment()V.b\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.a\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 			    		   "    ALOAD 0\n" +
-			    		   "    GETFIELD instrumenter/test/SampleClass.a : I\n" +
+			    		   "    GETFIELD org/scova/instrumenter/SampleClass.a : I\n" +
 			    		   "    ISTORE 1\n" +
 			    		   "    RETURN\n");
 	}
@@ -96,14 +96,14 @@ public class StateCoverageAsmTest {
 		assertCode(method, 
 			    		   "    ICONST_0\n" +
 			    		   "    ISTORE 1\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.a\"\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.localVarToFieldAssignment()V.local\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.localVarToFieldAssignment()V.local\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.a\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    		   "    ALOAD 0\n" +
 			    		   "    ILOAD 1\n" +
-			    		   "    PUTFIELD instrumenter/test/SampleClass.a : I\n" +
+			    		   "    PUTFIELD org/scova/instrumenter/SampleClass.a : I\n" +
 			    		   "    RETURN\n");
 	}
 	
@@ -114,15 +114,15 @@ public class StateCoverageAsmTest {
 		assertEquals("fieldToFieldAssignement", method.name);
 		assertEquals(10, method.instructions.size());
 		assertCode(method, 
-			    		   "    LDC \"instrumenter/test/SampleClass.a\"\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.other\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.other\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.a\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    		   "    ALOAD 0\n" +
 			    		   "    ALOAD 0\n" +
-			    		   "    GETFIELD instrumenter/test/SampleClass.other : I\n" +
-			    		   "    PUTFIELD instrumenter/test/SampleClass.a : I\n" +
+			    		   "    GETFIELD org/scova/instrumenter/SampleClass.other : I\n" +
+			    		   "    PUTFIELD org/scova/instrumenter/SampleClass.a : I\n" +
 			    		   "    RETURN\n");
 	}
 	
@@ -133,11 +133,11 @@ public class StateCoverageAsmTest {
 		assertEquals("getA", method.name);
 		assertEquals(6, method.instructions.size());
 		assertCode(method, 
-			    		   "    LDC \"instrumenter/test/SampleClass.getA()I\"\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.getA()I\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.a\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 			    		   "    ALOAD 0\n" +
-			    		   "    GETFIELD instrumenter/test/SampleClass.a : I\n" +
+			    		   "    GETFIELD org/scova/instrumenter/SampleClass.a : I\n" +
 			    		   "    IRETURN\n");
 	}
 	
@@ -150,8 +150,8 @@ public class StateCoverageAsmTest {
 		assertCode(method, 
 			    		   "    BIPUSH 9\n" +
 			    		   "    ISTORE 1\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.getLocal()I\"\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.getLocal()I.local\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.getLocal()I\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.getLocal()I.local\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 			    		   "    ILOAD 1\n" +
 			    		   "    IRETURN\n");
@@ -164,17 +164,17 @@ public class StateCoverageAsmTest {
 		assertEquals("testInt", method.name);
 		assertEquals(13, method.instructions.size());
 		assertCode(method, 
-			    		   "    LDC \"instrumenter/test/SampleClass.testInt()V\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.testInt()V\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
 			    		   "    ICONST_0\n" +
 			    		   "    ISTORE 1\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.testInt()V.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.testInt()V.a\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 			    		   "    LCONST_0\n" +
 			    		   "    ILOAD 1\n" +
 			    		   "    I2L\n" +
 			    		   "    INVOKESTATIC org/junit/Assert.assertEquals (JJ)V\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.testInt()V\"\n" + 
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.testInt()V\"\n" + 
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" + 
 			    		   "    RETURN\n");
 	}
@@ -186,16 +186,16 @@ public class StateCoverageAsmTest {
 		assertEquals("testString", method.name);
 		assertEquals(12, method.instructions.size());
 		assertCode(method, 
-			    		   "    LDC \"instrumenter/test/SampleClass.testString()V\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.testString()V\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
 			    		   "    LDC \"test\"\n" +
 			    		   "    ASTORE 1\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.testString()V.a\"\n" +
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.testString()V.a\"\n" +
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 			    		   "    LDC \"test\"\n" +
 			    		   "    ALOAD 1\n" +
 			    		   "    INVOKESTATIC org/junit/Assert.assertEquals (Ljava/lang/Object;Ljava/lang/Object;)V\n" +
-			    		   "    LDC \"instrumenter/test/SampleClass.testString()V\"\n" + 
+			    		   "    LDC \"org/scova/instrumenter/SampleClass.testString()V\"\n" + 
 			    		   "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" + 
 			    		   "    RETURN\n");
 	}
@@ -207,10 +207,10 @@ public class StateCoverageAsmTest {
 		assertEquals("testListModification", method.name);
 		assertEquals(8, method.instructions.size());
 		assertCode(method, 
-						   "    LDC \"instrumenter/test/SampleClass.list\"\n" +
+						   "    LDC \"org/scova/instrumenter/SampleClass.list\"\n" +
 						   "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    		   "    ALOAD 0\n" +
-						   "    GETFIELD instrumenter/test/SampleClass.list : Ljava/util/List;\n" + 
+						   "    GETFIELD org/scova/instrumenter/SampleClass.list : Ljava/util/List;\n" + 
 			    		   "    LDC \"aaa\"\n" +
 			    		   "    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
 			    		   "    POP\n" +
@@ -224,16 +224,16 @@ public class StateCoverageAsmTest {
 		assertEquals("testAssertWithMethodCall", method.name);
 		assertEquals(12, method.instructions.size());
 		assertCode(method, 
-						   "    LDC \"instrumenter/test/SampleClass.testAssertWithMethodCall()V\"\n" +
+						   "    LDC \"org/scova/instrumenter/SampleClass.testAssertWithMethodCall()V\"\n" +
 						   "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
-						   "    LDC \"instrumenter/test/SampleClass.getA()I\"\n" +
+						   "    LDC \"org/scova/instrumenter/SampleClass.getA()I\"\n" +
 						   "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 						   "    LCONST_1\n" +
 						   "    ALOAD 0\n" +
-						   "    INVOKEVIRTUAL instrumenter/test/SampleClass.getA ()I\n" +
+						   "    INVOKEVIRTUAL org/scova/instrumenter/SampleClass.getA ()I\n" +
 						   "    I2L\n" +
 						   "    INVOKESTATIC org/junit/Assert.assertEquals (JJ)V\n" +
-						   "    LDC \"instrumenter/test/SampleClass.testAssertWithMethodCall()V\"\n" +
+						   "    LDC \"org/scova/instrumenter/SampleClass.testAssertWithMethodCall()V\"\n" +
 						   "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
 						   "    RETURN\n");
 	}
@@ -250,11 +250,11 @@ public class StateCoverageAsmTest {
 	public void testShouldAddDependencyOnListProperties() {
 		assertInstrumentation(13, "getListCount", 7, 
 				
-			    "    LDC \"instrumenter/test/SampleClass.getListCount()I\"\n" +
-			    "    LDC \"instrumenter/test/SampleClass.list\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.getListCount()I\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.list\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 			    "    ALOAD 0\n" +
-			    "    GETFIELD instrumenter/test/SampleClass.list : Ljava/util/List;\n" +
+			    "    GETFIELD org/scova/instrumenter/SampleClass.list : Ljava/util/List;\n" +
 			    "    INVOKEINTERFACE java/util/List.size ()I\n" +
 			    "    IRETURN\n");
 	}
@@ -263,23 +263,23 @@ public class StateCoverageAsmTest {
 	public void testAssertListProperties() {
 		assertInstrumentation(12, "testAssertListProperties", 19, 
 
-			    "    LDC \"instrumenter/test/SampleClass.testAssertListProperties()V\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testAssertListProperties()V\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
-			    "    LDC \"instrumenter/test/SampleClass.list\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.list\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    "    ALOAD 0\n" +
-			    "    GETFIELD instrumenter/test/SampleClass.list : Ljava/util/List;\n" +
+			    "    GETFIELD org/scova/instrumenter/SampleClass.list : Ljava/util/List;\n" +
 			    "    LDC \"aaa\"\n" +
 			    "    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
 			    "    POP\n" +
-			    "    LDC \"instrumenter/test/SampleClass.getListCount()I\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.getListCount()I\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 			    "    LCONST_1\n" +
 			    "    ALOAD 0\n" +
-			    "    INVOKESPECIAL instrumenter/test/SampleClass.getListCount ()I\n" +
+			    "    INVOKESPECIAL org/scova/instrumenter/SampleClass.getListCount ()I\n" +
 			    "    I2L\n" +
 			    "    INVOKESTATIC org/junit/Assert.assertEquals (JJ)V\n" +
-			    "    LDC \"instrumenter/test/SampleClass.testAssertListProperties()V\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testAssertListProperties()V\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
 			    "    RETURN\n"); 
 	}
@@ -288,12 +288,12 @@ public class StateCoverageAsmTest {
 	public void testInstrumentPop() {
 		
 		assertInstrumentation(14, "testPop", 8, 
-			    "    LDC \"instrumenter/test/SampleClass.testPop()V\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testPop()V\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
 				"    ALOAD 0\n" +
-				"    INVOKESPECIAL instrumenter/test/SampleClass.getListCount ()I\n" +
+				"    INVOKESPECIAL org/scova/instrumenter/SampleClass.getListCount ()I\n" +
 				"    POP\n" +
-				"    LDC \"instrumenter/test/SampleClass.testPop()V\"\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass.testPop()V\"\n" +
 				"    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
 				"    RETURN\n");
 	}
@@ -304,7 +304,7 @@ public class StateCoverageAsmTest {
 		assertInstrumentation(15, "modifyStaticList", 8, 
 			    "    LDC \"staticList\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
-			    "    GETSTATIC instrumenter/test/SampleClass.staticList : Ljava/util/List;\n" +
+			    "    GETSTATIC org/scova/instrumenter/SampleClass.staticList : Ljava/util/List;\n" +
 			    "    ICONST_1\n" +
 			    "    INVOKESTATIC java/lang/Integer.valueOf (I)Ljava/lang/Integer;\n" +
 			    "    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
@@ -317,25 +317,25 @@ public class StateCoverageAsmTest {
 	public void testWhileIterator() {
 		
 		assertInstrumentation(16, "testWhileIteratorSample", 41, 
-			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
 			    "    NEW java/util/ArrayList\n" +
 			    "    DUP\n" +
 			    "    INVOKESPECIAL java/util/ArrayList.<init> ()V\n" +
 			    "    ASTORE 1\n" +
-			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V.myList\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.myList\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
 			    "    ALOAD 1\n" +
 			    "    LDC \"ola mundo\"\n" +
 			    "    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
 			    "    POP\n" +
-			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V.it\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.it\"\n" +
 			    "    LDC \"java/util/List.iterator()Ljava/util/Iterator;\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 			    "    ALOAD 1\n" +
 			    "    INVOKEINTERFACE java/util/List.iterator ()Ljava/util/Iterator;\n" +
 			    "    ASTORE 2\n" +
-			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V.n\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.n\"\n" +
 			    "    LDC \"java/util/Iterator.next()Ljava/lang/Object;\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 			    "    GOTO L0\n" +
@@ -347,10 +347,10 @@ public class StateCoverageAsmTest {
 			    "    ASTORE 3\n" +
 			    "    ICONST_1\n" +
 			    "    INVOKESTATIC org/junit/Assert.assertTrue (Z)V\n" +
-			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V.n\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.n\"\n" +
 			    "    LDC \"java/util/Iterator.next()Ljava/lang/Object;\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
-			    "    LDC \"instrumenter/test/SampleClass.testWhileIteratorSample()V\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
 			    "   L0\n" +
 			    "   FRAME SAME\n" +

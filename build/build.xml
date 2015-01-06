@@ -1,4 +1,4 @@
-<project default="instrument-and-run">
+<project default="all">
 
     <property file="build.properties"/>
 
@@ -52,11 +52,15 @@
     </target>
 
     <target name="run">
+
+        
+      
     	<java classname="org.junit.runner.JUnitCore">
 
     		<!-- put your tests here -->
-    		<arg value="test.net.douglashiura.picon.TestPiconAtributoEntidade"/>
-            <arg value="test.net.douglashiura.picon.TestePiconEscolha"/>
+    		<!--<arg value="test.net.douglashiura.picon.TestPiconAtributoEntidade"/>-->
+            <!--<arg value="test.net.douglashiura.picon.TestePiconEscolha"/>-->
+            <arg value="${TEST}"/>
     		<!-- end -->
 
             <classpath refid="project.output.classpath.id"/>    	
@@ -68,6 +72,15 @@
 
     <echo message="{project.input.classpath}: " />
     <echo message="${project.input.classpath}"/>
+
+    <echo message="{project.input.folder}: " />
+    <echo message="${project.input.folder}"/>
+
+    <echo message="{project.output.folder}: " />
+    <echo message="${project.output.folder}"/>
+
+    <echo message="{test.home}: " />
+    <echo message="${test.home}"/>
 
     <path id="project.output.classpath.id">
         <pathelement path="${project.output.classpath}"/>
@@ -115,7 +128,10 @@
         </java>
     </target>
 
-    <target name="instrument-and-run" depends="clean, compile, instrument, run-batch"/>
+    
+    <target name="all" depends="clean, compile, instrument, run-batch"/>
+    <target name="build" depends="clean, compile"/>    
+
         
 
 </project>

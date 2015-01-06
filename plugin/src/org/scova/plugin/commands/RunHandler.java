@@ -270,7 +270,7 @@ public class RunHandler extends AbstractHandler {
 		
 		//return;
 		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat",
-				"instrument-and-run", "-Dproject.input.folder="
+				"all", "-Dproject.input.folder="
 						+ projectInputFolder, "-Dproject.output.folder="
 						+ projectOutputFolder, "-Dproject.input.classpath="
 						+ projectInputClasspath, "-Dproject.output.classpath="

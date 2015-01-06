@@ -12,11 +12,11 @@ public class StateCoverage {
 	
 	static TestRecord actualTest = null;
 	
-	private static String log = new String();	
+//	private static String log = new String();	
 	
 	private static void dump(String str) {
-		log += str;
-		log += "\n";
+//		log += str;
+//		log += "\n";
 	}
 
 	public static void AddDependency(String target, String source) {
@@ -89,13 +89,14 @@ public class StateCoverage {
 	}
 
 	public static void BeginTestCapture(String testName) {
+		System.out.println("--------------------------------------");
 		System.out.println("Begin test capture for : " + testName);
 		dump("Beginning test : " + testName);
 		actualTest = testRegistry.addTest(testName);
 	}
 	
 	public static void EndTestCapture(String testName) {
-		System.out.println("End test capture for : " + testName);
+		
 		dump("Ending test : " + testName);
 		//Utils.dumpToFile("c:/sc_output/dump.txt", log);
 		actualTest = null;
@@ -103,6 +104,9 @@ public class StateCoverage {
 		System.out.println(result.toString());
 		
 		Utils.dumpToFile(Utils.escape(testName) + ".json", result.toJson());
+		
+		System.out.println("End test capture for : " + testName);
+		System.out.println("--------------------------------------");
 		
 	}
 
