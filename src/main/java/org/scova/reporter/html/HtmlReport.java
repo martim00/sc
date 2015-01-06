@@ -168,6 +168,10 @@ public class HtmlReport {
 	
 	public void generateHtml() throws Exception {
 		
+		StringBuilder testsBuilder = new StringBuilder();
+		appendTests(testsBuilder);
+		
+		
 		StringBuilder builder = new StringBuilder();
 		builder
 			.append("<!DOCTYPE html>\n")
@@ -182,7 +186,17 @@ public class HtmlReport {
 
 			.append("</head>\n")
 			.append("<body>\n")
-			.append("<h2>State Coverage Report for Tablelize-it</h2>\n")
+			.append("<h2>State Coverage Report</h2>\n")
+			
+			
+			.append("<h3>Total State Coverage</h3>\n")
+			.append("<table border=\"1\">\n")
+			.append(generateRow(getGlobalResultHeader()))
+			.append(generateRow(getGlobalResultRow(globalModified.size(), globalCovered.size())))
+			.append("</table>\n")
+			
+			.append("<h3>State Coverage for each test</h3>\n")
+		
 			.append("<table border=\"1\">\n")
 			.append("<tr>\n")
 			.append("<td>Test name</td>\n")
@@ -190,17 +204,11 @@ public class HtmlReport {
 			.append("<td>Covered States</td>\n")
 			.append("<td>State Coverage</td>\n");
 		
-		appendTests(builder);
+		builder.append(testsBuilder);
+		
+		//appendTests(builder);
 			
 		builder.append("</table>\n");
-			
-		builder
-			.append("<h3>Total State Coverage</h3>\n")
-			.append("<table border=\"1\">\n")
-			.append(generateRow(getGlobalResultHeader()))
-			.append(generateRow(getGlobalResultRow(globalModified.size(), globalCovered.size())))
-			.append("</table>\n");
-
 			
 		builder.append("</body>\n")
 			.append("</html>\n");
