@@ -6,6 +6,10 @@ import java.io.InputStream;
 
 //import org.scova.instrumenter.StateCoverageAsm;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.filesystem.*;
 import org.eclipse.ui.ide.*;
 import org.eclipse.core.commands.AbstractHandler;
@@ -25,6 +29,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -32,7 +37,7 @@ import org.eclipse.jdt.core.JavaModelException;
 
 public class RunHandler extends AbstractHandler {
 
-	public static IProject getCurrentProject(IWorkbenchWindow workbenchWindow) {
+	public IProject getCurrentProject(IWorkbenchWindow workbenchWindow) {
 		ISelectionService selectionService = workbenchWindow
 				.getSelectionService();
 
@@ -50,11 +55,11 @@ public class RunHandler extends AbstractHandler {
 				// ((PackageFragmentRootContainer)element).getJavaProject();
 				// project = jProject.getProject();
 				// }
-				// else if (element instanceof IJavaElement) {
-				// IJavaProject jProject=
-				// ((IJavaElement)element).getJavaProject();
-				// project = jProject.getProject();
-				// }
+			} else if (element instanceof IJavaElement) {
+				IJavaElement javaElement = (IJavaElement)element;
+				instrumentClass(javaElement);
+//				 IJavaProject jProject= ((IJavaElement)element).getJavaProject();
+//				 project = jProject.getProject();
 			}
 		}
 		return project;
@@ -96,6 +101,11 @@ public class RunHandler extends AbstractHandler {
 	// }
 	// }
 
+	private void instrumentClass(IJavaElement javaElement) {
+		//executeInstrumentation();
+		
+	}
+
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IProject project = getCurrentProject(HandlerUtil
@@ -103,66 +113,121 @@ public class RunHandler extends AbstractHandler {
 
 		IJavaProject javaProject = JavaCore.create(project);
 
-		String projectInputFolder = project.getLocation().toString();
+		String instrumentationSourceFolder = getProjectInputFolder(project);
+		String instrumentationTargetFolder = getProjectOutputFolder(project);
 
-		String projectOutputFolder = "C:/sc/" + project.getName();
+		Set<String> projectOutputFolders = getOutputFolders(javaProject);
 
-		String projectInputClasspath = getClasspath(javaProject);
+		String instrumenationSourceClasspath = getProjectInputClasspath(
+				javaProject, projectOutputFolders);
+		// String instrumenationTargetClasspath =
+		// getProjectOutputClasspath(javaProject, projectOutputFolders);
 
-		IPath outputClassesLocation = null;
-		try {
-			outputClassesLocation = javaProject.getOutputLocation()
-					.makeAbsolute();
-			IFolder folder = project.getParent().getFolder(
-					outputClassesLocation);
-			outputClassesLocation = folder.getLocation();
+		String instrumentationTargetClasspath = instrumenationSourceClasspath;
 
-			projectInputClasspath += outputClassesLocation.toString();
+		for (String folder : projectOutputFolders) {
+			String sourceOutputFolder = instrumentationSourceFolder + "/"
+					+ folder;
+			instrumenationSourceClasspath += ";" + sourceOutputFolder;
 
-		} catch (JavaModelException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			String targetOutputFolder = instrumentationTargetFolder + "/"
+					+ folder;
+			instrumentationTargetClasspath += ";" + targetOutputFolder;
 		}
 
-		IPath relative = outputClassesLocation.makeRelativeTo(project
-				.getLocation());
+		// String classpath = new String();
+		// try {
+		// final IClasspathEntry[] resolvedClasspath =
+		// javaProject.getResolvedClasspath(true);
+		// for (IClasspathEntry classpathEntry : resolvedClasspath) {
+		// classpath += classpathEntry.getPath().makeAbsolute().toString();
+		// classpath += ";";
+		// }
+		// } catch (JavaModelException e2) {
+		// // TODO Auto-generated catch block
+		// e2.printStackTrace();
+		// }
 
-		String projectOutputClasspath = projectOutputFolder + "/"
-				+ relative.toString();
+		// appendSourceBinDir(projectInputClasspath, javaProject);
+
+		// Set<String> outputFolders = getOutputFolders(javaProject);
+		// for (String outputFolder : outputFolders) {
+		// projectInputClasspath+= ";" + outputFolder;
+		// }
+
+		// IPath outputClassesLocation = null;
+		// try {
+		// outputClassesLocation = javaProject.getOutputLocation()
+		// .makeAbsolute();
+		// IFolder folder = project.getParent().getFolder(
+		// outputClassesLocation);
+		// outputClassesLocation = folder.getLocation();
+		//
+		// //projectInputClasspath += outputClassesLocation.toString();
+		//
+		// } catch (JavaModelException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+		//
+		// IPath relative = outputClassesLocation.makeRelativeTo(project
+		// .getLocation());
+		//
+		// String projectOutputClasspath = instrumentationTargetFolder + "/"
+		// + relative.toString();
 
 		// TODO: hardcoded
-		String projectOutputTestFolder = "C:/sc/douglas+picon/src";
+		// String projectOutputTestFolder = "C:/sc/douglas+picon/src";
+		String projectOutputTestFolder = getProjectOutputTestFolder();
 
 		try {
-			executeInstrumentation(projectInputFolder, projectOutputFolder,
-					projectInputClasspath, projectOutputClasspath,
-					projectOutputTestFolder);
-			
-			executeReport(projectOutputFolder);
-			
+			executeInstrumentation(
+					instrumentationSourceFolder,
+					instrumentationTargetFolder
+					// , classpath //projectInputClasspath
+					, instrumenationSourceClasspath,
+					instrumentationTargetClasspath// , projectOutputClasspath
+					, projectOutputTestFolder);
+
+			executeReport(instrumentationTargetFolder);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		
+		return null;
+	}
 
-		// Process p;
-		// try {
-		// String [] command = { "C:/bin/apache-ant-1.8.4-bin/bin/ant.bat",
-		// "instrument"};
-		// p = Runtime.getRuntime().exec(command, null, scovaFolder);
-		// int exitCode = p.waitFor();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
+	private String getProjectOutputClasspath(IProject javaProject,
+			Set<String> projectOutputFolders) {
+
+		String classpath = "";
+		//
+		// for (String outputFolder : projectOutputFolders) {
+		//
+		// IFolder folder = javaProject.getParent().getFolder(outputFolder);
+		//
+		// IPath relative = folder.makeRelativeTo(javaProject
+		// .getLocation());
+		//
+		// String projectOutputClasspath = projectOutputFolder + "/"
+		// + relative.toString();
+		//
 		// }
 
-		// MessageDialog.openInformation(HandlerUtil.getActiveWorkbenchWindow(event).getShell(),
-		// "Info", "Info for you");
-		return null;
+		return classpath;
+	}
+
+	public String getProjectOutputTestFolder() {
+		return "C:/sc/commons-chain/src/test";
+	}
+
+	public String getProjectOutputFolder(IProject project) {
+		return "C:/sc/" + project.getName();
+	}
+
+	public String getProjectInputFolder(IProject project) {
+		return project.getLocation().toString();
 	}
 
 	private void executeAnt(String... args) throws Exception {
@@ -194,7 +259,8 @@ public class RunHandler extends AbstractHandler {
 	}
 
 	private void executeReport(String outputFolder) throws Exception {
-		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "report", "-Dproject.output.folder=" + outputFolder);
+		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "report",
+				"-Dproject.output.folder=" + outputFolder);
 
 		File fileToOpen = new File(outputFolder + "/report.html");
 
@@ -234,7 +300,9 @@ public class RunHandler extends AbstractHandler {
 		// page.openEditor(new FileEditorInput(file), desc.getId());
 	}
 
-	public String getClasspath(IJavaProject javaProject) {
+	public String getProjectInputClasspath(IJavaProject javaProject,
+			Set<String> projectOutputFolders) {
+
 		String projectClassPath = "";
 		try {
 			projectClassPath = getClasspathInfo(javaProject);
@@ -244,21 +312,27 @@ public class RunHandler extends AbstractHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		// append outputFolders to projectClassPath
+		for (String outputFolder : projectOutputFolders) {
+			projectClassPath += ";" + outputFolder;
+		}
+
 		return projectClassPath.replace("\"", "");
 	}
-	
+
 	private void executeFromLocalProject(String inputFolder, String outputFolder) {
-		
-//		StateCoverageAsm instrumenter = new StateCoverageAsm();
-//		try {
-//			instrumenter.instrumentFolder(inputFolder, outputFolder);
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
+
+		// StateCoverageAsm instrumenter = new StateCoverageAsm();
+		// try {
+		// instrumenter.instrumentFolder(inputFolder, outputFolder);
+		// } catch (ClassNotFoundException e) {
+		// e.printStackTrace();
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		//
 	}
 
 	private void executeInstrumentation(String projectInputFolder,
@@ -266,16 +340,15 @@ public class RunHandler extends AbstractHandler {
 			String projectOutputClasspath, String projectOutputTestFolder)
 			throws Exception {
 
-		//executeFromLocalProject(projectInputFolder, projectOutputFolder);
-		
-		//return;
-		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat",
-				"all", "-Dproject.input.folder="
-						+ projectInputFolder, "-Dproject.output.folder="
-						+ projectOutputFolder, "-Dproject.input.classpath="
-						+ projectInputClasspath, "-Dproject.output.classpath="
-						+ projectOutputClasspath, "-Dtest.home="
-						+ projectOutputTestFolder);
+		// executeFromLocalProject(projectInputFolder, projectOutputFolder);
+
+		// return;
+		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "all",
+				"-Dproject.input.folder=" + projectInputFolder,
+				"-Dproject.output.folder=" + projectOutputFolder,
+				"-Dproject.input.classpath=" + projectInputClasspath,
+				"-Dproject.output.classpath=" + projectOutputClasspath,
+				"-Dtest.home=" + projectOutputTestFolder);
 	}
 
 	private String getClasspathInfo(IJavaProject project) throws Exception {
@@ -283,12 +356,15 @@ public class RunHandler extends AbstractHandler {
 		try {
 			IClasspathEntry[] entries = project.getResolvedClasspath(false);
 			for (int i = 0; i < entries.length; i++) {
+				System.out.println(entries[i].getPath().toString());
 				if (entries[i].getContentKind() == IPackageFragmentRoot.K_BINARY
 						&& entries[i].getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
 					result += convertEntryToSystemPath(project, entries[i]);
 				} else if (entries[i].getEntryKind() == IClasspathEntry.CPE_PROJECT) {
 					IJavaProject referredProject = convertEntryToProject(entries[i]);
 					result += getClasspathInfo(referredProject);
+				} else if (entries[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+					// System.out.println(entries[i].getPath().toString());
 				}
 			}
 		} catch (JavaModelException e) {
@@ -333,6 +409,27 @@ public class RunHandler extends AbstractHandler {
 			throw new Exception("Cannot setup outputpath: " + e.toString());
 		}
 		return result;
+	}
+
+	private static Set<String> getOutputFolders(IJavaProject javaProject) {
+		final Set<String> classpathEntries = new HashSet<String>();
+		try {
+			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
+				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+					final IPath output = entry.getOutputLocation();
+					if (output != null) {
+						classpathEntries.add(output.removeFirstSegments(1)
+								.toString());
+					}
+				}
+			}
+			final IPath output = javaProject.getOutputLocation();
+			classpathEntries.add(output.removeFirstSegments(1).toString());
+		} catch (JavaModelException e) {
+			e.printStackTrace();
+			// AcceleoCommonPlugin.log(e,false);
+		}
+		return classpathEntries;
 	}
 
 }

@@ -9,12 +9,12 @@ public class Main {
 		System.out.println("Usage: sc [input_folder] [output_folder]");
 		
 //		String inputFolder = "C:/Users/Martim/workspace/table/java";
-		String inputFolder = "C:/Users/Aniceto/workspace/junit_original";
+		String inputFolder = "C:/Users/Aniceto/workspace/commons-logging-1.2-src/commons-logging-1.2-src";
 //		String inputFolder = "C:/Users/Aniceto/workspace/statecoverage/externals/tablelize_it/java";
 //		String inputFolder = "C:/Users/Aniceto/workspace/tablelize_it/java";
 		
 		
-		String outputFolder = "C:/sc_junit";		
+		String outputFolder = "C:/sc_commons_pela_ide";		
 		
 		inputFolder = args[0];
 		System.out.println("Input folder: " + inputFolder);

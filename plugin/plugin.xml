@@ -79,5 +79,15 @@
             sequence="F7">
       </key>
    </extension>
+   
+   <!--<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+          delegate="org.scova.plugin.launching.ScovaLaunchConfigurationDelegate"
+          id="org.scova.plugin.launching.scovaLaunch"
+          modes="run, debug"
+          name="Scova"
+          public="true">        
+    </launchConfigurationType>
+</extension>-->
 
 </plugin>

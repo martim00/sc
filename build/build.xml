@@ -14,7 +14,8 @@
 
     <target name="compile" depends="compile-lib">
         <!--<mkdir dir="bin"/>-->
-        <javac srcdir="../src" destdir="../bin">
+        <javac srcdir="../src" destdir="../bin" debug="on">
+
         	<classpath>
         		<pathelement location="../deps/asm-debug-all-4.1.jar"/>
         		<pathelement location="../deps/json-simple-1.1.1.jar"/>
@@ -30,7 +31,9 @@
 
     <echo message="${scova.classpath}" />
     <target name="instrument">
-    	<java classname="org.scova.instrumenter.Main">
+    	<java classname="org.scova.instrumenter.Main" fork="yes">
+            <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=y"/>
+            
 
             <arg value="${project.input.folder}"/>
             <arg value="${project.output.folder}"/>
