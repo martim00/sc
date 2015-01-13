@@ -19,10 +19,25 @@ public class Main {
 		inputFolder = args[0];
 		System.out.println("Input folder: " + inputFolder);
 		outputFolder = args[1];
-		System.out.println("Output folder: " + outputFolder);	
-		
+		System.out.println("Output folder: " + outputFolder);
 		
 		StateCoverageAsm instrumenter = new StateCoverageAsm();
+		
+		if (args.length > 2) {
+			String classToInstrument = args[2];
+			
+			try {
+				instrumenter.instrumentClass(classToInstrument);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return;
+		}
+		
+		
+		
 		try {
 			instrumenter.instrumentFolder(inputFolder, outputFolder);
 		} catch (ClassNotFoundException e) {

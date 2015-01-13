@@ -1,12 +1,8 @@
 package org.scova.plugin.commands;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-
-//import org.scova.instrumenter.StateCoverageAsm;
-
-import java.util.ArrayList;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +33,47 @@ import org.eclipse.jdt.core.JavaModelException;
 
 public class RunHandler extends AbstractHandler {
 
-	public IProject getCurrentProject(IWorkbenchWindow workbenchWindow) {
+	private String instrumentationSourceFolder;
+	private String instrumentationTargetFolder;
+	private String instrumentationSourceClasspath;
+	private String instrumentationTargetClasspath;
+	private String projectOutputTestFolder;
+
+	private void instrumentClass(IJavaElement javaElement, IJavaProject project) {
+
+		resolvePaths(project);
+		
+		String outputPath = findOutputPathOf(javaElement);
+				
+		executeSingleClassInstrumentation(outputPath);
+
+	}
+
+	private void executeSingleClassInstrumentation(String classFile) {
+
+		try {
+			executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat",
+					"all-single-class", "-Dproject.input.folder="
+							+ this.instrumentationSourceFolder,
+					"-Dproject.output.folder="
+							+ this.instrumentationTargetFolder,
+					"-Dproject.input.classpath="
+							+ this.instrumentationSourceClasspath,
+					"-Dproject.output.classpath="
+							+ this.instrumentationTargetClasspath,
+					"-Dtest.home=" + projectOutputTestFolder, "-Dtarget.class="
+							+ classFile);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private void switchSelection(ExecutionEvent event) {
+		IWorkbenchWindow workbenchWindow = HandlerUtil
+				.getActiveWorkbenchWindow(event);
+
 		ISelectionService selectionService = workbenchWindow
 				.getSelectionService();
 
@@ -50,172 +86,114 @@ public class RunHandler extends AbstractHandler {
 
 			if (element instanceof IResource) {
 				project = ((IResource) element).getProject();
-				// } else if (element instanceof PackageFragmentRootContainer) {
-				// IJavaProject jProject =
-				// ((PackageFragmentRootContainer)element).getJavaProject();
-				// project = jProject.getProject();
-				// }
+				IJavaProject javaProject = JavaCore.create(project);
+				instrumentProject(javaProject);
 			} else if (element instanceof IJavaElement) {
-				IJavaElement javaElement = (IJavaElement)element;
-				instrumentClass(javaElement);
-//				 IJavaProject jProject= ((IJavaElement)element).getJavaProject();
-//				 project = jProject.getProject();
+				IJavaElement javaElement = (IJavaElement) element;
+				IJavaProject javaproject = javaElement.getJavaProject();
+				instrumentClass(javaElement, javaproject);
 			}
+
 		}
-		return project;
+
 	}
 
-	// public void setActiveEditor(IAction action, IEditorPart targetEditor) {
-	// try {
-	// if (targetEditor != null && targetEditor.getEditorInput() != null) {
-	// file = (IFile) targetEditor.getEditorInput().getAdapter(IFile.class);
-	// ICompilationUnit unit = JavaCore.createCompilationUnitFrom(file);
-	// this.javaName = unit.getTypes()[0].getFullyQualifiedName();
-	// this.filePath = file.getLocation().toString();
-	// this.javaProject = unit.getJavaProject();
-	// }
-	// } catch (JavaModelException e) {
-	// ErrorHandler.reportError(e, getClass(), "setActiveEditor() error",
-	// e.toString());
-	// }
-	// }
-	//
-	// private void doCompile() {
-	// String compParam = null;
-	// try {
-	// String classPath = getClasspathInfo(this.javaProject);
-	// String outputPath = getJavaOutputPath();
-	// String filesToCompile = this.filePath;
-	// if (filesToCompile.length() != 0) {
-	// compParam = JavacCompiler.compileFile(classPath, filesToCompile,
-	// outputPath);
-	// HotSwap.hotSwap(this.javaName, getClassToHotswap(), getProjectName());
-	// ErrorHandler
-	// .openSuccessDialog("Compilation/Hotswap successfully finished",
-	// "Following params used for compilation:\n\n" + compParam);
-	//
-	// }
-	// } catch (Throwable e) {
-	// ErrorHandler.reportError(e, getClass(), "Compilation error",
-	// e.getMessage());
-	// }
-	// }
-
-	private void instrumentClass(IJavaElement javaElement) {
-		//executeInstrumentation();
+	private void instrumentProject(IJavaProject project) {
 		
+		resolvePaths(project);
+		executeInstrumentation();
+		executeReport(instrumentationTargetFolder);
+
 	}
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IProject project = getCurrentProject(HandlerUtil
-				.getActiveWorkbenchWindow(event));
+	private void resolvePaths(IJavaProject project) {
 
-		IJavaProject javaProject = JavaCore.create(project);
+		instrumentationSourceFolder = getProjectInputFolder(project
+				.getProject());
+		instrumentationTargetFolder = getProjectOutputFolder(project
+				.getProject());
 
-		String instrumentationSourceFolder = getProjectInputFolder(project);
-		String instrumentationTargetFolder = getProjectOutputFolder(project);
+		Set<String> projectOutputFolders = getOutputFolders(project);
 
-		Set<String> projectOutputFolders = getOutputFolders(javaProject);
+		instrumentationSourceClasspath = getProjectInputClasspath(project,
+				projectOutputFolders);
 
-		String instrumenationSourceClasspath = getProjectInputClasspath(
-				javaProject, projectOutputFolders);
-		// String instrumenationTargetClasspath =
-		// getProjectOutputClasspath(javaProject, projectOutputFolders);
-
-		String instrumentationTargetClasspath = instrumenationSourceClasspath;
+		instrumentationTargetClasspath = instrumentationSourceClasspath;
 
 		for (String folder : projectOutputFolders) {
 			String sourceOutputFolder = instrumentationSourceFolder + "/"
 					+ folder;
-			instrumenationSourceClasspath += ";" + sourceOutputFolder;
+			instrumentationSourceClasspath += ";" + sourceOutputFolder;
 
 			String targetOutputFolder = instrumentationTargetFolder + "/"
 					+ folder;
 			instrumentationTargetClasspath += ";" + targetOutputFolder;
 		}
 
-		// String classpath = new String();
-		// try {
-		// final IClasspathEntry[] resolvedClasspath =
-		// javaProject.getResolvedClasspath(true);
-		// for (IClasspathEntry classpathEntry : resolvedClasspath) {
-		// classpath += classpathEntry.getPath().makeAbsolute().toString();
-		// classpath += ";";
-		// }
-		// } catch (JavaModelException e2) {
-		// // TODO Auto-generated catch block
-		// e2.printStackTrace();
-		// }
-
-		// appendSourceBinDir(projectInputClasspath, javaProject);
-
-		// Set<String> outputFolders = getOutputFolders(javaProject);
-		// for (String outputFolder : outputFolders) {
-		// projectInputClasspath+= ";" + outputFolder;
-		// }
-
-		// IPath outputClassesLocation = null;
-		// try {
-		// outputClassesLocation = javaProject.getOutputLocation()
-		// .makeAbsolute();
-		// IFolder folder = project.getParent().getFolder(
-		// outputClassesLocation);
-		// outputClassesLocation = folder.getLocation();
-		//
-		// //projectInputClasspath += outputClassesLocation.toString();
-		//
-		// } catch (JavaModelException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
-		//
-		// IPath relative = outputClassesLocation.makeRelativeTo(project
-		// .getLocation());
-		//
-		// String projectOutputClasspath = instrumentationTargetFolder + "/"
-		// + relative.toString();
-
-		// TODO: hardcoded
-		// String projectOutputTestFolder = "C:/sc/douglas+picon/src";
-		String projectOutputTestFolder = getProjectOutputTestFolder();
-
-		try {
-			executeInstrumentation(
-					instrumentationSourceFolder,
-					instrumentationTargetFolder
-					// , classpath //projectInputClasspath
-					, instrumenationSourceClasspath,
-					instrumentationTargetClasspath// , projectOutputClasspath
-					, projectOutputTestFolder);
-
-			executeReport(instrumentationTargetFolder);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		projectOutputTestFolder = getProjectOutputTestFolder();
+		
+		dumpPaths();
 	}
 
-	private String getProjectOutputClasspath(IProject javaProject,
-			Set<String> projectOutputFolders) {
+	private void dumpPaths() {
+		System.out.println("project.output.classpath=" + this.instrumentationTargetClasspath);
+		System.out.println("project.input.folder=" + this.instrumentationSourceFolder);
+		System.out.println("project.output.folder=" + this.instrumentationTargetFolder);
+		System.out.println("project.input.classpath=" + this.instrumentationSourceClasspath);
+		System.out.println("test.home=" + this.projectOutputTestFolder);
+				
+	}
 
-		String classpath = "";
-		//
-		// for (String outputFolder : projectOutputFolders) {
-		//
-		// IFolder folder = javaProject.getParent().getFolder(outputFolder);
-		//
-		// IPath relative = folder.makeRelativeTo(javaProject
-		// .getLocation());
-		//
-		// String projectOutputClasspath = projectOutputFolder + "/"
-		// + relative.toString();
-		//
-		// }
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		return classpath;
+		switchSelection(event);
+
+		return null;
+
+//		IProject project = getCurrentProject(HandlerUtil
+//				.getActiveWorkbenchWindow(event));
+//
+//		IJavaProject javaProject = JavaCore.create(project);
+//
+//		String instrumentationSourceFolder = getProjectInputFolder(project);
+//		String instrumentationTargetFolder = getProjectOutputFolder(project);
+//
+//		Set<String> projectOutputFolders = getOutputFolders(javaProject);
+//
+//		String instrumenationSourceClasspath = getProjectInputClasspath(
+//				javaProject, projectOutputFolders);
+//
+//		String instrumentationTargetClasspath = instrumenationSourceClasspath;
+//
+//		for (String folder : projectOutputFolders) {
+//			String sourceOutputFolder = instrumentationSourceFolder + "/"
+//					+ folder;
+//			instrumenationSourceClasspath += ";" + sourceOutputFolder;
+//
+//			String targetOutputFolder = instrumentationTargetFolder + "/"
+//					+ folder;
+//			instrumentationTargetClasspath += ";" + targetOutputFolder;
+//		}
+//
+//		String projectOutputTestFolder = getProjectOutputTestFolder();
+//
+//		try {
+//			executeInstrumentation(
+//					instrumentationSourceFolder,
+//					instrumentationTargetFolder
+//					// , classpath //projectInputClasspath
+//					, instrumenationSourceClasspath,
+//					instrumentationTargetClasspath// , projectOutputClasspath
+//					, projectOutputTestFolder);
+//
+//			executeReport(instrumentationTargetFolder);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
+//		return null;
 	}
 
 	public String getProjectOutputTestFolder() {
@@ -258,11 +236,17 @@ public class RunHandler extends AbstractHandler {
 
 	}
 
-	private void executeReport(String outputFolder) throws Exception {
-		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "report",
-				"-Dproject.output.folder=" + outputFolder);
-
+	private void executeReport(String outputFolder) {
+		
+		try {
+			executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "report",
+					"-Dproject.output.folder=" + outputFolder);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		File fileToOpen = new File(outputFolder + "/report.html");
+		
 
 		if (fileToOpen.exists() && fileToOpen.isFile()) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
@@ -321,34 +305,23 @@ public class RunHandler extends AbstractHandler {
 		return projectClassPath.replace("\"", "");
 	}
 
-	private void executeFromLocalProject(String inputFolder, String outputFolder) {
+	private void executeInstrumentation() {
 
-		// StateCoverageAsm instrumenter = new StateCoverageAsm();
-		// try {
-		// instrumenter.instrumentFolder(inputFolder, outputFolder);
-		// } catch (ClassNotFoundException e) {
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		//
-	}
-
-	private void executeInstrumentation(String projectInputFolder,
-			String projectOutputFolder, String projectInputClasspath,
-			String projectOutputClasspath, String projectOutputTestFolder)
-			throws Exception {
-
-		// executeFromLocalProject(projectInputFolder, projectOutputFolder);
-
-		// return;
-		executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "all",
-				"-Dproject.input.folder=" + projectInputFolder,
-				"-Dproject.output.folder=" + projectOutputFolder,
-				"-Dproject.input.classpath=" + projectInputClasspath,
-				"-Dproject.output.classpath=" + projectOutputClasspath,
-				"-Dtest.home=" + projectOutputTestFolder);
+		try {
+			executeAnt("C:/bin/apache-ant-1.8.4-bin/bin/ant.bat", "all",
+					"-Dproject.input.folder="
+							+ this.instrumentationSourceFolder,
+					"-Dproject.output.folder="
+							+ this.instrumentationTargetFolder,
+					"-Dproject.input.classpath="
+							+ this.instrumentationSourceClasspath,
+					"-Dproject.output.classpath="
+							+ this.instrumentationTargetClasspath,
+					"-Dtest.home=" + projectOutputTestFolder);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private String getClasspathInfo(IJavaProject project) throws Exception {
@@ -395,23 +368,37 @@ public class RunHandler extends AbstractHandler {
 
 		IJavaProject javaProject = JavaCore.create(project);
 		return javaProject;
+	}	
+	
+	private String findOutputPathOf(IJavaElement javaElement) {
+		
+		return "C:\\Users\\Aniceto\\workspace\\commons-chain-1.2-src\\target\\classes\\org\\apache\\commons\\chain\\CatalogFactory.class";
+		
+//		Set<String> outputFolders = getOutputFolders(javaElement.getJavaProject());
+//		for (String outputFolder : outputFolders) {
+//			
+//			IResource resource;
+//			try {
+//				resource = javaElement.getCorrespondingResource();
+//				
+//				if (resource != null) {
+//					String possiblePath = outputFolder + resource.getProjectRelativePath();
+//					File file = new File(possiblePath);
+//					if (file.exists())
+//						return possiblePath;
+//					
+//				}
+//				
+//			} catch (JavaModelException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+		
+		//return "";
 	}
 
-	private String getJavaOutputPath(IJavaProject javaProject) throws Exception {
-		String result = "";
-		try {
-			IPath outputLocation = javaProject.getOutputLocation();
-			IProject project = javaProject.getProject();
-			outputLocation = outputLocation.removeFirstSegments(1);
-			IFolder folder = project.getFolder(outputLocation);
-			result = folder.getLocation().toString();
-		} catch (Throwable e) {
-			throw new Exception("Cannot setup outputpath: " + e.toString());
-		}
-		return result;
-	}
-
-	private static Set<String> getOutputFolders(IJavaProject javaProject) {
+	private Set<String> getOutputFolders(IJavaProject javaProject) {
 		final Set<String> classpathEntries = new HashSet<String>();
 		try {
 			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {

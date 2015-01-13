@@ -35,6 +35,8 @@ public class StateCoverageAsm {
 			ClassReader cr = new ClassReader(inputStream);
 			ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 			ClassVisitor cv = new StateCoverageClassAdapter(cw, true);
+			
+			System.out.println("BEGINNING INSTRUMENTATION OF " + inputClass);
 			cr.accept(cv, 0);
 			b = cw.toByteArray();
 		} catch (Exception e) {
@@ -149,8 +151,9 @@ class StateCoverageClassAdapter extends ClassVisitor implements Opcodes {
 					super.visitEnd();
 					
 					boolean debug = false;
-					if (debug) { // debug
+					if (true) { // debug
 						
+						System.out.println("Bytecode of method " + this.name);
 						System.out.println(DebugUtils.codeToString(this));
 						
 					}

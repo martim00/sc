@@ -32,7 +32,7 @@
     <echo message="${scova.classpath}" />
     <target name="instrument">
     	<java classname="org.scova.instrumenter.Main" fork="yes">
-            <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=y"/>
+        <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=y"/>
             
 
             <arg value="${project.input.folder}"/>
@@ -47,6 +47,30 @@
 
     		</classpath>
     	</java>
+    </target>
+
+    <target name="instrument-class">
+        <java classname="org.scova.instrumenter.Main" fork="yes">
+           <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=y"/>
+            
+
+            <arg value="${project.input.folder}"/>
+            <arg value="${project.output.folder}"/>
+            <!-- <arg value="${target.class}"/> -->
+
+            <arg value="C:\\Users\\Aniceto\\workspace\\commons-chain-1.2-src\\target\\classes\\org\\apache\\commons\\chain\\CatalogFactory.class"/>
+
+            
+
+            <classpath>
+                <pathelement path="${scova.classpath}"/>
+                
+                <!-- precisa para buscar informações de classe do projeto através de reflexion --> 
+                <pathelement path="${project.input.classpath}"/>
+
+
+            </classpath>
+        </java>
     </target>
 
     <target name="clean">
@@ -110,6 +134,7 @@
                 <fileset dir="${test.home}">
                     <include name="**/Test*.java"/>
                     <include name="**/*Test.java"/>
+                    <include name="**/*Test*.java"/>
                     <exclude name="**/*AbstractTest.java"/>
                 </fileset>
                 <formatter type="xml"/>
@@ -134,6 +159,8 @@
     
     <target name="all" depends="clean, compile, instrument, run-batch"/>
     <target name="build" depends="clean, compile"/>    
+
+    <target name="all-single-class" depends="clean, compile, instrument-class, run-batch"/>
 
         
 

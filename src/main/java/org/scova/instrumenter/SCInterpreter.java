@@ -96,6 +96,9 @@ public class SCInterpreter extends Interpreter<SCValue> implements
         int size;
         String name = "";
         switch (insn.getOpcode()) {
+        case NEW:
+        	size= 1;
+        	break;
         case LCONST_0:
         case LCONST_1:
         case DCONST_0:
@@ -166,7 +169,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 		case ASTORE:
 			if (!value.getName().isEmpty()) { // soh podemos adicionar dependencia se o source do store for um identificador
 				
-				System.out.println("AddDependency: " + ((VarInsnNode)insn).var + " <- " + value.getName());
+				System.out.println("Found dependency: " + ((VarInsnNode)insn).var + " <- " + value.getName());
 				
 				String target = extractNameForLoadAndStore((VarInsnNode)insn);
 				this.addInstrumentation(CodeGeneration.generateAddDependencyCode(target, value.getName()), lastStatement);
@@ -275,8 +278,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements
                     : ((MethodInsnNode) insn).desc;
             
             size = Type.getReturnType(desc).getSize();
-            System.out.println("method " + methodName);
             
+            //System.out.println("Calling method " + methodName + " of class " + this.className);
             boolean isProcedure = Type.getReturnType(desc) == Type.VOID_TYPE;
             if (!isProcedure) {
             	
@@ -290,7 +293,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements
             	}
             }
             if (methodIsAssert(methodName)) {
-            	System.out.println("AddAssert : " + name + " at instruction " + lastStatement.toString());
+            	System.out.println("Found assert : " + methodName);
             	
             	for (SCValue value : values) {
             		if (value.getName().isEmpty())
@@ -377,7 +380,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements
     	union.addAll(d.insns);
     	union.addAll(w.insns);
 //    	return new SCValue(union.size(), union, d.getName() + ", " + w.getName());
-    	return new SCValue(union.size(), union, "");
+    	//return new SCValue(union.size(), union, "");
+    	return new SCValue(w.getSize(), w.insns, w.getName());
     }
 	
 	public void addInstrumentation(InsnList insnList, AbstractInsnNode previousNode) {
