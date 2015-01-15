@@ -231,6 +231,8 @@ public class StateCoverageAsmTest {
 						   "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
 						   "    LDC \"org/scova/instrumenter/SampleClass.getA()I\"\n" +
 						   "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
+						   "    LDC \"org/scova/instrumenter/SampleClass.testAssertWithMethodCall()V.this\"\n" +
+						   "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 						   "    LCONST_1\n" +
 						   "    ALOAD 0\n" +
 						   "    INVOKEVIRTUAL org/scova/instrumenter/SampleClass.getA ()I\n" +
@@ -281,6 +283,8 @@ public class StateCoverageAsmTest {
 			    "    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
 			    "    POP\n" +
 			    "    LDC \"org/scova/instrumenter/SampleClass.getListCount()I\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testAssertListProperties()V.this\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
 			    "    LCONST_1\n" +
 			    "    ALOAD 0\n" +
@@ -340,6 +344,9 @@ public class StateCoverageAsmTest {
 				"    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.it\"\n" +
 				"    LDC \"java/util/List.iterator()Ljava/util/Iterator;\"\n" +
 				"    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.it\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.myList\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 				"    ALOAD 1\n" +
 				"    INVOKEINTERFACE java/util/List.iterator ()Ljava/util/Iterator;\n" +
 				"    ASTORE 2\n" +
@@ -349,6 +356,9 @@ public class StateCoverageAsmTest {
 				"    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.n\"\n" +
 				"    LDC \"java/util/Iterator.next()Ljava/lang/Object;\"\n" +
 				"    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.n\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.it\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 				"    ALOAD 2\n" +
 				"    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;\n" +
 				"    CHECKCAST java/lang/String\n" +
