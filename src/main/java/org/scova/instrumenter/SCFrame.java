@@ -23,7 +23,8 @@ public class SCFrame extends Frame<SCValue> {
     	
         switch (insn.getOpcode()) {
         case Opcodes.POP:
-        	((SCInterpreter)interpreter).pop(insn);
+        	//((SCInterpreter)interpreter).pop(insn);
+        	((SCInterpreter)interpreter).setLastInstruction(insn);
     	}
     }
 

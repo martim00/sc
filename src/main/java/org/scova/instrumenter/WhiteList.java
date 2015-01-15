@@ -10,8 +10,14 @@ public class WhiteList {
 		final Set<String> registeredAsserts = new HashSet<String>();
 		registeredAsserts.add("assertEquals");
 		registeredAsserts.add("assertNotNull");
+		registeredAsserts.add("assertNull");
 		registeredAsserts.add("assertTrue");
-		registeredAsserts.add("assertFalse");		
+		registeredAsserts.add("assertFalse");	
+		registeredAsserts.add("assertArrayEquals");
+		registeredAsserts.add("assertNotSame");
+		registeredAsserts.add("assertSame");
+		registeredAsserts.add("assertThat");
+		
 		return registeredAsserts;
 		
 	}

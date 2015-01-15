@@ -151,7 +151,7 @@ class StateCoverageClassAdapter extends ClassVisitor implements Opcodes {
 					super.visitEnd();
 					
 					boolean debug = false;
-					if (true) { // debug
+					if (debug) { // debug
 						
 						System.out.println("Bytecode of method " + this.name);
 						System.out.println(DebugUtils.codeToString(this));
@@ -162,6 +162,11 @@ class StateCoverageClassAdapter extends ClassVisitor implements Opcodes {
 					SCAnalyzer a = new SCAnalyzer(interpreter);
 
 					try {
+						
+//						if (!this.name.equals("getConfigurationFile"))
+//							return;
+						
+						System.out.println("Analysing method " + this.name);
 						a.analyze(owner, this);
 						
 						interpreter.instrumentBeginAndEnd(); // temos que fazer isso pois o Analyser não chama o Interpreter.returnOperation quando 

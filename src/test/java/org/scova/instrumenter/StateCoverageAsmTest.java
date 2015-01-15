@@ -313,52 +313,137 @@ public class StateCoverageAsmTest {
 		
 	}
 	
-//	@Test // TODO: provavelmente quando arrumar o pop isso vai funcionar...
+	@Test // TODO: provavelmente quando arrumar o pop isso vai funcionar...
 	public void testWhileIterator() {
 		
-		assertInstrumentation(16, "testWhileIteratorSample", 41, 
-			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V\"\n" +
-			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
+		assertInstrumentation(16, "testWhileIteratorSample", 38,
+				"    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
+				"    NEW java/util/ArrayList\n" +
+				"    DUP\n" +
+				"    INVOKESPECIAL java/util/ArrayList.<init> ()V\n" +
+				"    ASTORE 1\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.myList\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
+				"    ALOAD 1\n" +
+				"    LDC \"ola mundo\"\n" +
+				"    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
+				"    POP\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.it\"\n" +
+				"    LDC \"java/util/List.iterator()Ljava/util/Iterator;\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+				"    ALOAD 1\n" +
+				"    INVOKEINTERFACE java/util/List.iterator ()Ljava/util/Iterator;\n" +
+				"    ASTORE 2\n" +
+				"    GOTO L0\n" +
+				"   L1\n" +
+				"   FRAME APPEND [java/util/ArrayList java/util/Iterator]\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.n\"\n" +
+				"    LDC \"java/util/Iterator.next()Ljava/lang/Object;\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+				"    ALOAD 2\n" +
+				"    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;\n" +
+				"    CHECKCAST java/lang/String\n" +
+				"    ASTORE 3\n" +
+				"    ICONST_1\n" +
+				"    INVOKESTATIC org/junit/Assert.assertTrue (Z)V\n" +
+				"   L0\n" +
+				"   FRAME SAME\n" +
+				"    ALOAD 2\n" +
+				"    INVOKEINTERFACE java/util/Iterator.hasNext ()Z\n" +
+				"    IFNE L1\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
+				"    RETURN\n");
+	}
+	
+	//@Test
+	public void testDupX() {
+		assertInstrumentation(17, "testDupX", 18, 
+			   "    LDC \"org/scova/instrumenter/SampleClass.count\"\n" +  
+			   "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" + 
+			   "    LDC \"org/scova/instrumenter/SampleClass.count\"\n" + 
+			   "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" + 
+			   "    ALOAD 0\n" + 
+			   "    DUP\n" + 
+			   "    GETFIELD org/scova/instrumenter/SampleClass.count : I\n" +
+			   "    DUP_X1\n" + 
+			   "    ICONST_1\n" +
+			   "    IADD\n" +
+			   "    PUTFIELD org/scova/instrumenter/SampleClass.count : I\n" +
+			   "    IFLE L0\n" +
+			   "    ALOAD 0\n" +
+			   "    ICONST_0\n" +
+			   "    PUTFIELD org/scova/instrumenter/SampleClass.count : I\n" +
+			   "   L0\n" +
+			   "   FRAME SAME\n" +			    
+			   "    RETURN\n");
+	}
+	
+	@Test
+	public void testBugInfiniteLoop() {
+		
+		assertInstrumentation(18, "getConfigurationFile", 60, 
+				"    ACONST_NULL\n" +
+			    "    ASTORE 3\n" +
+			    "    DCONST_0\n" +
+			    "    DSTORE 4\n" +
 			    "    NEW java/util/ArrayList\n" +
 			    "    DUP\n" +
 			    "    INVOKESPECIAL java/util/ArrayList.<init> ()V\n" +
-			    "    ASTORE 1\n" +
-			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.myList\"\n" +
-			    "    INVOKESTATIC statecoverage/StateCoverage.AddModification (Ljava/lang/String;)V\n" +
-			    "    ALOAD 1\n" +
-			    "    LDC \"ola mundo\"\n" +
-			    "    INVOKEINTERFACE java/util/List.add (Ljava/lang/Object;)Z\n" +
-			    "    POP\n" +
-			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.it\"\n" +
-			    "    LDC \"java/util/List.iterator()Ljava/util/Iterator;\"\n" +
+			    "    ASTORE 6\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;.newProps\"\n" +
+			    "    LDC \"java/util/ArrayList.iterator()Ljava/util/Iterator;\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
-			    "    ALOAD 1\n" +
-			    "    INVOKEINTERFACE java/util/List.iterator ()Ljava/util/Iterator;\n" +
-			    "    ASTORE 2\n" +
-			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.n\"\n" +
-			    "    LDC \"java/util/Iterator.next()Ljava/lang/Object;\"\n" +
-			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    "    ALOAD 6\n" +
+			    "    INVOKEVIRTUAL java/util/ArrayList.iterator ()Ljava/util/Iterator;\n" +
+			    "    ASTORE 7\n" +
 			    "    GOTO L0\n" +
 			    "   L1\n" +
-			    "   FRAME APPEND [java/util/ArrayList java/util/Iterator]\n" +
-			    "    ALOAD 2\n" +
-			    "    INVOKEINTERFACE java/util/Iterator.next ()Ljava/lang/Object;\n" +
-			    "    CHECKCAST java/lang/String\n" +
-			    "    ASTORE 3\n" +
-			    "    ICONST_1\n" +
-			    "    INVOKESTATIC org/junit/Assert.assertTrue (Z)V\n" +
-			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V.n\"\n" +
-			    "    LDC \"java/util/Iterator.next()Ljava/lang/Object;\"\n" +
+			    "   FRAME FULL [org/scova/instrumenter/SampleClass java/lang/ClassLoader java/lang/String java/util/Properties D java/util/ArrayList java/util/Iterator] []\n" +
+				"    NEW java/util/Properties\n" +
+			    "    DUP\n" +
+			    "    INVOKESPECIAL java/util/Properties.<init> ()V\n" +
+			    "    ASTORE 8\n" +
+			    "    ALOAD 8\n" +
+			    "    IFNULL L0\n" +
+			    "    ALOAD 3\n" +
+			    "    IFNONNULL L2\n" +
+			    "    DCONST_0\n" +
+			    "    DSTORE 4\n" +
+			    "    GOTO L0\n" +
+			    "   L2\n" +
+			    "   FRAME APPEND [java/util/Properties]\n" +
+			    "    LDC \"\"\n" +
+			    "    ASTORE 9\n" +
+			    "    DCONST_0\n" +
+			    "    DSTORE 10\n" +
+			    "    ALOAD 9\n" +
+			    "    IFNULL L3\n" +
+			    "    DCONST_0\n" +
+			    "    DSTORE 10\n" +
+			    "   L3\n" +
+			    "   FRAME APPEND [java/lang/String D]\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;.props\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;.newProps\"\n" +
 			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
-			    "    LDC \"org/scova/instrumenter/SampleClass.testWhileIteratorSample()V\"\n" +
-			    "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
+			    "    ALOAD 8\n" +
+			    "    ASTORE 3\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;.priority\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;.newPriority\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    "    DLOAD 10\n" +
+			    "    DSTORE 4\n" +
 			    "   L0\n" +
-			    "   FRAME SAME\n" +
-			    "    ALOAD 2\n" +
+			    "   FRAME CHOP 3\n" +
+			    "    ALOAD 7\n" +
 			    "    INVOKEINTERFACE java/util/Iterator.hasNext ()Z\n" +
 			    "    IFNE L1\n" +
-			    "    RETURN\n");
-
+			    "    LDC \"org/scova/instrumenter/SampleClass.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;\"\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;.props\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+			    "    ALOAD 3\n" +   
+			    "    ARETURN\n");
 		
 	}
 

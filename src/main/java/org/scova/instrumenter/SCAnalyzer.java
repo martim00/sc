@@ -7,13 +7,15 @@ import org.objectweb.asm.tree.analysis.Interpreter;
 
 public class SCAnalyzer extends Analyzer<SCValue> {
 
-	public SCAnalyzer(Interpreter<SCValue> interpreter) {
+	private SCInterpreter interpreter;
+	public SCAnalyzer(SCInterpreter interpreter) {
 		super(interpreter);
+		this.interpreter = interpreter;		
 	}
 
     @Override
     protected Frame<SCValue> newFrame(final int nLocals, final int nStack) {
-        return new SCFrame(nLocals, nStack);
+    	return new SCFrame(nLocals, nStack);
     }
 
     /**
@@ -29,12 +31,14 @@ public class SCAnalyzer extends Analyzer<SCValue> {
     }
     
     protected void newControlFlowEdge(final int insn, final int successor) {
+    	interpreter.setLastInstruction(insn);
 //    	System.out.println("new control flow edge : insn: " + insn + " successor: " + successor);
     }
     @Override
     protected boolean newControlFlowExceptionEdge(final int insn,
             final int successor) {
 //    	System.out.println("new control flow excpetion edge : insn: " + insn + " successor: " + successor);
+    	interpreter.setLastInstruction(insn);
         return true;
     }
 
@@ -42,6 +46,7 @@ public class SCAnalyzer extends Analyzer<SCValue> {
     protected boolean newControlFlowExceptionEdge(final int insn,
             final TryCatchBlockNode tcb) {
 //    	System.out.println("new control flow excpetion edge : insn: " + insn + " successor: " + "?");
+    	interpreter.setLastInstruction(insn);
         return super.newControlFlowExceptionEdge(insn, tcb);
     }
 }

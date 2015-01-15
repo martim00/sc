@@ -169,9 +169,10 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 		case ASTORE:
 			if (!value.getName().isEmpty()) { // soh podemos adicionar dependencia se o source do store for um identificador
 				
-				System.out.println("Found dependency: " + ((VarInsnNode)insn).var + " <- " + value.getName());
+				
 				
 				String target = extractNameForLoadAndStore((VarInsnNode)insn);
+				System.out.println("Found dependency: " + target + " <- " + value.getName());
 				this.addInstrumentation(CodeGeneration.generateAddDependencyCode(target, value.getName()), lastStatement);
 			}
 			
@@ -376,12 +377,9 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 
     @Override
     public SCValue merge(final SCValue d, final SCValue w) {
-    	Set<AbstractInsnNode> union = new HashSet<AbstractInsnNode>();
-    	union.addAll(d.insns);
-    	union.addAll(w.insns);
-//    	return new SCValue(union.size(), union, d.getName() + ", " + w.getName());
-    	//return new SCValue(union.size(), union, "");
-    	return new SCValue(w.getSize(), w.insns, w.getName());
+    	
+    	//return new SCValue(w.getSize(), w.insns, w.getName());
+    	return new SCValue(d.getSize(), d.insns, d.getName());
     }
 	
 	public void addInstrumentation(InsnList insnList, AbstractInsnNode previousNode) {
@@ -404,8 +402,19 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 		return result;
 	}
 
-	public void pop(AbstractInsnNode insn) {
+	public void setLastInstruction(AbstractInsnNode insn) {
 		this.lastStatement = insn;
+	}
+	
+	public void setLastInstruction(int insn) {
+		AbstractInsnNode node = this.methodNode.instructions.get(insn);
+		int insnType = node.getType();
+		if (insnType == AbstractInsnNode.LABEL
+			|| insnType == AbstractInsnNode.LINE
+			|| insnType == AbstractInsnNode.FRAME) {
+		
+				this.lastStatement = node;
+			}
 	}
 	
 }
