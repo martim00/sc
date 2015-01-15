@@ -1,4 +1,6 @@
 package org.scova.instrumenter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -8,30 +10,31 @@ import org.objectweb.asm.tree.analysis.SourceValue;
 public class SCValue extends SourceValue {
 	
 	
-	private String name = "";
+//	private String name = "";
+	private List<String> identifiers = new ArrayList<String>();
 
 	public SCValue(int size) {
 		super(size);
 	}
 
-	public SCValue(int size, AbstractInsnNode insn, String name) {
+	public SCValue(int size, AbstractInsnNode insn) {
 		super(size, insn);
-		this.name = name;
 	}
 
-	public SCValue(int size, Set<AbstractInsnNode> insns, String name) {
+	public SCValue(int size, Set<AbstractInsnNode> insns
+			, List<String> identifiers) {
 		super(size, insns);
-		this.name = name;
+		this.identifiers = identifiers;
 	}
 	
-	public SCValue(int size, String name) {
-		super(size);
-		this.name = name;
+	public SCValue(int size, AbstractInsnNode insn, List<String> identifiers) {
+		super(size, insn);
+		this.identifiers = identifiers;
 	}
 
-	public String getName() {
-		return this.name;
+
+	public List<String> getIdentifiers() {
+		return this.identifiers;
 	}
 	
-
 }

@@ -9,11 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class SampleClass {
-
-	protected Class logConstructorSignature[] = { java.lang.String.class };
 
 	private int a = 0;
 	private int other = 1;
@@ -107,40 +106,13 @@ public class SampleClass {
 
 	public void testDupX() {
 
-		// NEW java/lang/NoClassDefFoundError
-		// DUP_X1
-		// SWAP
-		// INVOKEVIRTUAL java/lang/Throwable.getMessage ()Ljava/lang/String;
-		// INVOKESPECIAL java/lang/NoClassDefFoundError.<init>
-		// (Ljava/lang/String;)V
-		// ATHROW
-
-		// Class c = Abstract.class;
-
-		// return null;
-		//
-		// boolean test = changeCount == 0;
-		// if (test) {
-		// throw new NullPointerException("Null values are not allowed");
-		// }
-
 		int count = 0;
 		if (count++ > 0) {
 			count = 0;
 		}
-
-		// if (changeCount > MAX_CHANGES_BEFORE_PURGE) {
-		// changeCount = 0;
-		// }
-
-		// Log log = LogFactory.getLog(CatalogFactory.class);
-
-		// SampleClass c = new SampleClass();
-		// c.getA();
-		// Class c = SampleClass.class;
-
 	}
 
+	@SuppressWarnings("unused")
 	private final Properties getConfigurationFile(
 			ClassLoader classLoader, String fileName) {
 		Properties props = null;
@@ -171,5 +143,48 @@ public class SampleClass {
 
 		return props;
 	}
+	
+	class DSCompiler {
+		
+	}
+	
+	class DerivativeStructure {
+
+	    /** Compiler for the current dimensions. */
+	    private transient DSCompiler compiler;
+
+	    /** Combined array holding all values. */
+	    private final double[] data;
+	    
+	    public DerivativeStructure(DSCompiler compiler, double [] data) {
+	    	this.compiler = compiler;
+	    	this.data = data;
+	    }
+	 	    
+	    public DerivativeStructure abs() {
+	        if (Double.doubleToLongBits(data[0]) < 0) {
+	            // we use the bits representation to also handle -0.0
+	            return this;
+	        } else {
+	            return this;
+	        }
+	    }
+	    
+	    public double getPartialDerivative(final int ... orders) {
+	            return data[0];
+	        }
+	}
+	
+	
+    @Test
+    public void testAbs() {
+
+        DerivativeStructure minusOne = new DerivativeStructure(new DSCompiler(), new double[] {1, 0, -1.0});
+        Assert.assertEquals(+1.0, minusOne.abs().getPartialDerivative(0), 1.0e-15);
+        Assert.assertEquals(-1.0, minusOne.abs().getPartialDerivative(1), 1.0e-15);
+
+        
+    }
+
 
 }

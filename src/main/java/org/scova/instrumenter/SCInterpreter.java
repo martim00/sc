@@ -14,385 +14,533 @@ import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InvokeDynamicInsnNode;
 import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import org.objectweb.asm.tree.analysis.Interpreter;
 
-public class SCInterpreter extends Interpreter<SCValue> implements
-        Opcodes {
+public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 
 	private AbstractInsnNode lastStatement = null;
 	private boolean debug = true;
 	private Set<String> thirdPartNonConstMethods = new HashSet<String>();
-	private Set<String> thirdPartPropertyVerifier = new HashSet<String>(); 
-	
+	private Set<String> thirdPartPropertyVerifier = new HashSet<String>();
+
 	class InstrumenterInfo {
-				
+
 		public InsnList instructionList = null;
 		public AbstractInsnNode previousInsn = null;
-		
-		public InstrumenterInfo(InsnList instructionList, AbstractInsnNode previousInsn) {
+
+		public InstrumenterInfo(InsnList instructionList,
+				AbstractInsnNode previousInsn) {
 			this.instructionList = instructionList;
 			this.previousInsn = previousInsn;
 		}
 	}
-	
-	private Map<AbstractInsnNode, List<InstrumenterInfo>> instrumentation 
-		= new HashMap<AbstractInsnNode, List<InstrumenterInfo>>();
-	
+
+	private Map<AbstractInsnNode, List<InstrumenterInfo>> instrumentation = new HashMap<AbstractInsnNode, List<InstrumenterInfo>>();
+
 	private String className;
 	private MethodNode methodNode;
-	
+
 	private boolean isTestMethod = false;
-	
-    public SCInterpreter(String className, MethodNode methodNode) {
-        super(ASM4);
-        this.className = className;
-        this.methodNode = methodNode;
-        
-        this.isTestMethod = Utils.isTestMethod(methodNode, className);
-        
-        this.lastStatement = methodNode.instructions.getFirst();
-        
-        initThirdPartNonConst();
-        initThirdPartPropertyVerifier();
-    }
 
-    private void initThirdPartNonConst() {
-    	this.thirdPartNonConstMethods.add("java/util/List.add(Ljava/lang/Object;)Z");
-    	this.thirdPartNonConstMethods.add("java/util/ArrayList.add(Ljava/lang/Object;)Z");
+	public SCInterpreter(String className, MethodNode methodNode) {
+		super(ASM4);
+		this.className = className;
+		this.methodNode = methodNode;
+
+		this.isTestMethod = Utils.isTestMethod(methodNode, className);
+
+		this.lastStatement = methodNode.instructions.getFirst();
+
+		initThirdPartNonConst();
+		initThirdPartPropertyVerifier();
 	}
 
-    private void initThirdPartPropertyVerifier() {
-    	this.thirdPartPropertyVerifier.add("java/util/List.size()I");
-    	this.thirdPartPropertyVerifier.add("java/util/Map.get(Ljava/lang/Object;)Ljava/lang/Object;");
-    	this.thirdPartPropertyVerifier.add("java/util/Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object;");
-    	this.thirdPartPropertyVerifier.add("java/util/List.get(I)Ljava/lang/Object;");
-    	this.thirdPartPropertyVerifier.add("java/util/Map.size()I");
-    	
+	private void initThirdPartNonConst() {
+		this.thirdPartNonConstMethods
+				.add("java/util/List.add(Ljava/lang/Object;)Z");
+		this.thirdPartNonConstMethods
+				.add("java/util/ArrayList.add(Ljava/lang/Object;)Z");
 	}
-    
+
+	private void initThirdPartPropertyVerifier() {
+		this.thirdPartPropertyVerifier.add("java/util/List.size()I");
+		this.thirdPartPropertyVerifier
+				.add("java/util/Map.get(Ljava/lang/Object;)Ljava/lang/Object;");
+		this.thirdPartPropertyVerifier
+				.add("java/util/Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object;");
+		this.thirdPartPropertyVerifier
+				.add("java/util/List.get(I)Ljava/lang/Object;");
+		this.thirdPartPropertyVerifier.add("java/util/Map.size()I");
+
+	}
+
 	public void instrumentBeginAndEnd() {
-    	if (!this.isTestMethod)
-    		return;
-    	
-    	methodNode.instructions.insert(CodeGeneration.generateBeginTestCode(
-    			CodeGeneration.prepareFullyQualifiedName(className, this.getMethodName())));
-    	methodNode.instructions.insert(lastStatement, CodeGeneration.generateEndTestCode(
-    			CodeGeneration.prepareFullyQualifiedName(className, this.getMethodName())));
-    }
+		if (!this.isTestMethod)
+			return;
 
-    @Override
-    public SCValue newValue(final Type type) {
-        if (type == Type.VOID_TYPE) {
-            return null;
-        }
-        return new SCValue(type == null ? 1 : type.getSize());
-    }
-
-    @Override
-    public SCValue newOperation(final AbstractInsnNode insn) {
-        int size;
-        String name = "";
-        switch (insn.getOpcode()) {
-        case NEW:
-        	size= 1;
-        	break;
-        case LCONST_0:
-        case LCONST_1:
-        case DCONST_0:
-        case DCONST_1:
-            size = 2;
-            break;
-        case LDC:
-            Object cst = ((LdcInsnNode) insn).cst;
-            size = cst instanceof Long || cst instanceof Double ? 2 : 1;
-            break;
-        case GETSTATIC:
-            size = Type.getType(((FieldInsnNode) insn).desc).getSize();
-            name = ((FieldInsnNode)insn).name;
-            break;
-        default:
-            size = 1;
-        }
-        return new SCValue(size, insn, name); // TODO
-    }
-
-    private String getMethodName() {
-    	return methodNode.name + methodNode.desc;
-    }
-    
-    private String extractNameForLoadAndStore(VarInsnNode insn) {
-    	
-    	VarInsnNode varNode = (VarInsnNode)insn;
-    	String target = "";
-    	if (debug) {
-    		String varName = "";
-    		// há casos aonde o número de variáveis locais contidos em 'localVariables' é menor do que o maxLocals
-    		// isso acontece por exemplo, quando há variáveis escondidas no bytecode, por exemplo em um foreach 
-    		if (varNode.var >= this.methodNode.localVariables.size()) {
-    			varName = "hidden" + new Integer(varNode.var).toString();
-    		} else {
-    			varName = this.methodNode.localVariables.get(varNode.var).name;
-    		}					
-    		target = CodeGeneration.prepareFullyQualifiedName(
-    				className, this.getMethodName(), varName);
-    	} else {
-    		target = CodeGeneration.prepareFullyQualifiedName(
-    				className, this.getMethodName(), new Integer(varNode.var).toString());
-    	}
-    	
-    	return target;
-
-    }
+		methodNode.instructions.insert(CodeGeneration
+				.generateBeginTestCode(CodeGeneration
+						.prepareFullyQualifiedName(className,
+								this.getMethodName())));
+		methodNode.instructions.insert(lastStatement, CodeGeneration
+				.generateEndTestCode(CodeGeneration.prepareFullyQualifiedName(
+						className, this.getMethodName())));
+	}
 
 	@Override
-    public SCValue copyOperation(final AbstractInsnNode insn,
-            final SCValue value) {
-		
-    	switch (insn.getOpcode()) {
-    	case ILOAD:
-    	case LLOAD:
-    	case FLOAD:
-    	case DLOAD:
-    	case ALOAD:
-    		HashSet<AbstractInsnNode> union = new HashSet<AbstractInsnNode>();
-    		union.add(insn);
-    		union.addAll(value.insns);
-    		String name = extractNameForLoadAndStore((VarInsnNode)insn);
-    		return new SCValue(union.size(), union, name);
-    	case ISTORE: 
+	public SCValue newValue(final Type type) {
+		if (type == Type.VOID_TYPE) {
+			return null;
+		}
+		return new SCValue(type == null ? 1 : type.getSize());
+	}
+
+	@Override
+	public SCValue newOperation(final AbstractInsnNode insn) {
+		int size;
+		ArrayList<String> identifiers = new ArrayList<String>();
+		switch (insn.getOpcode()) {
+		case NEW:
+			size = 1;
+			break;
+		case LCONST_0:
+		case LCONST_1:
+		case DCONST_0:
+		case DCONST_1:
+			size = 2;
+			break;
+		case LDC:
+			Object cst = ((LdcInsnNode) insn).cst;
+			size = cst instanceof Long || cst instanceof Double ? 2 : 1;
+			break;
+		case GETSTATIC:
+			size = Type.getType(((FieldInsnNode) insn).desc).getSize();
+			String name = ((FieldInsnNode) insn).name;
+			identifiers.add(name);
+			break;
+		default:
+			size = 1;
+		}
+		return new SCValue(size, insn, identifiers); // TODO
+	}
+
+	private String getMethodName() {
+		return methodNode.name + methodNode.desc;
+	}
+
+	private String extractNameForLoadAndStore(VarInsnNode insn) {
+
+		VarInsnNode varNode = (VarInsnNode) insn;
+		String target = "";
+		if (debug) { // in debug we have variable names
+
+			String varName = getLocalVariableName(varNode);
+			// // há casos aonde o número de variáveis locais contidos em
+			// 'localVariables' é menor do que o maxLocals
+			// // isso acontece por exemplo, quando há variáveis escondidas no
+			// bytecode, por exemplo em um foreach
+			// if (varNode.var >= this.methodNode.localVariables.size()) {
+			// varName = "hidden" + new Integer(varNode.var).toString();
+			// } else {
+			// varName = this.methodNode.localVariables.get(varNode.var).name;
+			// }
+			target = CodeGeneration.prepareFullyQualifiedName(className,
+					this.getMethodName(), varName);
+		} else {
+			target = CodeGeneration.prepareFullyQualifiedName(className,
+					this.getMethodName(), new Integer(varNode.var).toString());
+		}
+
+		return target;
+
+	}
+
+	String getLocalVariableName(VarInsnNode varNode) {
+		for (LocalVariableNode localVar : this.methodNode.localVariables) {
+			if (localVar.index == varNode.var)
+				return localVar.name;
+		}
+		// há casos aonde o número de variáveis locais contidos em
+		// 'localVariables' é menor do que o maxLocals
+		// isso acontece por exemplo, quando há variáveis escondidas no
+		// bytecode, por exemplo em um foreach
+		return "hidden" + new Integer(varNode.var).toString();
+	}
+
+	@Override
+	public SCValue copyOperation(final AbstractInsnNode insn,
+			final SCValue value) {
+
+		switch (insn.getOpcode()) {
+		case ILOAD:
+		case LLOAD:
+		case FLOAD:
+		case DLOAD:
+		case ALOAD:
+			HashSet<AbstractInsnNode> union = new HashSet<AbstractInsnNode>();
+			union.add(insn);
+			union.addAll(value.insns);
+			String name = extractNameForLoadAndStore((VarInsnNode) insn);
+			List<String> identifiers = new ArrayList<String>();
+			identifiers.add(name);
+			return new SCValue(union.size(), union, identifiers);
+		case ISTORE:
 		case LSTORE:
-		case FSTORE: 
+		case FSTORE:
 		case DSTORE:
 		case ASTORE:
-			if (!value.getName().isEmpty()) { // soh podemos adicionar dependencia se o source do store for um identificador
-				
-				
-				
-				String target = extractNameForLoadAndStore((VarInsnNode)insn);
-				System.out.println("Found dependency: " + target + " <- " + value.getName());
-				this.addInstrumentation(CodeGeneration.generateAddDependencyCode(target, value.getName()), lastStatement);
+			for (String identifier : value.getIdentifiers()) {
+				// if (!value.getName().isEmpty()) { // soh podemos adicionar
+				// dependencia se o source do
+				// store for um identificador
+
+				String target = extractNameForLoadAndStore((VarInsnNode) insn);
+				System.out.println("Found dependency: " + target + " <- "
+						+ identifier);
+				this.addInstrumentation(CodeGeneration
+						.generateAddDependencyCode(target, identifier),
+						lastStatement);
+			}
+
+			this.lastStatement = insn;
+			return new SCValue(value.getSize(), insn);
+		}
+
+		return new SCValue(value.getSize(), insn); // TODO
+	}
+
+	@Override
+	public SCValue unaryOperation(final AbstractInsnNode insn,
+			final SCValue value) {
+
+		// repassamos para a próxima instrução os identificadores que chegaram
+		// até aqui
+		List<String> identifiers = value.getIdentifiers();
+		int size;
+		switch (insn.getOpcode()) {
+		case LNEG:
+		case DNEG:
+		case I2L:
+		case I2D:
+		case L2D:
+		case F2L:
+		case F2D:
+		case D2L:
+			size = 2;
+			break;
+		case GETFIELD:
+			FieldInsnNode fieldInsn = (FieldInsnNode) insn;
+			String name = CodeGeneration.prepareFullyQualifiedName(
+					fieldInsn.owner, fieldInsn.name);
+			identifiers.clear();
+			identifiers.add(name);
+			size = Type.getType(fieldInsn.desc).getSize();
+			break;
+		default:
+			size = 1;
+		}
+		return new SCValue(size, insn, identifiers);
+	}
+
+//    @Override
+//    public SCValue binaryOperation(final AbstractInsnNode insn,
+//            final SCValue value1, final SCValue value2) {
+//        
+//        int size;
+//        switch (insn.getOpcode()) {
+//        case LALOAD:
+//        case DALOAD:
+//        case LADD:
+//        case DADD:
+//        case LSUB:
+//        case DSUB:
+//        case LMUL:
+//        case DMUL:
+//        case LDIV:
+//        case DDIV:
+//        case LREM:
+//        case DREM:
+//        case LSHL:
+//        case LSHR:
+//        case LUSHR:
+//        case LAND:
+//        case LOR:
+//        case LXOR:
+//            size = 2;
+//            break;
+//        case PUTFIELD:
+//			size = 2;
+//			FieldInsnNode fieldInsn = (FieldInsnNode) insn;
+//			for (String identifier : value2.getIdentifiers()) {
+//				this.addInstrumentation(CodeGeneration
+//						.generateAddDependencyCode(CodeGeneration
+//								.prepareFullyQualifiedName(fieldInsn.owner,
+//										fieldInsn.name), identifier),
+//						lastStatement);
+//				System.out.println("PUTFIELD found for field " + identifier);
+//			}
+//			
+//			this.addInstrumentation(CodeGeneration
+//					.generateAddModification(CodeGeneration
+//							.prepareFullyQualifiedName(fieldInsn.owner,
+//									fieldInsn.name)), lastStatement);
+//			return new SCValue(size, insn);
+//        default:
+//            size = 1;
+//        }
+//        return new SCValue(size, insn); // TODO
+//    }
+//
+@Override
+	public SCValue binaryOperation(final AbstractInsnNode insn,
+			final SCValue value1, final SCValue value2) {
+
+		int size = 1;
+		switch (insn.getOpcode()) {
+		case PUTFIELD:
+			size = 2;
+			FieldInsnNode fieldInsn = (FieldInsnNode) insn;
+			for (String identifier : value2.getIdentifiers()) {
+				this.addInstrumentation(CodeGeneration
+						.generateAddDependencyCode(CodeGeneration
+								.prepareFullyQualifiedName(fieldInsn.owner,
+										fieldInsn.name), identifier),
+						lastStatement);
+				System.out.println("PUTFIELD found for field " + identifier);
 			}
 			
-			this.lastStatement = insn;
-			return new SCValue(value.getSize(), insn, "");
-    	}
-    	
-        return new SCValue(value.getSize(), insn, ""); // TODO
-    }
+			this.addInstrumentation(CodeGeneration
+					.generateAddModification(CodeGeneration
+							.prepareFullyQualifiedName(fieldInsn.owner,
+									fieldInsn.name)), lastStatement);
+			return new SCValue(size, insn);
+		case LALOAD:
+		case DALOAD:
+		case LADD:
+		case DADD:
+		case LSUB:
+		case DSUB:
+		case LMUL:
+		case DMUL:
+		case LDIV:
+		case DDIV:
+		case LREM:
+		case DREM:
+		case LSHL:
+		case LSHR:
+		case LUSHR:
+		case LAND:
+		case LOR:
+		case LXOR:
+			size = 2;
+			break;
+		
+		default:
+			size = 1;
+		}
+		ArrayList<String> identifiers = new ArrayList<String>();
+		identifiers.addAll(value1.getIdentifiers());
+		identifiers.addAll(value2.getIdentifiers());
+		return new SCValue(size, insn, identifiers);
+	}
 
-    @Override
-    public SCValue unaryOperation(final AbstractInsnNode insn,
-            final SCValue value) {
-    	
-    	String name = value.getName(); // repassamos para a próxima instrução o valor...
-        int size;
-        switch (insn.getOpcode()) {
-        case LNEG:
-        case DNEG:
-        case I2L:
-        case I2D:
-        case L2D:
-        case F2L:
-        case F2D:
-        case D2L:
-            size = 2;
-            break;
-        case GETFIELD:
-        	FieldInsnNode fieldInsn = (FieldInsnNode)insn;
-        	name = CodeGeneration.prepareFullyQualifiedName(fieldInsn.owner, fieldInsn.name);
-            size = Type.getType(fieldInsn.desc).getSize();
-            break;
-        default:
-            size = 1;
-        }
-        return new SCValue(size, insn, name); 
-    }
+	@Override
+	public SCValue ternaryOperation(final AbstractInsnNode insn,
+			final SCValue value1, final SCValue value2, final SCValue value3) {
 
-    @Override
-    public SCValue binaryOperation(final AbstractInsnNode insn,
-            final SCValue value1, final SCValue value2) {
-    	
-        int size;
-        switch (insn.getOpcode()) {
-        case LALOAD:
-        case DALOAD:
-        case LADD:
-        case DADD:
-        case LSUB:
-        case DSUB:
-        case LMUL:
-        case DMUL:
-        case LDIV:
-        case DDIV:
-        case LREM:
-        case DREM:
-        case LSHL:
-        case LSHR:
-        case LUSHR:
-        case LAND:
-        case LOR:
-        case LXOR:
-            size = 2;
-            break;
-        case PUTFIELD:
-        	size = 2;
-        	FieldInsnNode fieldInsn = (FieldInsnNode)insn;
-        	if (!value2.getName().isEmpty()) {
-        		this.addInstrumentation(CodeGeneration.generateAddDependencyCode(
-        				CodeGeneration.prepareFullyQualifiedName(fieldInsn.owner, fieldInsn.name), value2.getName())
-        				, lastStatement);
-        		System.out.println("PUTFIELD found for field " + value2.getName());
-        	}
-			this.addInstrumentation(CodeGeneration.generateAddModification(CodeGeneration.prepareFullyQualifiedName(fieldInsn.owner, fieldInsn.name)), lastStatement);
-        default:
-            size = 1;
-        }
-        return new SCValue(size, insn, ""); // TODO
-    }
+		return new SCValue(1, insn); // TODO
+	}
 
-    @Override
-    public SCValue ternaryOperation(final AbstractInsnNode insn,
-            final SCValue value1, final SCValue value2,
-            final SCValue value3) {
-    	
-        return new SCValue(1, insn, ""); // TODO
-    }
-    
-    @Override
-    public SCValue naryOperation(final AbstractInsnNode insn,
-            final List<? extends SCValue> values) {
-    	
-    	// TODO: refactor!!!
-        int size;
-        String name = "";
-        int opcode = insn.getOpcode();
-        if (opcode == MULTIANEWARRAY) {
-            size = 1;
-        } else {
-        	String methodName = (opcode == INVOKEDYNAMIC) ? ((InvokeDynamicInsnNode) insn).name
-                    : ((MethodInsnNode) insn).name; 
-        	
-            String desc = (opcode == INVOKEDYNAMIC) ? ((InvokeDynamicInsnNode) insn).desc
-                    : ((MethodInsnNode) insn).desc;
-            
-            size = Type.getReturnType(desc).getSize();
-            
-            //System.out.println("Calling method " + methodName + " of class " + this.className);
-            boolean isProcedure = Type.getReturnType(desc) == Type.VOID_TYPE;
-            if (!isProcedure) {
-            	
-            	String fullName = getMethodCallName(insn); 
-            	
-            	if (methodCallIsPropertyVerifier(fullName)) { // se for um property verifier de uma lista, por exemplo, não adicionamos o nome do método mas sim  o nome da instância (no caso a lista)...
-            		assert(values.size() >= 1);
-            		name = values.get(0).getName();
-            	} else { // senão adicionamos o próprio nome do método como value
-            		name = fullName;
-            	}
-            }
-            if (methodIsAssert(methodName)) {
-            	System.out.println("Found assert : " + methodName);
-            	
-            	for (SCValue value : values) {
-            		if (value.getName().isEmpty())
-            			continue;
-            		addInstrumentation(CodeGeneration.generateAssertCode(value.getName()), this.lastStatement);
-            	}
-            }
-            instrumentThirdPart(insn, values);
-            
-            if (isProcedure) {
-            	this.lastStatement = insn;
-            }
-        }
-        
-        return new SCValue(size, insn, name);
-    }
+	@Override
+	public SCValue naryOperation(final AbstractInsnNode insn,
+			final List<? extends SCValue> values) {
+
+		// TODO: refactor!!!
+		List<String> identifiers = new ArrayList<String>();
+
+		int size;
+		// String name = "";
+		int opcode = insn.getOpcode();
+		if (opcode == MULTIANEWARRAY) {
+			size = 1;
+		} else {
+			String methodName = (opcode == INVOKEDYNAMIC) ? ((InvokeDynamicInsnNode) insn).name
+					: ((MethodInsnNode) insn).name;
+
+			String desc = (opcode == INVOKEDYNAMIC) ? ((InvokeDynamicInsnNode) insn).desc
+					: ((MethodInsnNode) insn).desc;
+
+			size = Type.getReturnType(desc).getSize();
+
+			// System.out.println("Calling method " + methodName + " of class "
+			// + this.className);
+			boolean isProcedure = Type.getReturnType(desc) == Type.VOID_TYPE;
+			if (!isProcedure) {
+
+				String fullName = getMethodCallName(insn);
+
+				// se o método não for um property verifier iremos adicionar o
+				// nome do método como identifier
+				// se for um property verifier apenas repassa os identificadores
+				// de todos os parâmetros até agora
+				if (!methodCallIsPropertyVerifier(fullName)) {
+					identifiers.add(fullName);
+				}
+
+				for (SCValue value : values) {
+					identifiers.addAll(value.getIdentifiers());
+				}
+
+				// if (methodCallIsPropertyVerifier(fullName)) { // se for um
+				// property verifier de uma lista, por exemplo, não adicionamos
+				// o nome do método mas sim o nome da instância (no caso a
+				// lista)...
+				// assert(values.size() >= 1);
+				// identifiers = values.get(0).getIdentifiers();
+				// } else { // senão adicionamos o próprio nome do método como
+				// value mais todos os identificadores que até agora
+				// influenciaram os parâmetros do método
+				//
+				// identifiers = values.get(0).getIdentifiers();
+				// //name = fullName;
+				// }
+
+			}
+
+			if (methodIsAssert(methodName)) {
+				System.out.println("Found assert : " + methodName);
+
+				for (SCValue value : values) {
+
+					for (String identifier : value.getIdentifiers())
+						addInstrumentation(
+								CodeGeneration.generateAssertCode(identifier),
+								this.lastStatement);
+				}
+			}
+
+			instrumentThirdPart(insn, values);
+
+			if (isProcedure) {
+				this.lastStatement = insn;
+			}
+		}
+
+		return new SCValue(size, insn, identifiers);
+	}
 
 	private boolean methodIsAssert(String methodName) {
 		return WhiteList.getAsserts().contains(methodName);
-		
-		//return methodName.equals("assertEquals");
-	}
-    
-    private String getMethodCallName(AbstractInsnNode insn) {
-    	
-    	assert(insn instanceof MethodInsnNode);
-    	MethodInsnNode methodInsn = (MethodInsnNode)insn;
-    	return CodeGeneration.prepareFullyQualifiedName(methodInsn.owner, methodInsn.name + methodInsn.desc); 
-    }
 
-    private void instrumentThirdPart(AbstractInsnNode insn, final List<? extends SCValue> values) {
-    	
-    	if (!(insn.getOpcode() == Opcodes.INVOKEINTERFACE 
-    			|| insn.getOpcode() == Opcodes.INVOKESPECIAL 
-    			|| insn.getOpcode() == Opcodes.INVOKEVIRTUAL))
-    		return;
-    	
-    	String fullName = getMethodCallName(insn);
-    	
-    	if (methodCallIsNonConst(fullName)) {
-    		
-    		assert(values.size() >= 1);
-    		// TODO: tratar isso.. por exemplo... list.add("some"); // devemos criar uma outra notação para isso
-//    		addInstrumentation(CodeGeneration.generateAddDependencyCode(values.get(0).getName(), ""), this.lastStatement);
-    		addInstrumentation(CodeGeneration.generateAddModification(values.get(0).getName()), this.lastStatement);
-    		
-//    		for (int i = 0; i < values.size(); i++) {
-//    		    			
-//    			if (i == 0) continue;
-//    			
-//    			if (!values.get(i).getName().isEmpty())
-//    				addInstrumentation(CodeGeneration.generateAddDependencyCode(values.get(0).getName(), values.get(i).getName()), this.lastStatement);
-//    		}
-    	}
-    }
+		// return methodName.equals("assertEquals");
+	}
+
+	private String getMethodCallName(AbstractInsnNode insn) {
+
+		assert (insn instanceof MethodInsnNode);
+		MethodInsnNode methodInsn = (MethodInsnNode) insn;
+		return CodeGeneration.prepareFullyQualifiedName(methodInsn.owner,
+				methodInsn.name + methodInsn.desc);
+	}
+
+	private void instrumentThirdPart(AbstractInsnNode insn,
+			final List<? extends SCValue> values) {
+
+		if (!(insn.getOpcode() == Opcodes.INVOKEINTERFACE
+				|| insn.getOpcode() == Opcodes.INVOKESPECIAL || insn
+					.getOpcode() == Opcodes.INVOKEVIRTUAL))
+			return;
+
+		String fullName = getMethodCallName(insn);
+
+		if (methodCallIsNonConst(fullName)) {
+
+			assert (values.size() >= 1);
+			assert (!values.get(0).getIdentifiers().isEmpty());
+			// TODO: tratar isso.. por exemplo... list.add("some"); // devemos
+			// criar uma outra notação para isso
+			// addInstrumentation(CodeGeneration.generateAddDependencyCode(values.get(0).getName(),
+			// ""), this.lastStatement);
+			// TODO: não sei se isso funciona...
+			addInstrumentation(
+					CodeGeneration.generateAddModification(values.get(0)
+							.getIdentifiers().get(0)), this.lastStatement);
+
+			// for (int i = 0; i < values.size(); i++) {
+			//
+			// if (i == 0) continue;
+			//
+			// if (!values.get(i).getName().isEmpty())
+			// addInstrumentation(CodeGeneration.generateAddDependencyCode(values.get(0).getName(),
+			// values.get(i).getName()), this.lastStatement);
+			// }
+		}
+	}
 
 	private boolean methodCallIsPropertyVerifier(String fullName) {
 		return this.thirdPartPropertyVerifier.contains(fullName);
 	}
 
 	/**
-     * Return true if the method call passed modifies the object
-     * @param insn 
-     * @return
-     */
-    private boolean methodCallIsNonConst(String methodName) {
-    	return thirdPartNonConstMethods.contains(methodName);
+	 * Return true if the method call passed modifies the object
+	 * 
+	 * @param insn
+	 * @return
+	 */
+	private boolean methodCallIsNonConst(String methodName) {
+		return thirdPartNonConstMethods.contains(methodName);
 	}
 
 	@Override
-    public void returnOperation(final AbstractInsnNode insn,
-            final SCValue value, final SCValue expected) {
-    	
-    	if (!value.getName().isEmpty()) {
-    		String target = CodeGeneration.prepareFullyQualifiedName(className, this.getMethodName()); 
-    		String source = value.getName();
-    		this.addInstrumentation(CodeGeneration.generateAddDependencyCode(target, source), lastStatement);
-    	}
-    }
+	public void returnOperation(final AbstractInsnNode insn,
+			final SCValue value, final SCValue expected) {
 
-    @Override
-    public SCValue merge(final SCValue d, final SCValue w) {
-    	
-    	//return new SCValue(w.getSize(), w.insns, w.getName());
-    	return new SCValue(d.getSize(), d.insns, d.getName());
-    }
-	
-	public void addInstrumentation(InsnList insnList, AbstractInsnNode previousNode) {
+		String target = CodeGeneration.prepareFullyQualifiedName(className,
+				this.getMethodName());
+
+		for (String identifier : value.getIdentifiers()) {
+			// String source = value.getName();
+			String source = identifier;
+			addInstrumentation(
+					CodeGeneration.generateAddDependencyCode(target, source),
+					lastStatement);
+		}
+
+		// if (!value.getName().isEmpty()) {
+		// String target = CodeGeneration.prepareFullyQualifiedName(className,
+		// this.getMethodName());
+		// String source = value.getName();
+		// this.addInstrumentation(CodeGeneration.generateAddDependencyCode(target,
+		// source), lastStatement);
+		// }
+	}
+
+	@Override
+	public SCValue merge(final SCValue d, final SCValue w) {
+
+		// return new SCValue(w.getSize(), w.insns, w.getName());
+		// return new SCValue(d.getSize(), d.insns, d.getName());
+		return new SCValue(d.getSize(), d.insns, d.getIdentifiers());
+	}
+
+	public void addInstrumentation(InsnList insnList,
+			AbstractInsnNode previousNode) {
 		if (!instrumentation.containsKey(previousNode))
-			instrumentation.put(previousNode, new ArrayList<InstrumenterInfo>());
-		
-		this.instrumentation.get(previousNode).add(new InstrumenterInfo(insnList, previousNode));
+			instrumentation
+					.put(previousNode, new ArrayList<InstrumenterInfo>());
+
+		this.instrumentation.get(previousNode).add(
+				new InstrumenterInfo(insnList, previousNode));
 	}
 
 	public boolean hasInstrumentationAt(AbstractInsnNode insn) {
 		return this.instrumentation.containsKey(insn);
 	}
-	
+
 	public InsnList getInstrumentationFor(AbstractInsnNode insn) {
 		InsnList result = new InsnList();
 		List<InstrumenterInfo> instrumented = this.instrumentation.get(insn);
@@ -405,17 +553,16 @@ public class SCInterpreter extends Interpreter<SCValue> implements
 	public void setLastInstruction(AbstractInsnNode insn) {
 		this.lastStatement = insn;
 	}
-	
+
 	public void setLastInstruction(int insn) {
 		AbstractInsnNode node = this.methodNode.instructions.get(insn);
 		int insnType = node.getType();
 		if (insnType == AbstractInsnNode.LABEL
-			|| insnType == AbstractInsnNode.LINE
-			|| insnType == AbstractInsnNode.FRAME) {
-		
-				this.lastStatement = node;
-			}
-	}
-	
-}
+				|| insnType == AbstractInsnNode.LINE
+				|| insnType == AbstractInsnNode.FRAME) {
 
+			this.lastStatement = node;
+		}
+	}
+
+}
