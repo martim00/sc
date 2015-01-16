@@ -30,7 +30,7 @@
 
 
     <echo message="${scova.classpath}" />
-    <target name="instrument">
+    <target name="instrument-all">
     	<java classname="org.scova.instrumenter.Main" fork="yes">
         <!--<jvmarg value="-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=y"/>-->
             
@@ -162,8 +162,10 @@
     </target>
 
     
-    <target name="all" depends="clean, compile, instrument, run-batch"/>
-    <target name="build" depends="clean, compile"/>    
+    <target name="all" depends="clean, compile, instrument-all, run-batch"/>
+    <target name="build" depends="clean, compile"/> 
+
+    <target name="instrument" depends="clean, compile, instrument-all"/>
 
     <target name="all-single-class" depends="clean, compile, instrument-class, run-batch"/>
 

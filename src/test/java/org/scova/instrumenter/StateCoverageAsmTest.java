@@ -325,7 +325,7 @@ public class StateCoverageAsmTest {
 		
 	}
 	
-	@Test // TODO: provavelmente quando arrumar o pop isso vai funcionar...
+	@Test 
 	public void testWhileIterator() {
 		
 		assertInstrumentation(16, "testWhileIteratorSample", 44,
@@ -470,18 +470,71 @@ public class StateCoverageAsmTest {
 	@Test
 	public void testBugCommonsMath() {
 		
-//		assertInstrumentation(19, "testAbs", 56, 
-//				"    ACONST_NULL\n" +
-//						"");
-//		
+		assertInstrumentation(19, "testAbs", 46, 
+				"    LDC \"org/scova/instrumenter/SampleClass.testAbs()V\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
+				"    NEW org/scova/instrumenter/SampleClass$DerivativeStructure\n" +
+				"    DUP\n" +
+				"    ALOAD 0\n" +
+				"    NEW org/scova/instrumenter/SampleClass$DSCompiler\n" +
+				"    DUP\n" +
+				"    ALOAD 0\n" +
+				"    INVOKESPECIAL org/scova/instrumenter/SampleClass$DSCompiler.<init> (Lorg/scova/instrumenter/SampleClass;)V\n" +
+				"    ICONST_3\n" +
+				"    NEWARRAY T_DOUBLE\n" +
+				"    DUP\n" +
+				"    ICONST_0\n" +
+				"    DCONST_1\n" +
+				"    DASTORE\n" +
+				"    DUP\n" +
+				"    ICONST_1\n" +
+				"    DCONST_0\n" +
+				"    DASTORE\n" +
+				"    DUP\n" +
+				"    ICONST_2\n" +
+				"    LDC -1.0\n" +
+				"    DASTORE\n" +
+				"    INVOKESPECIAL org/scova/instrumenter/SampleClass$DerivativeStructure.<init> (Lorg/scova/instrumenter/SampleClass;Lorg/scova/instrumenter/SampleClass$DSCompiler;[D)V\n" +
+				"    ASTORE 1\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass$DerivativeStructure.getPartialDerivative([I)D\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass$DerivativeStructure.abs()Lorg/scova/instrumenter/SampleClass$DerivativeStructure;\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass.testAbs()V.minusOne\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
+				"    DCONST_1\n" +
+				"    ALOAD 1\n" +
+				"    INVOKEVIRTUAL org/scova/instrumenter/SampleClass$DerivativeStructure.abs ()Lorg/scova/instrumenter/SampleClass$DerivativeStructure;\n" +
+				"    ICONST_1\n" +
+				"    NEWARRAY T_INT\n" +
+				"    DUP\n" +
+				"    ICONST_0\n" +
+				"    ICONST_0\n" +
+				"    IASTORE\n" +
+				"    INVOKEVIRTUAL org/scova/instrumenter/SampleClass$DerivativeStructure.getPartialDerivative ([I)D\n" +
+				"    LDC 1.0E-15\n" +
+				"    INVOKESTATIC org/junit/Assert.assertEquals (DDD)V\n" +
+				"    LDC \"org/scova/instrumenter/SampleClass.testAbs()V\"\n" +
+				"    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
+				"    RETURN\n"
+			    );
+		
 	    ClassNode classNode = instrumentAndReadClass("bin/org/scova/instrumenter/SampleClass$DerivativeStructure.class");
-	    assertInstrumentationOf(classNode, 2, "getPartialDerivative", 8,
+	    assertInstrumentationOf(classNode, 2, "getPartialDerivative", 16,
 	    	    "    LDC \"org/scova/instrumenter/SampleClass$DerivativeStructure.getPartialDerivative([I)D\"\n" + 
 	    	    "    LDC \"org/scova/instrumenter/SampleClass$DerivativeStructure.data\"\n" +
 	    	    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+	    	    "    LDC \"org/scova/instrumenter/SampleClass$DerivativeStructure.getPartialDerivative([I)D\"\n" +
+	    	    "    LDC \"org/scova/instrumenter/SampleClass$DSCompiler.getIdx()I\"\n" +
+	    	    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
+	    	    "    LDC \"org/scova/instrumenter/SampleClass$DerivativeStructure.getPartialDerivative([I)D\"\n" +
+	    	    "    LDC \"org/scova/instrumenter/SampleClass$DerivativeStructure.compiler\"\n" +
+	    	    "    INVOKESTATIC statecoverage/StateCoverage.AddDependency (Ljava/lang/String;Ljava/lang/String;)V\n" +
 	    		"    ALOAD 0\n" +
 	    		"    GETFIELD org/scova/instrumenter/SampleClass$DerivativeStructure.data : [D\n" + 
-	    		"    ICONST_0\n" +
+	    	    "    ALOAD 0\n" +
+	    	    "    GETFIELD org/scova/instrumenter/SampleClass$DerivativeStructure.compiler : Lorg/scova/instrumenter/SampleClass$DSCompiler;\n" +
+	    	    "    INVOKEVIRTUAL org/scova/instrumenter/SampleClass$DSCompiler.getIdx ()I\n" +
 	    		"    DALOAD\n" +
 	    		"    DRETURN\n");
 
