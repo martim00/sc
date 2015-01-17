@@ -1,4 +1,5 @@
 package statecoverage;
+
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
@@ -7,9 +8,10 @@ public class InfluenceMap {
 
 	private Hashtable<String, Dependencies> influences = new Hashtable<String, Dependencies>();
 
-	// a set of states to ignore.. mainly because are test local variables. TODO: search for a better place
+	// a set of states to ignore.. mainly because are test local variables.
+	// TODO: search for a better place
 	private Set<String> statesToIgnore = new HashSet<String>();
-	
+
 	public void addDependency(String target, String source) {
 		Dependencies influences = getOrCreateDependencies(target);
 		influences.addDependency(source);
@@ -22,30 +24,30 @@ public class InfluenceMap {
 		return influences.get(attr);
 	}
 
-	public Set<String> getInfluencesOf(String attr)
-    {
-        Set<String> result = getOrCreateDependencies(attr).getDependencies();
+	public Set<String> getInfluencesOf(String attr) {
+		Set<String> result = getOrCreateDependencies(attr).getDependencies();
 
-        Set<String> dependenciesOf = new HashSet<String>(result);
-        for (String dep : dependenciesOf)
-        {
-        	if (!dep.isEmpty()) // temos que ver outra maneira de tratar listas...
-        		result.addAll(getInfluencesOf(dep));
-        }
+		Set<String> dependenciesOf = new HashSet<String>(result);
+		for (String dep : dependenciesOf) {
+			if (!dep.isEmpty() && !dep.equals(attr)) // avoid recursion.. if an
+														// identifier influences
+														// himself (ex: i+= 1)
+				result.addAll(getInfluencesOf(dep));
+		}
 
-        return result;
-    }
-	
+		return result;
+	}
+
 	public Set<String> getAllTargets() {
 		Set<String> targets = new HashSet<String>(influences.keySet());
 		targets.removeAll(statesToIgnore);
 		return targets;
 	}
-	
+
 	public void ignoreState(String stateToIgnore) {
 		statesToIgnore.add(stateToIgnore);
 	}
-	
+
 	public boolean ignores(String state) {
 		return statesToIgnore.contains(state);
 	}

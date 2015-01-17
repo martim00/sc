@@ -110,7 +110,7 @@
 
             <!--<arg value="${TEST}"/>_-->
 
-            <arg value="org.apache.commons.cli.ApplicationTest"/>
+            <arg value="test.FixtureTest"/>
 
             
     		<!-- end -->
@@ -189,7 +189,7 @@
     <target name="instrument" depends="clean, compile, instrument-all"/>
 
     <target name="all-single-class" depends="clean, compile, instrument-class, run-batch"/>
-    <target name="all-report" depends="clean, compile, instrument-class, run-batch, report"/>
+    <target name="all-report" depends="clean, compile, instrument-all, run-batch, report"/>
 
         
 
