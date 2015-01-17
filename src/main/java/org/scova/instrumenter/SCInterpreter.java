@@ -18,6 +18,7 @@ import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
+import org.objectweb.asm.tree.analysis.Frame;
 import org.objectweb.asm.tree.analysis.Interpreter;
 
 public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
@@ -53,7 +54,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 
 		this.isTestMethod = Utils.isTestMethod(methodNode, className);
 
-		this.lastStatement = methodNode.instructions.getFirst();
+		this.setLastInstruction(methodNode.instructions.getFirst());
 
 		initThirdPartNonConst();
 		initThirdPartPropertyVerifier();
@@ -193,20 +194,28 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 		case FSTORE:
 		case DSTORE:
 		case ASTORE:
+			
+			String target = extractNameForLoadAndStore((VarInsnNode) insn);
+			
+//			if (!value.getIdentifiers().isEmpty()) // only generates clear dependency if value has dependencies
+			// we have to generate clear dependency even if target doesnt have dependencies
+			// cause: any assignment clear all dependencies
+			// example:
+			// int a = 0;
+			// int b = a;
+			// b = 0; <- b deps are empty after this			
+			generateClearDependency(target);
+			
 			for (String identifier : value.getIdentifiers()) {
-				// if (!value.getName().isEmpty()) { // soh podemos adicionar
-				// dependencia se o source do
-				// store for um identificador
 
-				String target = extractNameForLoadAndStore((VarInsnNode) insn);
 				System.out.println("Found dependency: " + target + " <- "
 						+ identifier);
 				this.addInstrumentation(CodeGeneration
 						.generateAddDependencyCode(target, identifier),
 						lastStatement);
 			}
-
-			this.lastStatement = insn;
+			
+			this.setLastInstruction(insn);
 			return new SCValue(value.getSize(), insn);
 		}
 
@@ -295,6 +304,13 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 //        return new SCValue(size, insn); // TODO
 //    }
 //
+	private void generateClearDependency(String identifier) {
+		System.out.println("Generate ClearDependenciesOf: " + identifier);
+		this.addInstrumentation(CodeGeneration
+				.generateClearDependencies(identifier),
+				lastStatement);
+	}
+	
 @Override
 	public SCValue binaryOperation(final AbstractInsnNode insn,
 			final SCValue value1, final SCValue value2) {
@@ -304,11 +320,16 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 		case PUTFIELD:
 			size = 2;
 			FieldInsnNode fieldInsn = (FieldInsnNode) insn;
+			
+			String fullyQualifiedName = CodeGeneration
+					.prepareFullyQualifiedName(fieldInsn.owner,
+							fieldInsn.name);			
+			
+			generateClearDependency(fullyQualifiedName);
+			
 			for (String identifier : value2.getIdentifiers()) {
-				this.addInstrumentation(CodeGeneration
-						.generateAddDependencyCode(CodeGeneration
-								.prepareFullyQualifiedName(fieldInsn.owner,
-										fieldInsn.name), identifier),
+				this.addInstrumentation(
+						CodeGeneration.generateAddDependencyCode(fullyQualifiedName, identifier),
 						lastStatement);
 				System.out.println("PUTFIELD found for field " + identifier);
 			}
@@ -425,9 +446,9 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 
 			instrumentThirdPart(insn, values);
 
-			if (isProcedure) {
-				this.lastStatement = insn;
-			}
+//			if (isProcedure) {
+//				this.lastStatement = insn;
+//			}
 		}
 
 		return new SCValue(size, insn, identifiers);
@@ -501,6 +522,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 
 		String target = CodeGeneration.prepareFullyQualifiedName(className,
 				this.getMethodName());
+		
+		generateClearDependency(target);
 
 		for (String identifier : value.getIdentifiers()) {
 			// String source = value.getName();
@@ -509,6 +532,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 					CodeGeneration.generateAddDependencyCode(target, source),
 					lastStatement);
 		}
+		
+//		this.setLastInstruction(insn);
 
 		// if (!value.getName().isEmpty()) {
 		// String target = CodeGeneration.prepareFullyQualifiedName(className,
@@ -554,14 +579,21 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 		this.lastStatement = insn;
 	}
 
-	public void setLastInstruction(int insn) {
+	public void setLastInstruction(int insn, Frame<SCValue> insnFrame) {
+		
+		// only sets insn as lastInstruction if stack is empty
+		// and if insn is a FRAME or LABEL 
+    	if (insnFrame.getStackSize() > 0)
+    		return;
+		
 		AbstractInsnNode node = this.methodNode.instructions.get(insn);
 		int insnType = node.getType();
-		if (insnType == AbstractInsnNode.LABEL
-				|| insnType == AbstractInsnNode.LINE
+		if (
+				insnType == AbstractInsnNode.LABEL
+//				|| insnType == AbstractInsnNode.LINE
 				|| insnType == AbstractInsnNode.FRAME) {
 
-			this.lastStatement = node;
+			this.setLastInstruction(node);
 		}
 	}
 

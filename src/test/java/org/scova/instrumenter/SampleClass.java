@@ -64,7 +64,7 @@ public class SampleClass {
 
 	@Test
 	public void testAssertWithMethodCall() {
-		assertEquals(1, getA());
+		assertEquals(0, getA());
 	}
 
 	@Test
@@ -113,8 +113,8 @@ public class SampleClass {
 	}
 
 	@SuppressWarnings("unused")
-	private final Properties getConfigurationFile(
-			ClassLoader classLoader, String fileName) {
+	private final Properties getConfigurationFile(ClassLoader classLoader,
+			String fileName) {
 		Properties props = null;
 		double priority = 0.0;
 
@@ -143,49 +143,75 @@ public class SampleClass {
 
 		return props;
 	}
-	
+
 	class DSCompiler {
 		public int getIdx() {
 			return 0;
 		}
 	}
-	
+
 	class DerivativeStructure {
 
-	    /** Compiler for the current dimensions. */
-	    private transient DSCompiler compiler;
+		/** Compiler for the current dimensions. */
+		private transient DSCompiler compiler;
 
-	    /** Combined array holding all values. */
-	    private final double[] data;
-	    
-	    public DerivativeStructure(DSCompiler compiler, double [] data) {
-	    	this.compiler = compiler;
-	    	this.data = data;
-	    }
-	 	    
-	    public DerivativeStructure abs() {
-	        if (Double.doubleToLongBits(data[0]) < 0) {
-	            // we use the bits representation to also handle -0.0
-	            return this;
-	        } else {
-	            return this;
-	        }
-	    }
-	    
-	    public double getPartialDerivative(final int ... orders) {
-	            return data[compiler.getIdx()];
-	        }
+		/** Combined array holding all values. */
+		private final double[] data;
+
+		public DerivativeStructure(DSCompiler compiler, double[] data) {
+			this.compiler = compiler;
+			this.data = data;
+		}
+
+		public DerivativeStructure abs() {
+			if (Double.doubleToLongBits(data[0]) < 0) {
+				// we use the bits representation to also handle -0.0
+				return this;
+			} else {
+				return this;
+			}
+		}
+
+		public double getPartialDerivative(final int... orders) {
+			return data[compiler.getIdx()];
+		}
 	}
-	
-	
-    @Test
-    public void testAbs() {
 
-        DerivativeStructure minusOne = new DerivativeStructure(new DSCompiler(), new double[] {1, 0, -1.0});
-        Assert.assertEquals(+1.0, minusOne.abs().getPartialDerivative(0), 1.0e-15);
+	@Test
+	public void testAbs() {
 
-        
-    }
+		DerivativeStructure minusOne = new DerivativeStructure(
+				new DSCompiler(), new double[] {});
+//		Assert.assertEquals(+1.0, minusOne.abs().getPartialDerivative(0),
+//				1.0e-15);
+		Assert.assertEquals(1, minusOne.abs().getPartialDerivative(0)
+				, 0.1);
 
+	}
+
+	class CommandLine {
+
+		private List<String> options = new ArrayList<String>();
+
+		public boolean hasOption(String opt) {
+			return options.contains("");
+		}
+	}
+
+	@Test
+	public void testAnt() throws Exception {
+		CommandLine line = new CommandLine();
+
+		// check multiple values
+//		String[] opts = line.getOptionValues("D");
+//		assertEquals("property", opts[0]);
+
+		// check single value
+		// esse assert tbm deveria funcionar
+//		assertEquals(line.getOptionValue("buildfile"), "mybuild.xml");
+
+		// check option
+		assertFalse(line.hasOption("projecthelp"));
+	}
 
 }

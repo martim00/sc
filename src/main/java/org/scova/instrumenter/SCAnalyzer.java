@@ -31,22 +31,26 @@ public class SCAnalyzer extends Analyzer<SCValue> {
     }
     
     protected void newControlFlowEdge(final int insn, final int successor) {
-    	interpreter.setLastInstruction(insn);
-//    	System.out.println("new control flow edge : insn: " + insn + " successor: " + successor);
+    	
+    	setLastInstruction(insn);
     }
+
     @Override
     protected boolean newControlFlowExceptionEdge(final int insn,
             final int successor) {
-//    	System.out.println("new control flow excpetion edge : insn: " + insn + " successor: " + successor);
-    	interpreter.setLastInstruction(insn);
+    	setLastInstruction(insn);
         return true;
     }
 
     @Override
     protected boolean newControlFlowExceptionEdge(final int insn,
             final TryCatchBlockNode tcb) {
-//    	System.out.println("new control flow excpetion edge : insn: " + insn + " successor: " + "?");
-    	interpreter.setLastInstruction(insn);
+    	setLastInstruction(insn);
         return super.newControlFlowExceptionEdge(insn, tcb);
     }
+
+	private void setLastInstruction(final int insn) {
+		Frame<SCValue> insnFrame = this.getFrames()[insn];
+    	interpreter.setLastInstruction(insn, insnFrame);
+	}
 }

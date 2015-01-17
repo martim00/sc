@@ -197,7 +197,9 @@ public class RunHandler extends AbstractHandler {
 	}
 
 	public String getProjectOutputTestFolder() {
-		return "C:/sc/commons-chain/src/test";
+//		return "C:/sc/commons-chain/src/test";
+		//return "c:/sc/douglas+picon/src";
+		return "C:/sc/commons-csv/src/test/java";
 	}
 
 	public String getProjectOutputFolder(IProject project) {

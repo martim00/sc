@@ -7,7 +7,7 @@ class Dependencies {
 	private Set<String> dependencies = new HashSet<String>();
 
 	public void addDependency(String influence) {
-		dependencies.clear();
+//		dependencies.clear();
 		dependencies.add(influence);
 	}
 

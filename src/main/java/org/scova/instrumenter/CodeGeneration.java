@@ -58,6 +58,16 @@ public class CodeGeneration {
 		return il;
 	}
 
+	public static InsnList generateClearDependencies(String target) {
+		assert(!target.isEmpty());
+		InsnList il = new InsnList();
+		il.add(new LdcInsnNode(target));
+		il.add(new MethodInsnNode(StateCoverageClassAdapter.INVOKESTATIC,
+				"statecoverage/StateCoverage", "ClearDependenciesOf",
+				"(Ljava/lang/String;)V"));
+		return il;
+	}
+
 	public static String prepareFullyQualifiedName(String klass, String name, String var) {
 		return klass + "." + name + "." + var;
 	}

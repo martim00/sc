@@ -21,11 +21,14 @@ public class SCFrame extends Frame<SCValue> {
             final Interpreter<SCValue> interpreter) throws AnalyzerException {
     	super.execute(insn, interpreter);
     	
-        switch (insn.getOpcode()) {
-        case Opcodes.POP:
-        	//((SCInterpreter)interpreter).pop(insn);
-        	((SCInterpreter)interpreter).setLastInstruction(insn);
-    	}
+//    	if (this.getStackSize() == this.getLocals())
+//    		((SCInterpreter)interpreter).setLastInstruction(insn);
+    	
+//        switch (insn.getOpcode()) {
+//        case Opcodes.POP:
+//        	//((SCInterpreter)interpreter).pop(insn);
+//        	((SCInterpreter)interpreter).setLastInstruction(insn);
+//    	}
     }
 
 }

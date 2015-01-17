@@ -80,18 +80,39 @@
     <target name="clean">
         <delete dir="../bin"/>
         <mkdir dir="../bin" />
+    </target>   
+
+    <target name="run-sample-class">
+     
+        <java classname="org.junit.runner.JUnitCore">
+
+            <!-- put your tests here -->
+            
+            <arg value="org.scova.instrumenter.SampleClass"/>
+
+            <classpath>
+                <pathelement path="${scova.classpath}"/>
+                <pathelement location="../lib/bin"/>
+            </classpath>
+
+        </java>       
     </target>
 
     <target name="run">
+     
+    	<java classname="org.junit.runner.JUnitCore" fork="yes">
 
-        
-      
-    	<java classname="org.junit.runner.JUnitCore">
+            <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=y"/>
 
     		<!-- put your tests here -->
     		<!--<arg value="test.net.douglashiura.picon.TestPiconAtributoEntidade"/>-->
             <!--<arg value="test.net.douglashiura.picon.TestePiconEscolha"/>-->
-            <arg value="${TEST}"/>
+
+            <!--<arg value="${TEST}"/>_-->
+
+            <arg value="org.apache.commons.cli.ApplicationTest"/>
+
+            
     		<!-- end -->
 
             <classpath refid="project.output.classpath.id"/>    	
@@ -168,6 +189,7 @@
     <target name="instrument" depends="clean, compile, instrument-all"/>
 
     <target name="all-single-class" depends="clean, compile, instrument-class, run-batch"/>
+    <target name="all-report" depends="clean, compile, instrument-class, run-batch, report"/>
 
         
 
