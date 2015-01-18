@@ -224,5 +224,10 @@ public class SampleClass {
         } catch (Exception e) {
         }        
     } 
+	
+	abstract class Abstract {
+		@Test
+		public abstract void abstractMethod();
+	}
 
 }

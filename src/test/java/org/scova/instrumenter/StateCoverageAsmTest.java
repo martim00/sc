@@ -662,4 +662,11 @@ public class StateCoverageAsmTest {
 			    "    RETURN\n");
 	}
     
+	@Test
+	public void testAbstract() {
+		
+	    ClassNode classNode = instrumentAndReadClass("bin/org/scova/instrumenter/SampleClass$Abstract.class");
+	    assertInstrumentationOf(classNode, 1, "abstractMethod", 0, "");
+
+	}
 }

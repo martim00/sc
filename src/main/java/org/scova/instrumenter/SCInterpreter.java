@@ -80,7 +80,8 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 	}
 
 	public void instrumentBeginAndEnd() {
-		if (!this.isTestMethod)
+		if (!this.isTestMethod 
+				|| methodNode.instructions.size() == 0) // for abstract methods
 			return;
 
 		methodNode.instructions.insert(CodeGeneration
