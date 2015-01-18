@@ -625,5 +625,41 @@ public class StateCoverageAsmTest {
 	    	    "    INVOKEINTERFACE java/util/List.contains (Ljava/lang/Object;)Z\n" +
 	    	    "    IRETURN\n");
 	}
+
+	@Test
+	public void testBugCommonsChain() {
+		
+		assertInstrumentation(21, "testAssertBesideCatch", 30,
+			    "    LDC \"org/scova/instrumenter/SampleClass.testAssertBesideCatch()V\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.BeginTestCapture (Ljava/lang/String;)V\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testAssertBesideCatch()V.line\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.ClearDependenciesOf (Ljava/lang/String;)V\n" +
+			    "    NEW org/scova/instrumenter/SampleClass$CommandLine\n" +
+			    "    DUP\n" +
+			    "    ALOAD 0\n" +
+			    "    INVOKESPECIAL org/scova/instrumenter/SampleClass$CommandLine.<init> (Lorg/scova/instrumenter/SampleClass;)V\n" +
+			    "    ASTORE 1\n" +
+			    "   L0\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testAssertBesideCatch()V.hidden2\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.ClearDependenciesOf (Ljava/lang/String;)V\n" +
+			    "    ALOAD 1\n" +
+			    "    LDC \"projecthelp\"\n" +
+			    "    INVOKEVIRTUAL org/scova/instrumenter/SampleClass$CommandLine.hasOption (Ljava/lang/String;)Z\n" +
+			    "    INVOKESTATIC org/junit/Assert.assertFalse (Z)V\n" +
+			    "   L1\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testAssertBesideCatch()V\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.EndTestCapture (Ljava/lang/String;)V\n" +
+			    "    GOTO L2\n" +
+			    "   L3\n" +
+			    "   FRAME FULL [org/scova/instrumenter/SampleClass org/scova/instrumenter/SampleClass$CommandLine] [java/lang/Exception]\n" +
+			    "    ASTORE 2\n" +
+			    "   L2\n" +
+			    "   FRAME SAME\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass$CommandLine.hasOption(Ljava/lang/String;)Z\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
+			    "    LDC \"org/scova/instrumenter/SampleClass.testAssertBesideCatch()V.line\"\n" +
+			    "    INVOKESTATIC statecoverage/StateCoverage.AddAssert (Ljava/lang/String;)V\n" +
+			    "    RETURN\n");
+	}
     
 }

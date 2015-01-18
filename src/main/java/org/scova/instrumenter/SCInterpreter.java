@@ -590,7 +590,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 		int insnType = node.getType();
 		if (
 				insnType == AbstractInsnNode.LABEL
-//				|| insnType == AbstractInsnNode.LINE
+				|| insnType == AbstractInsnNode.LINE
 				|| insnType == AbstractInsnNode.FRAME) {
 
 			this.setLastInstruction(node);

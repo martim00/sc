@@ -32,7 +32,7 @@
     <echo message="${scova.classpath}" />
     <target name="instrument-all">
     	<java classname="org.scova.instrumenter.Main" fork="yes">
-        <!--<jvmarg value="-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=y"/>-->
+       <!-- <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8888,server=y,suspend=y"/> -->
             
 
             <arg value="${project.input.folder}"/>
@@ -110,7 +110,7 @@
 
             <!--<arg value="${TEST}"/>_-->
 
-            <arg value="test.FixtureTest"/>
+            <arg value="org.apache.commons.chain.generic.LookupCommandTestCase"/>
 
             
     		<!-- end -->

@@ -213,5 +213,16 @@ public class SampleClass {
 		// check option
 		assertFalse(line.hasOption("projecthelp"));
 	}
+	
+	// Test ability to lookup and execute single non-delegating command
+	@Test
+    public void testAssertBesideCatch() {
+		
+		CommandLine line = new CommandLine();
+        try {        	
+            assertFalse(line.hasOption("projecthelp"));
+        } catch (Exception e) {
+        }        
+    } 
 
 }
