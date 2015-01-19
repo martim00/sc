@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.lang.model.element.Modifier;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -36,6 +38,8 @@ public class HtmlReport {
 	}
 
 	private void appendTests(StringBuilder builder) throws Exception {
+
+		builder.append("<h3>State Coverage for each test</h3>\n");
 
 		File[] files = new File(folder).listFiles(new FilenameFilter() {
 
@@ -61,23 +65,34 @@ public class HtmlReport {
 				assert (json.containsKey("covered"));
 				assert (json.containsKey("useless"));
 
+				builder.append("<table border=\"1\">\n").append("<tr>\n")
+						.append("<td>Test name</td>\n")
+						.append("<td>Modified States</td>\n")
+						.append("<td>Covered States</td>\n")
+						.append("<td>State Coverage</td>\n");
+
 				builder.append("<tr>").append("<td>")
 						.append(json.get("test_name")).append("</td>")
 						.append("<td>").append(json.get("modified_states"))
 						.append("</td>").append("<td>")
 						.append(json.get("covered_states")).append("</td>")
 						.append("<td>").append(json.get("state_coverage"))
-						.append("</td>").append("</tr>");
+						.append("</td>").append("</tr>").append("</table>");
+
+				builder.append("<table border=\"1\">\n");
 
 				JSONArray modified = (JSONArray) json.get("modified");
 				JSONArray covered = (JSONArray) json.get("covered");
+
+				if (!modified.isEmpty())
+					appendFieldHeader(builder);
 
 				for (Object state : modified) {
 
 					String jsonObject = (String) state;
 
-					List<String> column = new ArrayList<String>();
-					column.add(jsonObject);
+					List<String> column = splitInstanceInfo(jsonObject);
+
 					builder.append(generateColoredRow(column, covered
 							.contains(jsonObject) ? Colors.GREEN : Colors.RED));
 
@@ -98,11 +113,35 @@ public class HtmlReport {
 					builder.append(content);
 				}
 
+				builder.append("</table>").append("</table></br>\n");
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void appendFieldHeader(StringBuilder builder) {
+		ArrayList<String> headers = new ArrayList<String>();
+		headers.add("Class");
+		headers.add("Field");
+
+		builder.append(this.generateRow(headers));
+	}
+
+	public List<String> splitInstanceInfo(String jsonObject) throws Exception {
+		List<String> column = new ArrayList<String>();
+
+		String[] instanceInfo = jsonObject.split("\\.");
+		// instanceInfo should contains the class name and field name at
+		// position 0 and 1, respectively
+		if (instanceInfo.length != 2) {
+			throw new Exception();
+		}
+		column.add(instanceInfo[0].replace("/", "."));
+		column.add(instanceInfo[1]);
+		return column;
 	}
 
 	private List<String> getGlobalResultRow(int totalModified, int totalCovered) {
@@ -183,22 +222,11 @@ public class HtmlReport {
 
 				.append("<h3>Global report</h3>\n")
 				.append("<table border=\"1\">\n")
-				.append(getGlobalResultStates())
-				.append("</table>\n")
-
-				.append("<h3>State Coverage for each test</h3>\n")
-
-				.append("<table border=\"1\">\n").append("<tr>\n")
-				.append("<td>Test name</td>\n")
-				.append("<td>Modified States</td>\n")
-				.append("<td>Covered States</td>\n")
-				.append("<td>State Coverage</td>\n");
+				.append(getGlobalResultStates()).append("</table>\n");
 
 		builder.append(testsBuilder);
 
 		// appendTests(builder);
-
-		builder.append("</table>\n");
 
 		builder.append("</body>\n").append("</html>\n");
 
@@ -209,15 +237,18 @@ public class HtmlReport {
 	private StringBuilder getGlobalResultStates() throws Exception {
 
 		StringBuilder builder = new StringBuilder();
+		
+		if (!globalModified.isEmpty())
+			this.appendFieldHeader(builder);
 
 		for (Object state : globalModified) {
 
 			String jsonObject = (String) state;
 
-			List<String> column = new ArrayList<String>();
-			column.add(jsonObject);
-			builder.append(generateColoredRow(column,
-					globalCovered.contains(jsonObject) ? Colors.GREEN : Colors.RED));
+			List<String> column = splitInstanceInfo(jsonObject);
+
+			builder.append(generateColoredRow(column, globalCovered
+					.contains(jsonObject) ? Colors.GREEN : Colors.RED));
 
 		}
 		return builder;
