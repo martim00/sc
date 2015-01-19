@@ -322,23 +322,27 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 			size = 2;
 			FieldInsnNode fieldInsn = (FieldInsnNode) insn;
 			
-			String fullyQualifiedName = CodeGeneration
-					.prepareFullyQualifiedName(fieldInsn.owner,
-							fieldInsn.name);			
+			if (!WhiteList.isIgnoredField(fieldInsn.name)) {
 			
-			generateClearDependency(fullyQualifiedName);
-			
-			for (String identifier : value2.getIdentifiers()) {
-				this.addInstrumentation(
-						CodeGeneration.generateAddDependencyCode(fullyQualifiedName, identifier),
-						lastStatement);
-				System.out.println("PUTFIELD found for field " + identifier);
-			}
-			
-			this.addInstrumentation(CodeGeneration
-					.generateAddModification(CodeGeneration
-							.prepareFullyQualifiedName(fieldInsn.owner,
-									fieldInsn.name)), lastStatement);
+				String fullyQualifiedName = CodeGeneration
+						.prepareFullyQualifiedName(fieldInsn.owner,
+								fieldInsn.name);
+
+				generateClearDependency(fullyQualifiedName);
+
+				for (String identifier : value2.getIdentifiers()) {
+					this.addInstrumentation(CodeGeneration
+							.generateAddDependencyCode(fullyQualifiedName,
+									identifier), lastStatement);
+					System.out
+							.println("PUTFIELD found for field " + identifier);
+				}
+
+				this.addInstrumentation(CodeGeneration
+						.generateAddModification(CodeGeneration
+								.prepareFullyQualifiedName(fieldInsn.owner,
+										fieldInsn.name)), lastStatement);
+			} 
 			return new SCValue(size, insn);
 		case LALOAD:
 		case DALOAD:
@@ -456,9 +460,7 @@ public class SCInterpreter extends Interpreter<SCValue> implements Opcodes {
 	}
 
 	private boolean methodIsAssert(String methodName) {
-		return WhiteList.getAsserts().contains(methodName);
-
-		// return methodName.equals("assertEquals");
+		return WhiteList.isAssertMethod(methodName);
 	}
 
 	private String getMethodCallName(AbstractInsnNode insn) {
