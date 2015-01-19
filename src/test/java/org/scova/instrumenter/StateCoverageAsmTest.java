@@ -668,4 +668,22 @@ public class StateCoverageAsmTest {
 	    ClassNode classNode = instrumentAndReadClass("bin/org/scova/instrumenter/SampleClass$Abstract.class");
 	    assertInstrumentationOf(classNode, 1, "abstractMethod", 0, "");
 	}
+	
+	@Test
+	public void testAnonymousInnerClassUsingParameter() {
+		
+	    ClassNode classNode = instrumentAndReadClass("bin/org/scova/instrumenter/SampleClass$TokenMatchers$1Test.class");
+	    assertInstrumentationOf(classNode, 0, "<init>", 9, 
+	    "    ALOAD 0\n" +
+	    "    ALOAD 1\n" +
+	    "    PUTFIELD org/scova/instrumenter/SampleClass$TokenMatchers$1Test.this$1 : Lorg/scova/instrumenter/SampleClass$TokenMatchers;\n" +
+	    "    ALOAD 0\n" +
+	    "    ALOAD 2\n" +
+	    "    PUTFIELD org/scova/instrumenter/SampleClass$TokenMatchers$1Test.val$expectedContent : Ljava/lang/String;\n" +
+	    "    ALOAD 0\n" +
+	    "    INVOKESPECIAL java/lang/Object.<init> ()V\n" +
+	    "    RETURN\n");
+
+	    
+	}
 }

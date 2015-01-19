@@ -25,9 +25,12 @@ public class WhiteList {
 	}
 
 	public static boolean isIgnoredField(String field) {
-		String escapedString = "this(";
+		if (field.equals("this"))
+			return true;
+		
+		String escapedString = ".+";
 		escapedString += java.util.regex.Pattern.quote("$");
-		escapedString += "\\d+)?";
+		escapedString += ".+";
 		
 		return field.matches(escapedString);
 	}

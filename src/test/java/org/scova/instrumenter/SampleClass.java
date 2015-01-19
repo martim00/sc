@@ -229,5 +229,17 @@ public class SampleClass {
 		@Test
 		public abstract void abstractMethod();
 	}
+	
+	final class TokenMatchers {
+		public void matches(final String expectedContent) {
+			class Test {
+				String getExpected() {
+					return expectedContent;
+				}
+				
+			}
+		}
+		
+	}
 
 }
