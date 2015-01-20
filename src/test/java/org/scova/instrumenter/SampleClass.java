@@ -241,5 +241,12 @@ public class SampleClass {
 		}
 		
 	}
+	
+	String argName;
+	public boolean hasArgName() {
+		return argName.length() > 0;
+				//argName != null && argName.length() > 0;
+	}
+
 
 }

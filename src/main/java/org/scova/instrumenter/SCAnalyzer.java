@@ -32,25 +32,18 @@ public class SCAnalyzer extends Analyzer<SCValue> {
     
     protected void newControlFlowEdge(final int insn, final int successor) {
     	
-    	setLastInstruction(insn);
+    	interpreter.storeJumpInfluences(insn, getFrames()[insn], successor);
     }
 
     @Override
     protected boolean newControlFlowExceptionEdge(final int insn,
             final int successor) {
-    	setLastInstruction(insn);
         return true;
     }
 
     @Override
     protected boolean newControlFlowExceptionEdge(final int insn,
             final TryCatchBlockNode tcb) {
-    	setLastInstruction(insn);
         return super.newControlFlowExceptionEdge(insn, tcb);
     }
-
-	private void setLastInstruction(final int insn) {
-		Frame<SCValue> insnFrame = this.getFrames()[insn];
-    	interpreter.setLastInstruction(insn, insnFrame);
-	}
 }
