@@ -33,15 +33,15 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Sample Category"
+            name="State Coverage"
             id="scova-eclipse">
       </category>
       <view
-            name="Sample View"
+            name="State Coverage"
             icon="icons/sample.gif"
             category="scova-eclipse"
-            class="scovaeclipse.views.SampleView"
-            id="scovaeclipse.views.SampleView">
+            class="scovaeclipse.views.StateCoverage"
+            id="scovaeclipse.views.StateCoverage">
       </view>
    </extension>
    <extension
@@ -89,5 +89,20 @@
           public="true">        
     </launchConfigurationType>
 </extension>-->
+
+ <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="org.scova.plugin.preferences.ScovaPreferencePage"
+           id="org.scova.plugin.preferences.ScovaPreferencePage"
+           name="Scova">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="org.scova.plugin.preferences.PreferenceInitializer">
+     </initializer>
+  </extension>
 
 </plugin>

@@ -4,44 +4,28 @@ package scovaeclipse.views;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 import org.eclipse.jface.viewers.*;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 
-
-/**
- * This sample class demonstrates how to plug-in a new
- * workbench view. The view shows data obtained from the
- * model. The sample creates a dummy model on the fly,
- * but a real implementation would connect to the model
- * available either in this or another plug-in (e.g. the workspace).
- * The view is connected to the model using a content provider.
- * <p>
- * The view uses a label provider to define how model
- * objects should be presented in the view. Each
- * view can present the same model objects using
- * different labels and icons, if needed. Alternatively,
- * a single label provider can be shared between views
- * in order to ensure that objects of the same type are
- * presented in the same way everywhere.
- * <p>
- */
-
-public class SampleView extends ViewPart {
+public class StateCoverage extends ViewPart {
 
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "scovaeclipse.views.SampleView";
+	public static final String ID = "scovaeclipse.views.StateCoverage";
 
 	private TableViewer viewer;
 	private Action action1;
-	private Action action2;
 	private Action doubleClickAction;
 
+	private Browser browser = null;
+	
 	/*
 	 * The content provider class is responsible for
 	 * providing objects to the view. It can wrap
@@ -58,7 +42,7 @@ public class SampleView extends ViewPart {
 		public void dispose() {
 		}
 		public Object[] getElements(Object parent) {
-			return new String[] { "One", "Two", "Three" };
+			return new String[] { "One", "Two" };
 		}
 	}
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -79,42 +63,56 @@ public class SampleView extends ViewPart {
 	/**
 	 * The constructor.
 	 */
-	public SampleView() {
+	public StateCoverage() {
 	}
 
 	/**
 	 * This is a callback that will allow us
 	 * to create the viewer and initialize it.
 	 */
+	
+	public void setUrl(String url){
+		browser.setUrl(url);
+	}
+	
 	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		/*viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new NameSorter());
-		viewer.setInput(getViewSite());
+		viewer.setInput(getViewSite());*/
+		
+		try{
+			browser = new Browser(parent, SWT.NONE);
+			//publisher = new ScovaUpdatePublisher(browser);
+			browser.setUrl("www.google.com");
+		}catch(SWTError e){
+
+		}
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "scova-eclipse.viewer");
+		/*PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "scova-eclipse.viewer");
 		makeActions();
-		hookContextMenu();
+		//hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
+		*/
 	}
 
-	private void hookContextMenu() {
+	/*private void hookContextMenu() {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				SampleView.this.fillContextMenu(manager);
+				StateCoverage.this.fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuMgr, viewer);
-	}
+	}*/
 
-	private void contributeToActionBars() {
+	/*private void contributeToActionBars() {
 		IActionBars bars = getViewSite().getActionBars();
 		fillLocalPullDown(bars.getMenuManager());
 		fillLocalToolBar(bars.getToolBarManager());
@@ -124,16 +122,16 @@ public class SampleView extends ViewPart {
 		manager.add(action1);
 		manager.add(new Separator());
 		manager.add(action2);
-	}
+	}*/
 
-	private void fillContextMenu(IMenuManager manager) {
+	/*private void fillContextMenu(IMenuManager manager) {
 		manager.add(action1);
 		manager.add(action2);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-	}
+	}*/
 	
-	private void fillLocalToolBar(IToolBarManager manager) {
+	/*private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(action1);
 		manager.add(action2);
 	}
@@ -179,12 +177,12 @@ public class SampleView extends ViewPart {
 			viewer.getControl().getShell(),
 			"Sample View",
 			message);
-	}
+	}*/
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		//viewer.getControl().setFocus();
 	}
 }
