@@ -33,17 +33,33 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="State Coverage"
+            name="Scova Summary View"
             id="scova-eclipse">
       </category>
       <view
-            name="State Coverage"
+            name="Scova Summary View"
             icon="icons/sample.gif"
             category="scova-eclipse"
             class="org.scova.plugin.views.ScovaSummaryView"
             id="scovaeclipse.views.StateCoverage">
       </view>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Scova Report View"
+            id="scova-report">
+      </category>
+      <view
+            name="Scova Report View"
+            icon="icons/sample.gif"
+            category="scova-report"
+            class="org.scova.plugin.views.ScovaReportView"
+            id="scovaeclipse.views.ScovaReportView">
+      </view>
+   </extension>
+   
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension

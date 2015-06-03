@@ -36,6 +36,7 @@ import org.eclipse.ant.core.AntRunner;
 import org.scova.plugin.Activator;
 import org.scova.plugin.preferences.ScovaPreferencePage;
 import org.scova.plugin.views.ScovaProgressMonitor;
+import org.scova.plugin.views.ScovaReportView;
 import org.scova.plugin.views.ScovaSummaryView;
 
 
@@ -310,10 +311,15 @@ public class RunHandler extends AbstractHandler {
 						ScovaSummaryView part =
 								(ScovaSummaryView) page.showView("scovaeclipse.views.StateCoverage");
 						part.setUrl(outputFolder + "/report.html");
+						
+						ScovaReportView reportView =
+								(ScovaReportView) page.showView("scovaeclipse.views.ScovaReportView");
+						reportView.showContents(instrumentationTargetFolder);
 					} catch (PartInitException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}			// TODO Auto-generated method stub
+						
+					}		
 					
 				}
 			});
