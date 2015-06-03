@@ -4,8 +4,8 @@ public class FieldResult extends Result {
 
 	private boolean isCovered = false;
 	
-	public FieldResult(String fieldName, boolean isCovered) {
-		super(fieldName);
+	public FieldResult(String fieldName, boolean isCovered, Result parent) {
+		super(fieldName, parent);
 		this.isCovered = isCovered;
 	}
 

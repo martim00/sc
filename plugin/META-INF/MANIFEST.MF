@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.launching,
  org.eclipse.ant.core,
  org.eclipse.jdt.ui,
- org.eclipse.osgi
+ org.eclipse.osgi,
+ org.eclipse.ui.workbench,
+ org.eclipse.ui.workbench.texteditor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.resources

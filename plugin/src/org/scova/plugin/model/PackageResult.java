@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 public class PackageResult extends Result {
-	public PackageResult(String packageName) {
-		super(packageName);
+	public PackageResult(String packageName, Result parent) {
+		super(packageName, parent);
 	}
 
 	private Map<String, ClassResult> classResult = new HashMap<String, ClassResult>();
 
 	public ClassResult addAndReturnClass(String className) {
 		if (!classResult.containsKey(className)) {
-			classResult.put(className, new ClassResult(className));
+			classResult.put(className, new ClassResult(className, this));
 		}
 		return classResult.get(className);
 	}

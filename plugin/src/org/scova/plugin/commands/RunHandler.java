@@ -314,7 +314,7 @@ public class RunHandler extends AbstractHandler {
 						
 						ScovaReportView reportView =
 								(ScovaReportView) page.showView("scovaeclipse.views.ScovaReportView");
-						reportView.showContents(instrumentationTargetFolder);
+						reportView.showContents(instrumentationTargetFolder, javaProject.getProject().getName());
 					} catch (PartInitException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

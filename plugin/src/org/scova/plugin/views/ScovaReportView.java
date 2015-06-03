@@ -32,14 +32,14 @@ public class ScovaReportView extends ViewPart {
 		
 		viewer.setContentProvider(new ScovaReportContentProvider());
 		viewer.setLabelProvider(new ScovaReportLabelProvider());
-		//viewer.addDoubleClickListener(listener);
+		viewer.addDoubleClickListener(new OpenFieldDoubleClick());
 		
 		viewer.setInput(null);
 		viewer.expandAll();
 
 	}
 	
-	public void showContents(String outputFolder) {
+	public void showContents(String outputFolder, String projectName) {
 		
 		List<TestResult> model = new ArrayList<TestResult>();
 		
@@ -68,7 +68,7 @@ public class ScovaReportView extends ViewPart {
 				assert (json.containsKey("useless"));
 
 				String testName = (String)json.get("test_name");
-				TestResult testResult = new TestResult(testName);
+				TestResult testResult = new TestResult(testName, projectName);
 				model.add(testResult);
 				
 				JSONArray modified = (JSONArray) json.get("modified");
