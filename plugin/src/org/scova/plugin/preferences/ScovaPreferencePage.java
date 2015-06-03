@@ -10,8 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-
-import scova_eclipse.Activator;
+import org.scova.plugin.Activator;
 
 public class ScovaPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage{
 	

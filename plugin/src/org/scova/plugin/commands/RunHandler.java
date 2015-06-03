@@ -32,13 +32,11 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-
-import scova_eclipse.Activator;
-import scovaeclipse.views.StateCoverage;
-import scovaeclipse.views.SvovaProgressMonitor;
-
 import org.eclipse.ant.core.AntRunner;
+import org.scova.plugin.Activator;
 import org.scova.plugin.preferences.ScovaPreferencePage;
+import org.scova.plugin.views.ScovaProgressMonitor;
+import org.scova.plugin.views.ScovaSummaryView;
 
 
 public class RunHandler extends AbstractHandler {
@@ -309,8 +307,8 @@ public class RunHandler extends AbstractHandler {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 					IWorkbenchPage page = workbench.getActivePage();
 					try {
-						StateCoverage part =
-								(StateCoverage) page.showView("scovaeclipse.views.StateCoverage");
+						ScovaSummaryView part =
+								(ScovaSummaryView) page.showView("scovaeclipse.views.StateCoverage");
 						part.setUrl(outputFolder + "/report.html");
 					} catch (PartInitException e) {
 						// TODO Auto-generated catch block

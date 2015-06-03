@@ -1,8 +1,8 @@
-package scovaeclipse.views;
+package org.scova.plugin.views;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public class SvovaProgressMonitor implements IProgressMonitor{
+public class ScovaProgressMonitor implements IProgressMonitor{
 
 	@Override
 	public void beginTask(String name, int totalWork) {

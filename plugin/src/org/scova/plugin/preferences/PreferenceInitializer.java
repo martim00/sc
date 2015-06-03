@@ -2,8 +2,7 @@ package org.scova.plugin.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-
-import scova_eclipse.Activator;
+import org.scova.plugin.Activator;
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {

@@ -1,4 +1,4 @@
-package scovaeclipse.views;
+package org.scova.plugin.views;
 
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;

@@ -40,7 +40,7 @@
             name="State Coverage"
             icon="icons/sample.gif"
             category="scova-eclipse"
-            class="scovaeclipse.views.StateCoverage"
+            class="org.scova.plugin.views.ScovaSummaryView"
             id="scovaeclipse.views.StateCoverage">
       </view>
    </extension>

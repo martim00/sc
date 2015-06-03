@@ -1,4 +1,4 @@
-package scova_eclipse;
+package org.scova.plugin;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

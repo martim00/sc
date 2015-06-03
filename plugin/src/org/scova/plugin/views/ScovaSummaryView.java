@@ -1,4 +1,4 @@
-package scovaeclipse.views;
+package org.scova.plugin.views;
 
 
 import org.eclipse.swt.widgets.Composite;
@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 
-public class StateCoverage extends ViewPart {
+public class ScovaSummaryView extends ViewPart {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -63,7 +63,7 @@ public class StateCoverage extends ViewPart {
 	/**
 	 * The constructor.
 	 */
-	public StateCoverage() {
+	public ScovaSummaryView() {
 	}
 
 	/**

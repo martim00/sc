@@ -1,4 +1,4 @@
-package scovaeclipse.views;
+package org.scova.plugin.views;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
